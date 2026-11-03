@@ -103,3 +103,32 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+
+const VANTA_API = "https://vanta-api.rizzify.workers.dev";
+async function loadVantaCatalog() {
+  try {
+    const response = await fetch(VANTA_API + "/api/products");
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!Array.isArray(data.products)) return;
+    const items = data.products;
+    const card = p => '<article class="product-card"><a href="product.html?id='+encodeURIComponent(p.id)+'"><div class="product-visual '+(p.colour==="Black"?"dark":"")+'">'+(p.image?'<img src="'+VANTA_API+p.image+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover">':'<span class="product-tag">VANTA / ESSENTIALS 001</span><div class="shirt-shape"><span class="mock-logo">VANTA</span></div>')+'</div><div class="product-info"><div><h3>'+p.name+'</h3><p>'+p.category+' · '+String(p.colour||"").toUpperCase()+'</p></div><strong>FROM $'+Number(p.price).toFixed(2)+'</strong></div></a></article>';
+    const featured=items.filter(p=>p.featured);
+    if(document.querySelector("#featured-products")) document.querySelector("#featured-products").innerHTML=(featured.length?featured:items).map(card).join("");
+    if(document.querySelector("#all-products")) document.querySelector("#all-products").innerHTML=items.map(card).join("");
+    const root=document.querySelector("#product-detail");
+    if(root){const p=items.find(x=>x.id===new URLSearchParams(location.search).get("id"));if(p){
+      document.querySelector("#detail-name").textContent=p.name;
+      document.querySelector("#detail-type").textContent="VANTA ESSENTIALS 001 · "+String(p.colour||"").toUpperCase();
+      document.querySelector("#detail-description").textContent=p.description||"";
+      const visual=document.querySelector("#detail-visual");visual.className="product-visual detail-visual "+(p.colour==="Black"?"dark":"");
+      visual.innerHTML=p.image?'<img src="'+VANTA_API+p.image+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover">':'<span class="product-tag">VANTA / ESSENTIALS 001</span><div class="shirt-shape"><span class="mock-logo">VANTA</span></div>';
+      const sizes=p.sizes||[];const select=document.querySelector("#detail-size");select.innerHTML=sizes.map(s=>'<option value="'+s.size+'">'+s.size+'</option>').join("");
+      const price=document.querySelector("#detail-price");const update=()=>{const s=sizes.find(x=>x.size===select.value)||sizes[0];price.textContent="$"+Number(s?s.price:p.price).toFixed(2);};select.onchange=update;update();
+      document.querySelector("#detail-features").innerHTML=(p.details||[]).map(x=>"<li>"+x+"</li>").join("");
+      document.querySelector("#detail-care").innerHTML=(p.care||[]).map(x=>"<li>"+x+"</li>").join("");
+    }}
+  } catch (error) { console.warn("VANTA live catalogue unavailable; showing fallback catalogue.", error); }
+}
+document.addEventListener("DOMContentLoaded", loadVantaCatalog);

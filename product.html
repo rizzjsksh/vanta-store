@@ -25,16 +25,29 @@
         <p id="detail-type" class="page-lead"></p>
         <p id="detail-description" class="product-description"></p>
         <div class="detail-price" id="detail-price">$39.99</div>
+        
         <label class="variant-label" for="detail-size">SELECT SIZE</label>
         <select id="detail-size" class="size-select" aria-label="Select size"></select>
+        
+        <label class="variant-label" for="detail-qty" style="margin-top:16px">QUANTITY</label>
+        <div class="quantity-control">
+          <button type="button" class="quantity-btn" id="qty-minus" aria-label="Decrease quantity">–</button>
+          <input type="text" id="detail-qty" class="quantity-input" value="1" readonly>
+          <button type="button" class="quantity-btn" id="qty-plus" aria-label="Increase quantity">+</button>
+        </div>
+
+        <div class="add-to-bag-row">
+          <button type="button" id="add-to-bag" class="button button-dark add-to-bag-btn">ADD TO BAG</button>
+          <a class="button button-light" href="cart.html" style="padding:16px 28px;font-size:11px;letter-spacing:.15em">VIEW BAG</a>
+        </div>
+
         <p class="size-note" id="detail-size-note"></p>
-        <p class="availability">ORDERS OPENING SOON</p>
-        <p class="catalog-note">Checkout is not enabled yet. Product details and prices are being prepared while payment and delivery arrangements are verified.</p>
+        
         <h2 class="detail-subheading">PRODUCT DETAILS</h2>
         <ul id="detail-features" class="detail-list"></ul>
         <h2 class="detail-subheading">CARE INSTRUCTIONS</h2>
         <ul id="detail-care" class="detail-list"></ul>
-        <a class="button button-dark" href="shop.html">BACK TO SHOP</a>
+        <a class="button button-dark" href="shop.html" style="margin-top:25px;display:inline-block">← BACK TO SHOP</a>
       </div>
     </div>
   </main>

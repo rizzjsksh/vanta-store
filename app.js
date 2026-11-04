@@ -1,9 +1,13 @@
-/* VANTA Storefront Engine */
+/* ==========================================================================
+   VANTA Storefront Engine
+   High-End E-Commerce & State Management
+   ========================================================================== */
+
 const VANTA_API = "https://vanta-api.rizzify.workers.dev";
 const CART_STORAGE_KEY = "vanta_cart";
 const ORDERS_STORAGE_KEY = "vanta_orders";
 
-// Fallback catalog in case API is temporarily offline
+// Fallback catalog in case Cloudflare API is temporarily offline
 const fallbackProducts = [
   {
     id: "tee-white",
@@ -17,8 +21,20 @@ const fallbackProducts = [
     price: 39.99,
     priceFrom: 39.99,
     description: "Quiet confidence. Unmistakable identity. The VANTA Signature Tee brings minimalist design into everyday streetwear. Featuring understated VANTA lettering, a relaxed silhouette and dropped shoulders, it delivers a clean, effortless look without unnecessary detail. Made with medium-weight cotton fabric, it combines everyday comfort with durable double-needle stitching.",
-    details: ["Medium-weight 6 oz / 170 GSM fabric", "Relaxed silhouette with dropped shoulders", "Double-needle stitching at sleeves, neck and hem", "Tear-away label", "Available in XS–3XL"],
-    care: ["Machine wash cold, up to 30°C", "Use non-chlorine bleach if needed", "Tumble dry on low heat", "Iron on low heat", "Do not dry clean"],
+    details: [
+      "Custom heavyweight 6 oz / 280 GSM combed cotton",
+      "Relaxed architectural silhouette with dropped shoulders",
+      "Double-needle reinforced stitching at sleeves, collar and hem",
+      "Pre-shrunk to retain proportion across washes",
+      "Available in sizes XS–3XL"
+    ],
+    care: [
+      "Machine wash cold (30°C / 86°F) inside-out",
+      "Use mild detergent; do not use chlorine bleach",
+      "Hang dry recommended or tumble dry low",
+      "Iron on low temperature; do not iron decoration",
+      "Do not dry clean"
+    ],
     sizes: [
       {size:"XS", price:39.99},
       {size:"S", price:39.99},
@@ -43,8 +59,20 @@ const fallbackProducts = [
     price: 39.99,
     priceFrom: 39.99,
     description: "Make a statement without saying too much. The VANTA Oversized Signature Tee brings a relaxed boxy silhouette together with understated VANTA lettering. Its dropped shoulders and clean minimalist design create a confident streetwear look. Made from soft, combed and ring-spun cotton, this medium-weight tee offers everyday comfort with a modern oversized shape.",
-    details: ["100% Airlume combed and ring-spun cotton; composition can vary by colour", "Medium-weight 6 oz / 170 GSM fabric", "Relaxed oversized boxy fit", "Dropped shoulders", "Tear-away label", "Available in XS–3XL"],
-    care: ["Machine wash cold, up to 30°C", "Use non-chlorine bleach if needed", "Tumble dry on low heat", "Iron on low heat", "Do not dry clean"],
+    details: [
+      "100% Airlume combed and ring-spun heavyweight cotton",
+      "Medium-weight 6 oz / 280 GSM luxury jersey weave",
+      "Relaxed oversized box-cut fit engineered for drape",
+      "Dropped shoulders with clean collar ribbing",
+      "Available in sizes XS–3XL"
+    ],
+    care: [
+      "Machine wash cold (30°C / 86°F) inside-out",
+      "Use mild detergent; do not use chlorine bleach",
+      "Hang dry recommended or tumble dry low",
+      "Iron on low temperature; do not iron decoration",
+      "Do not dry clean"
+    ],
     sizes: [
       {size:"XS", price:39.99},
       {size:"S", price:39.99},
@@ -61,7 +89,9 @@ const fallbackProducts = [
 
 let liveCatalog = [...fallbackProducts];
 
-/* CART STATE & HELPERS */
+/* --------------------------------------------------------------------------
+   Cart State Management
+   -------------------------------------------------------------------------- */
 function getCart() {
   try {
     const raw = localStorage.getItem(CART_STORAGE_KEY);
@@ -83,7 +113,7 @@ function saveCart(cart) {
 
 function updateCartCount() {
   const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+  const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
   document.querySelectorAll("#cart-count, .cart-count-badge").forEach(el => {
     el.textContent = count;
   });
@@ -94,13 +124,16 @@ function addToCart(item) {
   const existingIndex = cart.findIndex(
     i => i.id === item.id && i.size === item.size
   );
+
   if (existingIndex > -1) {
     cart[existingIndex].quantity += item.quantity;
   } else {
     cart.push(item);
   }
+
   saveCart(cart);
   showCartToast(item);
+  renderCartPage();
 }
 
 function updateCartQuantity(index, delta) {
@@ -135,7 +168,7 @@ function showCartToast(item) {
     <span>✓ ADDED TO BAG: <strong>${item.name}</strong> (${item.size}) · QTY ${item.quantity}</span>
     <div>
       <a href="cart.html">VIEW BAG ↗</a>
-      <a href="checkout.html">CHECKOUT ↗</a>
+      <a href="checkout.html" style="margin-left:14px">CHECKOUT ↗</a>
     </div>
   `;
   toast.style.display = "flex";
@@ -145,24 +178,39 @@ function showCartToast(item) {
   }, 6000);
 }
 
-/* PRODUCT CARD COMPONENT */
+/* --------------------------------------------------------------------------
+   Product Card Component
+   -------------------------------------------------------------------------- */
 function productCard(p) {
   const isDark = (p.colour || "").toLowerCase() === "black";
   const imgHtml = p.image 
-    ? `<img src="${p.image.startsWith('http') ? p.image : VANTA_API + p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover">`
-    : `<span class="product-tag">VANTA / ESSENTIALS 001</span><div class="shirt-shape"><span class="mock-logo">VANTA</span></div>`;
+    ? `<img src="${p.image.startsWith('http') ? p.image : VANTA_API + p.image}" alt="${p.name}">`
+    : `
+      <div class="mock-garment ${isDark ? 'dark' : ''}">
+        <svg class="mock-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 30,10 Q 50,22 70,10 L 94,30 L 82,46 L 74,40 L 74,110 L 26,110 L 26,40 L 18,46 L 6,30 Z" />
+          <path d="M 38,12 L 38,24" stroke-dasharray="2,2" />
+          <path d="M 62,12 L 62,24" stroke-dasharray="2,2" />
+        </svg>
+        <div class="mock-garment-label">VANTA</div>
+      </div>
+    `;
   const priceDisplay = Number(p.price || (p.sizes && p.sizes[0] && p.sizes[0].price) || 39.99).toFixed(2);
   
   return `
     <article class="product-card">
       <a href="product.html?id=${encodeURIComponent(p.id)}">
         <div class="product-visual ${isDark ? "dark" : ""}">
+          <span class="product-tag">${p.category || "ESSENTIALS 001"}</span>
           ${imgHtml}
+          <div class="product-hover-overlay">
+            <span>EXPLORE PIECE ↗</span>
+          </div>
         </div>
         <div class="product-info">
           <div>
             <h3>${p.name}</h3>
-            <p>${p.category || "T-SHIRT"} · ${String(p.colour || "").toUpperCase()}</p>
+            <p>${p.category || "T-SHIRT"} · ${String(p.colour || "").toUpperCase()} · 280 GSM</p>
           </div>
           <strong>$${priceDisplay}</strong>
         </div>
@@ -171,7 +219,9 @@ function productCard(p) {
   `;
 }
 
-/* RENDER PRODUCT DETAIL PAGE */
+/* --------------------------------------------------------------------------
+   Product Detail Page
+   -------------------------------------------------------------------------- */
 function renderProductDetail() {
   const container = document.getElementById("product-detail");
   if (!container) return;
@@ -187,10 +237,12 @@ function renderProductDetail() {
   const descEl = document.getElementById("detail-description");
   const visualEl = document.getElementById("detail-visual");
   const sizeSelect = document.getElementById("detail-size");
+  const sizePillsContainer = document.getElementById("size-pills-row");
   const priceEl = document.getElementById("detail-price");
   const featuresEl = document.getElementById("detail-features");
   const careEl = document.getElementById("detail-care");
   const sizeNoteEl = document.getElementById("detail-size-note");
+  const btnAdd = document.getElementById("add-to-bag");
 
   if (titleEl) titleEl.textContent = product.name;
   if (typeEl) typeEl.textContent = `VANTA ESSENTIALS 001 · ${String(product.colour || "").toUpperCase()}`;
@@ -200,20 +252,53 @@ function renderProductDetail() {
     visualEl.className = `product-visual detail-visual ${isDark ? "dark" : ""}`;
     visualEl.innerHTML = product.image
       ? `<img src="${product.image.startsWith('http') ? product.image : VANTA_API + product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover">`
-      : `<span class="product-tag">VANTA / ESSENTIALS 001</span><div class="shirt-shape"><span class="mock-logo">VANTA</span></div>`;
+      : `
+        <span class="product-tag">VANTA / ESSENTIALS 001</span>
+        <div class="mock-garment ${isDark ? 'dark' : ''}">
+          <svg class="mock-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30,10 Q 50,22 70,10 L 94,30 L 82,46 L 74,40 L 74,110 L 26,110 L 26,40 L 18,46 L 6,30 Z" />
+            <path d="M 38,12 L 38,24" stroke-dasharray="2,2" />
+            <path d="M 62,12 L 62,24" stroke-dasharray="2,2" />
+          </svg>
+          <div class="mock-garment-label">VANTA</div>
+        </div>
+      `;
   }
 
   const sizes = (product.sizes && product.sizes.length) ? product.sizes : [{size: "M", price: product.price || 39.99}];
+  
+  const updatePrice = (chosenSize) => {
+    const selected = sizes.find(s => s.size === chosenSize) || sizes[0];
+    const pVal = Number(selected ? selected.price : product.price || 39.99);
+    if (priceEl) priceEl.textContent = `$${pVal.toFixed(2)}`;
+    if (btnAdd) btnAdd.textContent = `ADD TO BAG — $${pVal.toFixed(2)} ↗`;
+  };
+
+  // Populate interactive size selector pills
+  if (sizePillsContainer) {
+    sizePillsContainer.innerHTML = sizes.map((s, idx) => `
+      <button type="button" class="size-pill ${idx === 0 ? 'active' : ''}" data-size="${s.size}">
+        ${s.size}
+      </button>
+    `).join("");
+
+    sizePillsContainer.querySelectorAll(".size-pill").forEach(pill => {
+      pill.onclick = () => {
+        sizePillsContainer.querySelectorAll(".size-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        const sVal = pill.getAttribute("data-size");
+        if (sizeSelect) sizeSelect.value = sVal;
+        updatePrice(sVal);
+      };
+    });
+  }
+
   if (sizeSelect) {
     sizeSelect.innerHTML = sizes.map(s => `<option value="${s.size}">${s.size}</option>`).join("");
-    const updatePrice = () => {
-      const selected = sizes.find(s => s.size === sizeSelect.value) || sizes[0];
-      const pVal = Number(selected ? selected.price : product.price || 39.99);
-      if (priceEl) priceEl.textContent = `$${pVal.toFixed(2)}`;
-    };
-    sizeSelect.onchange = updatePrice;
-    updatePrice();
+    sizeSelect.onchange = () => updatePrice(sizeSelect.value);
   }
+
+  updatePrice(sizes[0].size);
 
   if (featuresEl) {
     featuresEl.innerHTML = (product.details || []).map(item => `<li>${item}</li>`).join("");
@@ -222,14 +307,13 @@ function renderProductDetail() {
     careEl.innerHTML = (product.care || []).map(item => `<li>${item}</li>`).join("");
   }
   if (sizeNoteEl) {
-    sizeNoteEl.textContent = "Available sizes: XS, S, M, L, XL, 2XL and 3XL. Designed for a comfortable modern fit.";
+    sizeNoteEl.textContent = "Fits true to size. Designed with dropped shoulders for a relaxed architectural streetwear silhouette.";
   }
 
   // Hook up quantity controls and Add to Bag
   const qtyInput = document.getElementById("detail-qty");
   const btnMinus = document.getElementById("qty-minus");
   const btnPlus = document.getElementById("qty-plus");
-  const btnAdd = document.getElementById("add-to-bag");
 
   if (btnMinus && qtyInput) {
     btnMinus.onclick = () => {
@@ -246,7 +330,7 @@ function renderProductDetail() {
 
   if (btnAdd) {
     btnAdd.onclick = () => {
-      const chosenSize = sizeSelect ? sizeSelect.value : "M";
+      const chosenSize = sizeSelect ? sizeSelect.value : (sizes[0] ? sizes[0].size : "M");
       const sizeObj = sizes.find(s => s.size === chosenSize) || sizes[0];
       const chosenPrice = Number(sizeObj ? sizeObj.price : product.price || 39.99);
       const chosenQty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
@@ -265,7 +349,9 @@ function renderProductDetail() {
   }
 }
 
-/* RENDER CART PAGE */
+/* --------------------------------------------------------------------------
+   Shopping Bag Page
+   -------------------------------------------------------------------------- */
 function renderCartPage() {
   const cartContainer = document.getElementById("cart-page-items");
   if (!cartContainer) return;
@@ -276,8 +362,9 @@ function renderCartPage() {
 
   if (cart.length === 0) {
     cartContainer.innerHTML = `
-      <div style="padding: 40px 0; text-align: left;">
-        <p class="empty-cart" style="font-size: 14px; margin-bottom: 20px;">Your bag is currently empty.</p>
+      <div style="padding: 60px 0; text-align: left;">
+        <p class="eyebrow">YOUR BAG IS CURRENTLY EMPTY</p>
+        <p style="font-size: 15px; color: var(--muted); margin: 12px 0 28px;">Explore Edition 001 and select your essential pieces.</p>
         <a href="shop.html" class="button button-dark">EXPLORE COLLECTION ↗</a>
       </div>
     `;
@@ -316,7 +403,7 @@ function renderCartPage() {
           <button type="button" class="quantity-btn" onclick="updateCartQuantity(${index}, 1)">+</button>
         </div>
         <div class="cart-item-total">$${itemTotal.toFixed(2)}</div>
-        <button type="button" class="cart-remove-btn" onclick="removeCartItem(${index})">REMOVE</button>
+        <button type="button" class="cart-remove-btn" onclick="removeCartItem(${index})" aria-label="Remove item">REMOVE</button>
       </div>
     `;
   }).join("");
@@ -325,7 +412,9 @@ function renderCartPage() {
   if (subtotalDisplay) subtotalDisplay.textContent = `$${subtotal.toFixed(2)}`;
 }
 
-/* RENDER CHECKOUT PAGE */
+/* --------------------------------------------------------------------------
+   Checkout Page
+   -------------------------------------------------------------------------- */
 function renderCheckoutPage() {
   const checkoutSection = document.getElementById("checkout-form-section");
   const summaryItemsContainer = document.getElementById("checkout-summary-items");
@@ -335,9 +424,10 @@ function renderCheckoutPage() {
   if (cart.length === 0) {
     document.getElementById("checkout-content").innerHTML = `
       <div class="confirmation-card">
+        <p class="eyebrow">CHECKOUT</p>
         <h2>YOUR BAG IS EMPTY</h2>
-        <p>You have no items in your shopping bag to checkout.</p>
-        <a href="shop.html" class="button button-dark" style="margin-top:20px;display:inline-block">EXPLORE COLLECTION ↗</a>
+        <p style="color:var(--muted);margin:14px 0 24px">You have no items in your shopping bag to checkout.</p>
+        <a href="shop.html" class="button button-dark">EXPLORE COLLECTION ↗</a>
       </div>
     `;
     return;
@@ -356,10 +446,10 @@ function renderCheckoutPage() {
       <div class="summary-item-card">
         ${imgHtml}
         <div style="flex:1">
-          <strong>${item.name}</strong>
-          <div style="font-size:11px;color:#777">${item.colour} · ${item.size} · Qty: ${item.quantity}</div>
+          <strong style="display:block;margin-bottom:2px">${item.name}</strong>
+          <div style="font-size:11px;color:var(--muted)">${item.colour} · Size ${item.size} · Qty ${item.quantity}</div>
         </div>
-        <div>$${itemTotal.toFixed(2)}</div>
+        <div style="font-weight:700">$${itemTotal.toFixed(2)}</div>
       </div>
     `;
   }).join("");
@@ -415,7 +505,6 @@ function renderCheckoutPage() {
         status: "CONFIRMED_PREORDER"
       };
 
-      // Store order in localStorage
       try {
         const past = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]");
         past.unshift(orderData);
@@ -431,28 +520,28 @@ function renderCheckoutPage() {
       // Show Confirmation Screen
       document.getElementById("checkout-content").innerHTML = `
         <div class="confirmation-card">
-          <p class="eyebrow" style="color:#2e7d32">ORDER CONFIRMED</p>
+          <p class="eyebrow" style="color:var(--ink)">ORDER RECORDED // 001</p>
           <h2>THANK YOU, ${firstName.toUpperCase()}.</h2>
-          <p>Your order has been recorded successfully. A confirmation summary has been registered for your delivery.</p>
+          <p style="color:var(--muted);font-size:14px;line-height:1.7">Your order has been recorded in inventory. A confirmation reference has been registered for your delivery.</p>
           <div class="order-badge">ORDER REF: ${orderId}</div>
           
           <div class="order-recap-box">
-            <strong>DELIVERY DETAILS</strong><br>
+            <strong>DELIVERY DISPATCH DETAILS</strong><br>
             ${firstName} ${lastName}<br>
             ${address}<br>
             ${city}, ${zip}, ${country}<br>
             Email: ${email} · Phone: ${phone || 'N/A'}<br><br>
-            <strong>ORDER SUMMARY</strong><br>
+            <strong>ORDER BREAKDOWN</strong><br>
             ${cart.map(i => `· ${i.quantity}x ${i.name} (${i.colour} / ${i.size}) — $${(i.price * i.quantity).toFixed(2)}`).join("<br>")}<br>
             Shipping: ${shippingCost === 0 ? "FREE" : "$" + shippingCost.toFixed(2)}<br>
             <strong>TOTAL: $${(subtotal + shippingCost).toFixed(2)}</strong>
           </div>
 
-          <p style="font-size:12px;color:#666;line-height:1.7">
-            Your items are now reserved in production. When live payment gateways (Monime) launch, tracking and automated dispatch updates will link directly to this order reference.
+          <p style="font-size:12px;color:var(--muted);line-height:1.8">
+            Your pieces are reserved in production. When live payment gateways (Monime) are activated, tracking and automated dispatch updates will link directly to this order reference.
           </p>
 
-          <a href="shop.html" class="button button-dark" style="margin-top:20px;display:inline-block">CONTINUE SHOPPING ↗</a>
+          <a href="shop.html" class="button button-dark" style="margin-top:24px;display:inline-block">CONTINUE SHOPPING ↗</a>
         </div>
       `;
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -460,7 +549,9 @@ function renderCheckoutPage() {
   }
 }
 
-/* FETCH LIVE CATALOG FROM CLOUDFLARE WORKER */
+/* --------------------------------------------------------------------------
+   Fetch Live Catalog from Cloudflare Worker
+   -------------------------------------------------------------------------- */
 async function loadVantaCatalog() {
   try {
     const res = await fetch(VANTA_API + "/api/products");
@@ -491,9 +582,37 @@ async function loadVantaCatalog() {
   renderProductDetail();
 }
 
-/* MAIN INITIALIZATION */
+/* --------------------------------------------------------------------------
+   Mobile Drawer & Navigation Initializer
+   -------------------------------------------------------------------------- */
+function initNavigation() {
+  const toggle = document.getElementById("mobile-toggle");
+  const drawer = document.getElementById("mobile-drawer");
+  if (toggle && drawer) {
+    toggle.addEventListener("click", () => {
+      toggle.classList.toggle("active");
+      drawer.classList.toggle("open");
+      const isOpen = drawer.classList.contains("open");
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+
+    drawer.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        toggle.classList.remove("active");
+        drawer.classList.remove("open");
+        document.body.style.overflow = "";
+      });
+    });
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Main Initialization
+   -------------------------------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
+  initNavigation();
   updateCartCount();
+  
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 

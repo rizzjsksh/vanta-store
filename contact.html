@@ -1,1 +1,129 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VANTA — The Art of Standing Apart</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body><div class="announcement">VANTA ESSENTIALS — FIRST COLLECTION</div><header class="site-header"><a class="wordmark" href="index.html">VANTA<span>®</span></a><nav class="desktop-nav"><a href="shop.html">SHOP</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav><a class="cart-button" href="cart.html">BAG <span id="cart-count">0</span></a></header><main class="page-main"><p class="eyebrow">GET IN TOUCH</p><h1 class="page-title">LET'S TALK.</h1><p class="page-lead">Questions about VANTA, the collection, or a future order? Send us a message.</p><form class="contact-form" id="contact-form"><label>YOUR NAME</label><input id="contact-name" required placeholder="Name"><label>EMAIL ADDRESS</label><input id="contact-email" type="email" required placeholder="you@example.com"><label>MESSAGE</label><textarea id="contact-message" required rows="5" placeholder="How can we help?"></textarea><button class="button button-dark">PREPARE EMAIL ↗</button><p id="contact-status" class="form-message">Your email app will open with your message prepared.</p></form></main><footer class="site-footer"><a class="wordmark" href="index.html">VANTA<span>®</span></a><p>THE ART OF STANDING APART.</p><span>© VANTA. ALL RIGHTS RESERVED.</span></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact & Concierge | VANTA — The Art of Standing Apart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="announcement">VANTA ESSENTIALS 001 — LIMITED PRODUCTION RUN · WORLDWIDE EXPRESS DELIVERY</div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="index.html" aria-label="VANTA home">VANTA<span>®</span></a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="shop.html" class="">SHOP</a>
+        <a href="about.html" class="">OUR STORY</a>
+        <a href="contact.html" class="active">CONTACT</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-button" href="cart.html" id="open-cart" aria-label="Open shopping bag">BAG <span id="cart-count">0</span></a>
+        <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-nav-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="mobile-nav-links">
+      <a href="shop.html">SHOP COLLECTION</a>
+      <a href="about.html">OUR STORY</a>
+      <a href="contact.html">CONTACT</a>
+      <a href="cart.html">YOUR BAG (<span class="cart-count-badge">0</span>)</a>
+    </div>
+    <div class="mobile-nav-footer">
+      <p>FREETOWN // WORLDWIDE DISPATCH</p>
+      <p>© VANTA — THE ART OF STANDING APART</p>
+    </div>
+  </div>
+
+  <main class="page-main">
+    <p class="eyebrow">DIRECT INQUIRIES</p>
+    <h1 class="page-title">LET'S TALK.</h1>
+    <p class="page-lead">Questions regarding upcoming drops, preorders, sizing consultations, or wholesale inquiries? Reach our concierge team.</p>
+
+    <div class="contact-layout">
+      <div class="contact-channels">
+        <div class="channel-card">
+          <span>CLIENT CONCIERGE</span>
+          <h3>ORDERS & INQUIRIES</h3>
+          <p>concierge@vanta.store<br>Response timeframe: within 24 hours</p>
+        </div>
+        <div class="channel-card">
+          <span>PRESS & WHOLESALE</span>
+          <h3>PARTNERSHIPS</h3>
+          <p>press@vanta.store<br>Stockist & editorial lookbook requests</p>
+        </div>
+        <div class="channel-card">
+          <span>STUDIO ATELIER</span>
+          <h3>FREETOWN HEADQUARTERS</h3>
+          <p>Freetown, Sierra Leone<br>Visits by appointment only</p>
+        </div>
+      </div>
+
+      <div style="background:var(--paper-warm);border:1px solid var(--line);padding:36px">
+        <p class="eyebrow">MESSAGE US</p>
+        <form class="contact-form" id="contact-form">
+          <label for="contact-name">YOUR NAME *</label>
+          <input id="contact-name" required placeholder="Alex Rivers">
+          
+          <label for="contact-email">EMAIL ADDRESS *</label>
+          <input id="contact-email" type="email" required placeholder="alex@example.com">
+          
+          <label for="contact-message">YOUR MESSAGE *</label>
+          <textarea id="contact-message" required rows="5" placeholder="How can our concierge assist you?"></textarea>
+          
+          <button type="submit" class="button button-dark" style="margin-top:12px">TRANSMIT INQUIRY ↗</button>
+          <p id="contact-status" class="form-message">Your email application will open with your inquiry formatted.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+        <p>An independent streetwear label built on considered essentials, architectural proportions and confident simplicity.</p>
+      </div>
+      <div class="footer-column">
+        <h3>COLLECTION</h3>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Essentials</a></li>
+          <li><a href="product.html?id=tee-black">Black Signature Tee</a></li>
+          <li><a href="product.html?id=tee-white">White Signature Tee</a></li>
+          <li><a href="shop.html">Edition 001</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CLIENT SERVICE</h3>
+        <ul class="footer-links">
+          <li><a href="about.html">Our Story & Ethos</a></li>
+          <li><a href="contact.html">Contact Concierge</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="admin.html">Studio Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>ATELIER</h3>
+        <ul class="footer-links">
+          <li><span style="color:#a8a49c;font-size:12px">Freetown, Sierra Leone</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">8.4844° N, 13.2344° W</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">Worldwide Tracked Dispatch</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> VANTA. ALL RIGHTS RESERVED.</span>
+      <span>THE ART OF STANDING APART.</span>
+      <span>FREETOWN / WORLDWIDE</span>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

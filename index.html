@@ -8,67 +8,177 @@
   <title>VANTA — The Art of Standing Apart</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="announcement">VANTA ESSENTIALS — FIRST COLLECTION COMING SOON</div>
+  <div class="announcement">VANTA ESSENTIALS 001 — LIMITED PRODUCTION RUN · WORLDWIDE EXPRESS DELIVERY</div>
   <header class="site-header">
-    <a class="wordmark" href="#" aria-label="VANTA home">VANTA<span>®</span></a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="shop.html">SHOP</a><a href="about.html">OUR STORY</a><a href="contact.html">CONTACT</a>
-    </nav>
-    <button class="cart-button" id="open-cart" aria-label="Open shopping bag">BAG <span id="cart-count">0</span></button>
+    <div class="header-inner">
+      <a class="wordmark" href="index.html" aria-label="VANTA home">VANTA<span>®</span></a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="shop.html" class="">SHOP</a>
+        <a href="about.html" class="">OUR STORY</a>
+        <a href="contact.html" class="">CONTACT</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-button" href="cart.html" id="open-cart" aria-label="Open shopping bag">BAG <span id="cart-count">0</span></a>
+        <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
   </header>
+
+  <div class="mobile-nav-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="mobile-nav-links">
+      <a href="shop.html">SHOP COLLECTION</a>
+      <a href="about.html">OUR STORY</a>
+      <a href="contact.html">CONTACT</a>
+      <a href="cart.html">YOUR BAG (<span class="cart-count-badge">0</span>)</a>
+    </div>
+    <div class="mobile-nav-footer">
+      <p>FREETOWN // WORLDWIDE DISPATCH</p>
+      <p>© VANTA — THE ART OF STANDING APART</p>
+    </div>
+  </div>
 
   <main>
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">VANTA / ESSENTIALS 001</p>
-        <h1>THE ART OF<br><em>STANDING APART.</em></h1>
-        <p class="hero-subtitle">Elevated everyday pieces. A quieter kind of statement.</p>
-        <a class="button button-light" href="#collection">EXPLORE THE COLLECTION <span>↗</span></a>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">VANTA / CORE COLLECTION // 001</p>
+          <h1>THE ART OF<br><em>STANDING APART.</em></h1>
+          <p class="hero-subtitle">Elevated everyday pieces. Heavyweight 280 GSM combed cotton. Engineered for an effortless drape.</p>
+          <div class="hero-cta-group">
+            <a class="button button-light" href="#collection">EXPLORE THE EDIT <span>↗</span></a>
+            <a class="button-link" href="about.html" style="color:#eee9df;border-color:#eee9df">OUR MANIFESTO ↗</a>
+          </div>
+          <div class="hero-spec-strip">
+            <span>[ 01 // 280 GSM COTTON ]</span>
+            <span>[ 02 // BOX-CUT SILHOUETTE ]</span>
+            <span>[ 03 // FREETOWN ]</span>
+          </div>
+        </div>
+        
+        <div class="hero-art" aria-label="VANTA monochrome editorial artwork">
+          <div class="crosshair crosshair-tl">+</div>
+          <div class="crosshair crosshair-tr">+</div>
+          <div class="crosshair crosshair-bl">+</div>
+          <div class="crosshair crosshair-br">+</div>
+          
+          <div class="hero-art-header">
+            <span>VANTA ARCHIVE // SERIES 001</span>
+            <span>EST. 2026</span>
+          </div>
+          
+          <div class="hero-art-center">
+            <div class="hero-art-title">VANTA</div>
+            <div class="hero-mockup-frame">
+              <svg class="hero-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 30,10 Q 50,22 70,10 L 94,30 L 82,46 L 74,40 L 74,110 L 26,110 L 26,40 L 18,46 L 6,30 Z" />
+                <path d="M 40,11 L 40,24" stroke-dasharray="2,2" />
+                <path d="M 60,11 L 60,24" stroke-dasharray="2,2" />
+              </svg>
+              <div class="hero-garment-brand">ESSENTIALS 001</div>
+            </div>
+          </div>
+          
+          <div class="hero-art-footer">
+            <span class="hero-badge-tag">LIMITED RUN // 280 GSM</span>
+            <span>8.4844° N, 13.2344° W</span>
+          </div>
+        </div>
       </div>
-      <div class="hero-art" aria-label="VANTA monochrome editorial artwork">
-        <div class="hero-orbit"></div><div class="hero-model-shape"></div>
-        <div class="hero-art-label">FORM<br>MEETS<br>IDENTITY.</div>
-        <div class="hero-art-index">001 — 026</div>
+      
+      <div class="hero-bottom">
+        <span>[ 01 ] INDEPENDENT STREETWEAR</span>
+        <span>[ 02 ] ARCHITECTURAL SILHOUETTE</span>
+        <span>[ 03 ] FREETOWN // WORLDWIDE DISPATCH</span>
       </div>
-      <div class="hero-bottom"><span>INDEPENDENT STREETWEAR</span><span>DESIGNED TO BE DISTINCT</span><span>FREETOWN / WORLDWIDE</span></div>
     </section>
 
     <section class="intro" id="story">
       <p class="eyebrow">A DIFFERENT POINT OF VIEW</p>
       <p class="intro-statement">Not made to follow. Made to <span>stand apart.</span></p>
-      <p class="intro-note">VANTA is a streetwear label built around considered essentials, confident simplicity and everyday expression.</p>
+      <p class="intro-note">VANTA is an independent streetwear label built around considered essentials, confident simplicity, and everyday expression.</p>
     </section>
 
     <section class="collection section-wrap" id="collection">
-      <div class="section-heading"><div><p class="eyebrow">THE FIRST EDIT</p><h2>VANTA ESSENTIALS</h2></div><span class="section-count">COLLECTION / 001</span></div>
-      <div class="product-grid" id="featured-products" aria-live="polite"></div><p><a href="shop.html">VIEW ALL PRODUCTS ↗</a></p>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">THE FIRST EDIT</p>
+          <h2>VANTA ESSENTIALS</h2>
+        </div>
+        <span class="section-count">COLLECTION / 001</span>
+      </div>
+      <div class="product-grid" id="featured-products" aria-live="polite"></div>
+      <p style="text-align:center;margin: 20px 0 40px"><a href="shop.html" class="button button-light">VIEW COMPLETE CATALOGUE <span>↗</span></a></p>
       <p class="catalog-note">Explore the first VANTA T-shirts in black and white. Available in sizes XS–3XL. Orders will open after checkout and delivery arrangements are tested.</p>
     </section>
 
     <section class="manifesto">
       <p class="eyebrow">THE VANTA STANDARD</p>
       <h2>LESS NOISE.<br>MORE <em>MEANING.</em></h2>
-      <p>Clean lines. Strong identity. Pieces that speak without shouting.</p>
+      <p>Clean lines. Heavyweight custom textiles. Pieces that speak without shouting.</p>
     </section>
 
     <section class="newsletter section-wrap" id="newsletter">
-      <div><p class="eyebrow">BE FIRST TO KNOW</p><h2>THE NEXT DROP<br>STARTS HERE.</h2></div>
-      <form id="notify-form"><label for="email">Join the VANTA launch list</label><div class="email-row"><input id="email" type="email" placeholder="Your email address" required><button type="submit">NOTIFY ME ↗</button></div><p id="form-message" class="form-message">No spam. Just collection updates.</p></form>
+      <div>
+        <p class="eyebrow">BE FIRST TO KNOW</p>
+        <h2>THE NEXT DROP<br>STARTS HERE.</h2>
+      </div>
+      <form id="notify-form">
+        <label for="email" style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Join the VANTA launch list</label>
+        <div class="email-row">
+          <input id="email" type="email" placeholder="Your email address" required>
+          <button type="submit">NOTIFY ME ↗</button>
+        </div>
+        <p id="form-message" class="form-message">No spam. Only private drop notifications.</p>
+      </form>
     </section>
   </main>
 
-  <footer class="site-footer"><a class="wordmark" href="#">VANTA<span>®</span></a><p>THE ART OF STANDING APART.</p><span>© <span id="year"></span> VANTA. ALL RIGHTS RESERVED.</span></footer>
-
-  <div class="cart-overlay" id="cart-overlay" hidden></div>
-  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping bag" aria-hidden="true">
-    <div class="cart-head"><h2>YOUR BAG <span id="drawer-count">(0)</span></h2><button id="close-cart" aria-label="Close bag">✕</button></div>
-    <div class="cart-items" id="cart-items"><p class="empty-cart">Your bag is currently empty.</p></div>
-    <div class="cart-foot"><div class="cart-total"><span>SUBTOTAL</span><strong id="cart-total">$0.00</strong></div><p>Shipping and taxes are calculated after delivery details are confirmed.</p><button class="button button-dark" id="checkout-button" disabled>CHECKOUT — COMING SOON</button><small>Online payments are not enabled yet. We will open orders after payment and fulfilment are tested.</small></div>
-  </aside>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+        <p>An independent streetwear label built on considered essentials, architectural proportions and confident simplicity.</p>
+      </div>
+      <div class="footer-column">
+        <h3>COLLECTION</h3>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Essentials</a></li>
+          <li><a href="product.html?id=tee-black">Black Signature Tee</a></li>
+          <li><a href="product.html?id=tee-white">White Signature Tee</a></li>
+          <li><a href="shop.html">Edition 001</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CLIENT SERVICE</h3>
+        <ul class="footer-links">
+          <li><a href="about.html">Our Story & Ethos</a></li>
+          <li><a href="contact.html">Contact Concierge</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="admin.html">Studio Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>ATELIER</h3>
+        <ul class="footer-links">
+          <li><span style="color:#a8a49c;font-size:12px">Freetown, Sierra Leone</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">8.4844° N, 13.2344° W</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">Worldwide Tracked Dispatch</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> VANTA. ALL RIGHTS RESERVED.</span>
+      <span>THE ART OF STANDING APART.</span>
+      <span>FREETOWN / WORLDWIDE</span>
+    </div>
+  </footer>
   <script src="app.js"></script>
 </body>
 </html>

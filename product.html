@@ -6,30 +6,63 @@
   <meta name="description" content="Explore VANTA Essentials minimalist streetwear T-shirts. Discover the VANTA Signature Tee in black and white.">
   <title>VANTA T-Shirts | VANTA Essentials</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="announcement">VANTA ESSENTIALS — FIRST COLLECTION</div>
+  <div class="announcement">VANTA ESSENTIALS 001 — LIMITED PRODUCTION RUN · WORLDWIDE EXPRESS DELIVERY</div>
   <header class="site-header">
-    <a class="wordmark" href="index.html">VANTA<span>®</span></a>
-    <nav class="desktop-nav" aria-label="Main navigation"><a href="shop.html">SHOP</a><a href="about.html">OUR STORY</a><a href="contact.html">CONTACT</a></nav>
-    <a class="cart-button" href="cart.html">BAG <span id="cart-count">0</span></a>
+    <div class="header-inner">
+      <a class="wordmark" href="index.html" aria-label="VANTA home">VANTA<span>®</span></a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="shop.html" class="active">SHOP</a>
+        <a href="about.html" class="">OUR STORY</a>
+        <a href="contact.html" class="">CONTACT</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-button" href="cart.html" id="open-cart" aria-label="Open shopping bag">BAG <span id="cart-count">0</span></a>
+        <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
   </header>
+
+  <div class="mobile-nav-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="mobile-nav-links">
+      <a href="shop.html">SHOP COLLECTION</a>
+      <a href="about.html">OUR STORY</a>
+      <a href="contact.html">CONTACT</a>
+      <a href="cart.html">YOUR BAG (<span class="cart-count-badge">0</span>)</a>
+    </div>
+    <div class="mobile-nav-footer">
+      <p>FREETOWN // WORLDWIDE DISPATCH</p>
+      <p>© VANTA — THE ART OF STANDING APART</p>
+    </div>
+  </div>
+
   <main class="page-main">
-    <p class="eyebrow">VANTA / ESSENTIALS 001</p>
+    <div style="margin-bottom:20px">
+      <a href="shop.html" style="font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase">← BACK TO COLLECTION</a>
+    </div>
+
     <div id="product-detail" class="product-detail-layout">
       <div id="detail-visual" class="product-visual detail-visual"></div>
+      
       <div class="detail-copy">
+        <p class="eyebrow" id="detail-type">VANTA / ESSENTIALS 001</p>
         <h1 class="page-title" id="detail-name">VANTA T-Shirt</h1>
-        <p id="detail-type" class="page-lead"></p>
-        <p id="detail-description" class="product-description"></p>
         <div class="detail-price" id="detail-price">$39.99</div>
+        <p id="detail-description" class="product-description"></p>
         
-        <label class="variant-label" for="detail-size">SELECT SIZE</label>
-        <select id="detail-size" class="size-select" aria-label="Select size"></select>
+        <label class="variant-label">SELECT SIZE</label>
+        <div class="size-pills-row" id="size-pills-row"></div>
+        <select id="detail-size" class="size-select" style="display:none" aria-label="Select size"></select>
+        <p class="size-note" id="detail-size-note"></p>
         
-        <label class="variant-label" for="detail-qty" style="margin-top:16px">QUANTITY</label>
+        <label class="variant-label" for="detail-qty" style="margin-top:20px">QUANTITY</label>
         <div class="quantity-control">
           <button type="button" class="quantity-btn" id="qty-minus" aria-label="Decrease quantity">–</button>
           <input type="text" id="detail-qty" class="quantity-input" value="1" readonly>
@@ -37,21 +70,73 @@
         </div>
 
         <div class="add-to-bag-row">
-          <button type="button" id="add-to-bag" class="button button-dark add-to-bag-btn">ADD TO BAG</button>
-          <a class="button button-light" href="cart.html" style="padding:16px 28px;font-size:11px;letter-spacing:.15em">VIEW BAG</a>
+          <button type="button" id="add-to-bag" class="button button-dark add-to-bag-btn">ADD TO BAG ↗</button>
+          <a class="button button-light" href="cart.html">VIEW BAG</a>
         </div>
 
-        <p class="size-note" id="detail-size-note"></p>
+        <div class="detail-trust-row">
+          <div class="trust-item">
+            <strong>280 GSM COTTON</strong>
+            <span>Custom heavyweight combed yarn</span>
+          </div>
+          <div class="trust-item">
+            <strong>BOX-CUT FIT</strong>
+            <span>Engineered dropped shoulder drape</span>
+          </div>
+          <div class="trust-item">
+            <strong>WORLDWIDE</strong>
+            <span>Tracked global dispatch</span>
+          </div>
+        </div>
         
-        <h2 class="detail-subheading">PRODUCT DETAILS</h2>
+        <h2 class="detail-subheading">SPECIFICATIONS & DETAILS</h2>
         <ul id="detail-features" class="detail-list"></ul>
-        <h2 class="detail-subheading">CARE INSTRUCTIONS</h2>
+        
+        <h2 class="detail-subheading">CARE PROTOCOL</h2>
         <ul id="detail-care" class="detail-list"></ul>
-        <a class="button button-dark" href="shop.html" style="margin-top:25px;display:inline-block">← BACK TO SHOP</a>
       </div>
     </div>
   </main>
-  <footer class="site-footer"><a class="wordmark" href="index.html">VANTA<span>®</span></a><p>THE ART OF STANDING APART.</p><span>© VANTA. ALL RIGHTS RESERVED.</span></footer>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+        <p>An independent streetwear label built on considered essentials, architectural proportions and confident simplicity.</p>
+      </div>
+      <div class="footer-column">
+        <h3>COLLECTION</h3>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Essentials</a></li>
+          <li><a href="product.html?id=tee-black">Black Signature Tee</a></li>
+          <li><a href="product.html?id=tee-white">White Signature Tee</a></li>
+          <li><a href="shop.html">Edition 001</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>CLIENT SERVICE</h3>
+        <ul class="footer-links">
+          <li><a href="about.html">Our Story & Ethos</a></li>
+          <li><a href="contact.html">Contact Concierge</a></li>
+          <li><a href="cart.html">Shopping Bag</a></li>
+          <li><a href="admin.html">Studio Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>ATELIER</h3>
+        <ul class="footer-links">
+          <li><span style="color:#a8a49c;font-size:12px">Freetown, Sierra Leone</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">8.4844° N, 13.2344° W</span></li>
+          <li><span style="color:#a8a49c;font-size:12px">Worldwide Tracked Dispatch</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> VANTA. ALL RIGHTS RESERVED.</span>
+      <span>THE ART OF STANDING APART.</span>
+      <span>FREETOWN / WORLDWIDE</span>
+    </div>
+  </footer>
   <script src="app.js"></script>
 </body>
 </html>

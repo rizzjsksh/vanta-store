@@ -378,3 +378,12 @@
   letter-spacing: .1em;
   color: #666;
 }
+
+.product-visual img,
+#product-visual img,
+.gallery-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

@@ -1,1 +1,138 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VANTA — The Art of Standing Apart</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body><div class="announcement">VANTA ESSENTIALS — FIRST COLLECTION</div><header class="site-header"><a class="wordmark" href="index.html">VANTA<span>®</span></a><nav class="desktop-nav"><a href="shop.html">SHOP</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav><a class="cart-button" href="cart.html">BAG <span id="cart-count">0</span></a></header><main class="page-main"><p class="eyebrow">VANTA / SECURE ORDERING</p><h1 class="page-title">CHECKOUT.</h1><div class="notice-panel"><h2>CHECKOUT IS OPENING SOON.</h2><p>We are setting up secure payment processing, shipping rates and order confirmation. No payment can be taken yet.</p><p>Your bag is saved in this browser. Please return when ordering opens.</p><a class="button button-dark" href="cart.html">RETURN TO YOUR BAG</a></div></main><footer class="site-footer"><a class="wordmark" href="index.html">VANTA<span>®</span></a><p>THE ART OF STANDING APART.</p><span>© VANTA. ALL RIGHTS RESERVED.</span></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout | VANTA — The Art of Standing Apart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="announcement">VANTA ESSENTIALS — FIRST COLLECTION</div>
+  <header class="site-header">
+    <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+    <nav class="desktop-nav"><a href="shop.html">SHOP</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav>
+    <a class="cart-button" href="cart.html">BAG <span id="cart-count">0</span></a>
+  </header>
+  <main class="page-main">
+    <p class="eyebrow">VANTA / SECURE ORDERING</p>
+    <h1 class="page-title">CHECKOUT.</h1>
+
+    <div id="checkout-content">
+      <div class="checkout-grid" id="checkout-grid">
+        <section class="checkout-form-section" id="checkout-form-section">
+          <form id="checkout-form">
+            <div class="checkout-section">
+              <h2>1. CONTACT INFORMATION</h2>
+              <div class="checkout-field">
+                <label for="cust-email">EMAIL ADDRESS *</label>
+                <input type="email" id="cust-email" required placeholder="alex@example.com">
+              </div>
+              <div class="checkout-field">
+                <label for="cust-phone">PHONE NUMBER (FOR DELIVERY UPDATES)</label>
+                <input type="tel" id="cust-phone" placeholder="+1 (555) 019-2834">
+              </div>
+            </div>
+
+            <div class="checkout-section">
+              <h2>2. SHIPPING ADDRESS</h2>
+              <div class="checkout-row">
+                <div class="checkout-field">
+                  <label for="cust-fname">FIRST NAME *</label>
+                  <input type="text" id="cust-fname" required placeholder="Alex">
+                </div>
+                <div class="checkout-field">
+                  <label for="cust-lname">LAST NAME *</label>
+                  <input type="text" id="cust-lname" required placeholder="Rivers">
+                </div>
+              </div>
+              <div class="checkout-field">
+                <label for="cust-address">STREET ADDRESS *</label>
+                <input type="text" id="cust-address" required placeholder="124 Fashion Ave, Apt 4B">
+              </div>
+              <div class="checkout-row">
+                <div class="checkout-field">
+                  <label for="cust-city">CITY *</label>
+                  <input type="text" id="cust-city" required placeholder="New York">
+                </div>
+                <div class="checkout-field">
+                  <label for="cust-zip">POSTAL / ZIP CODE *</label>
+                  <input type="text" id="cust-zip" required placeholder="10001">
+                </div>
+              </div>
+              <div class="checkout-field">
+                <label for="cust-country">COUNTRY *</label>
+                <select id="cust-country" required>
+                  <option value="United States">United States</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Canada">Canada</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Germany">Germany</option>
+                  <option value="France">France</option>
+                  <option value="Japan">Japan</option>
+                  <option value="International">Other International</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="checkout-section">
+              <h2>3. SHIPPING METHOD</h2>
+              <div class="shipping-options">
+                <label class="shipping-option">
+                  <div>
+                    <input type="radio" name="shipping" id="shipping-standard" value="standard" checked>
+                    <strong>STANDARD TRACKED DELIVERY (3–5 BUSINESS DAYS)</strong>
+                  </div>
+                  <span>$10.00 (FREE OVER $100)</span>
+                </label>
+                <label class="shipping-option">
+                  <div>
+                    <input type="radio" name="shipping" id="shipping-express" value="express">
+                    <strong>EXPRESS COURIER DELIVERY (1–2 BUSINESS DAYS)</strong>
+                  </div>
+                  <span>$25.00</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="checkout-section">
+              <h2>4. PAYMENT & CONFIRMATION</h2>
+              <p style="font-size:12px;color:#666;line-height:1.8;margin-bottom:15px">
+                Payment gateway setup (Monime) is scheduled for activation. Submitting this order registers your items in inventory and secures your order reference.
+              </p>
+              <button type="submit" class="button button-dark" style="width:100%;padding:18px;font-size:12px;letter-spacing:.15em">CONFIRM ORDER ↗</button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="order-summary-sidebar">
+          <h2>ORDER SUMMARY</h2>
+          <div id="checkout-summary-items"></div>
+          <div class="cart-summary-line" style="margin-top:20px;border-top:1px solid var(--line);padding-top:15px">
+            <span>SUBTOTAL</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="cart-summary-line">
+            <span>SHIPPING</span>
+            <span id="summary-shipping">$10.00</span>
+          </div>
+          <div class="cart-summary-line total">
+            <span>TOTAL</span>
+            <span id="summary-grand-total">$0.00</span>
+          </div>
+          <p style="font-size:10px;color:#888;margin-top:15px;line-height:1.6">
+            All prices in USD. Carbon-neutral fulfillment packaging.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+    <p>THE ART OF STANDING APART.</p>
+    <span>© VANTA. ALL RIGHTS RESERVED.</span>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

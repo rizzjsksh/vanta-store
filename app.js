@@ -1,3 +1,69 @@
+
+/* --------------------------------------------------------------------------
+   Dynamic Schema.org Product JSON-LD Injection
+   -------------------------------------------------------------------------- */
+function injectProductSchema(product) {
+  let script = document.getElementById("product-schema");
+  if (!script) {
+    script = document.createElement("script");
+    script.id = "product-schema";
+    script.type = "application/ld+json";
+    document.head.appendChild(script);
+  }
+  const imgUrl = product.image
+    ? (product.image.startsWith("http") ? product.image : VANTA_API + product.image)
+    : "https://vanta-store-8kn.pages.dev/styles.css";
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": [imgUrl],
+    "description": product.description || "VANTA 280 GSM luxury heavyweight cotton streetwear t-shirt in architectural box-cut silhouette.",
+    "sku": product.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "VANTA"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "USD",
+      "price": (Number(product.price) || 39.99).toFixed(2),
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "VANTA"
+      },
+      "eligibleRegion": [
+        { "@type": "Country", "name": "United States", "identifier": "US" },
+        { "@type": "Country", "name": "United Kingdom", "identifier": "GB" },
+        { "@type": "Country", "name": "Canada", "identifier": "CA" }
+      ],
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingDestination": [
+          { "@type": "DefinedRegion", "addressCountry": "US" },
+          { "@type": "DefinedRegion", "addressCountry": "GB" },
+          { "@type": "DefinedRegion", "addressCountry": "CA" }
+        ],
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "d"
+          }
+        }
+      }
+    }
+  };
+  script.textContent = JSON.stringify(schema, null, 2);
+}
+
 /* ==========================================================================
    VANTA Storefront Engine
    High-End E-Commerce & State Management
@@ -245,6 +311,12 @@ function renderProductDetail() {
   const btnAdd = document.getElementById("add-to-bag");
 
   if (titleEl) titleEl.textContent = product.name;
+
+  if (product.name) {
+    document.title = `${product.name} — 280 GSM Heavyweight Tee | VANTA`;
+  }
+  injectProductSchema(product);
+
   if (typeEl) typeEl.textContent = `VANTA ESSENTIALS 001 · ${String(product.colour || "").toUpperCase()}`;
   if (descEl) descEl.textContent = product.description || "";
   

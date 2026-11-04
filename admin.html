@@ -1,19 +1,428 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VANTA Admin</title><link rel="stylesheet" href="styles.css"><style>
-.admin-wrap{max-width:1100px;margin:50px auto;padding:24px}.admin-panel{background:#f5f3ef;color:#111;padding:28px;margin:20px 0}.admin-panel input,.admin-panel textarea,.admin-panel select{width:100%;padding:12px;margin:7px 0 15px;border:1px solid #bbb;background:white;color:#111}.admin-panel label{display:block;font-size:12px;letter-spacing:1px}.admin-panel button{background:#111;color:white;border:0;padding:13px 20px;cursor:pointer;margin:5px 5px 5px 0}.admin-products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.admin-product{background:#f5f3ef;color:#111;padding:16px}.admin-product img{width:100%;height:180px;object-fit:cover;background:#ddd}.admin-hidden{display:none}.admin-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:650px){.admin-row{grid-template-columns:1fr}}
-</style></head><body><div class="announcement">VANTA / PRIVATE ADMIN</div><header class="site-header"><a class="wordmark" href="index.html">VANTA<span>®</span></a><a class="cart-button" href="index.html">VIEW STORE ↗</a></header>
-<main class="admin-wrap"><p class="eyebrow">STORE MANAGEMENT</p><h1 class="page-title">VANTA ADMIN.</h1><p id="status">Connect securely to manage your store.</p>
-<section id="auth" class="admin-panel"><h2 id="auth-title">ADMIN ACCESS</h2><p id="auth-help">If this is your first time, create your admin password. Otherwise, sign in.</p><label>ADMIN PASSWORD</label><input id="password" type="password" minlength="12" autocomplete="current-password" placeholder="At least 12 characters"><button id="auth-btn">CONTINUE</button></section>
-<section id="dashboard" class="admin-hidden"><div class="admin-panel"><h2>PRODUCT EDITOR</h2><form id="product-form"><div class="admin-row"><div><label>PRODUCT ID</label><input id="pid" required placeholder="e.g. tee-grey"></div><div><label>PRODUCT NAME</label><input id="pname" required></div></div><div class="admin-row"><div><label>CATEGORY</label><input id="category" value="T-SHIRT"></div><div><label>COLOUR</label><input id="colour"></div></div><div class="admin-row"><div><label>PRICE (USD)</label><input id="price" type="number" step="0.01" required></div><div><label>PRODUCT IMAGE</label><input id="image" type="file" accept="image/*"></div></div><label>DESCRIPTION</label><textarea id="description" rows="3"></textarea><div class="admin-row"><div><label>PRODUCT DETAILS (one per line)</label><textarea id="details" rows="4"></textarea></div><div><label>CARE INSTRUCTIONS (one per line)</label><textarea id="care" rows="4"></textarea></div></div><label>SIZES (one per line, format: SIZE|PRICE)</label><textarea id="sizes" rows="4" placeholder="S|39.99&#10;M|39.99&#10;L|39.99"></textarea><div class="admin-row"><label><input id="published" type="checkbox" checked> Published</label><label><input id="featured" type="checkbox"> Featured on homepage</label></div><button type="submit">SAVE PRODUCT</button><button type="button" id="new-product">NEW PRODUCT</button></form></div><h2>YOUR PRODUCTS</h2><div id="products" class="admin-products"></div><div class="admin-panel"><button id="logout">SIGN OUT</button></div></section></main>
-<footer class="site-footer"><a class="wordmark" href="index.html">VANTA<span>®</span></a><p>PRIVATE STORE MANAGEMENT</p></footer>
-<script>
-const API="https://vanta-api.rizzify.workers.dev";let token=sessionStorage.getItem("vanta_admin_token");let setupMode=false;
-const $=id=>document.getElementById(id),status=m=>$("status").textContent=m;
-async function request(path,opts={}){const headers={...(opts.headers||{})};if(token)headers.Authorization="Bearer "+token;const r=await fetch(API+path,{...opts,headers});const d=await r.json();if(!r.ok)throw Error(d.error||"Request failed");return d;}
-async function start(){try{const s=await request("/api/admin/session");if(s.authenticated){$("auth").classList.add("admin-hidden");$("dashboard").classList.remove("admin-hidden");await loadProducts();return;}const h=await fetch(API+"/api/admin/session").then(r=>r.json());const setup=await fetch(API+"/api/setup",{method:"OPTIONS"});const loginCheck=await fetch(API+"/api/login",{method:"OPTIONS"});const health=await fetch(API+"/api/health").then(r=>r.json());setupMode=!!health.setupRequired;$("auth-title").textContent=setupMode?"CREATE ADMIN PASSWORD":"ADMIN SIGN IN";$("auth-help").textContent=setupMode?"Create a strong password with at least 12 characters. Keep it private.":"Enter your admin password to manage VANTA."; $("auth-btn").textContent=setupMode?"CREATE ADMIN":"SIGN IN";}catch(e){status(e.message);}}
-async function authAction(){try{const password=$("password").value;if(setupMode){await request("/api/setup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});setupMode=false;status("Admin created. Sign in with your new password.");$("auth-title").textContent="ADMIN SIGN IN";$("auth-btn").textContent="SIGN IN";$("password").value="";return;}const d=await request("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});token=d.token;sessionStorage.setItem("vanta_admin_token",token);$("auth").classList.add("admin-hidden");$("dashboard").classList.remove("admin-hidden");status("Signed in.");await loadProducts();}catch(e){status(e.message);}}
-function resetForm(){$("product-form").reset();$("pid").disabled=false;$("category").value="T-SHIRT";$("published").checked=true;}
-function fill(p){$("pid").value=p.id;$("pid").disabled=true;$("pname").value=p.name;$("category").value=p.category;$("colour").value=p.colour;$("price").value=p.price;$("description").value=p.description;$("details").value=(p.details||[]).join("\n");$("care").value=(p.care||[]).join("\n");$("sizes").value=(p.sizes||[]).map(x=>x.size+"|"+x.price).join("\n");$("published").checked=p.published;$("featured").checked=p.featured;window.currentImageKey=p.image_key||"";window.scrollTo({top:0,behavior:"smooth"});}
-async function loadProducts(){const d=await request("/api/admin/products");$("products").innerHTML=d.products.map(p=>'<article class="admin-product">'+(p.image?'<img src="'+API+p.image+'">':'<div style="height:180px;background:#ddd;display:grid;place-items:center">NO IMAGE</div>')+'<h3>'+p.name+'</h3><p>'+p.colour+' · $'+Number(p.price).toFixed(2)+'</p><button data-edit="'+p.id+'">EDIT</button><button data-delete="'+p.id+'">DELETE</button></article>').join("");$("products").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>fill(d.products.find(p=>p.id===b.dataset.edit)));$("products").querySelectorAll("[data-delete]").forEach(b=>b.onclick=async()=>{if(confirm("Delete this product?")){await request("/api/admin/products/"+encodeURIComponent(b.dataset.delete),{method:"DELETE"});await loadProducts();}});}
-$("product-form").onsubmit=async e=>{e.preventDefault();try{let imageKey=window.currentImageKey||null;const file=$("image").files[0];if(file){const f=new FormData();f.append("file",file);const up=await request("/api/admin/upload",{method:"POST",body:f});imageKey=up.key;}const sizes=$("sizes").value.split("\n").filter(Boolean).map(line=>{const a=line.split("|");return {size:a[0].trim(),price:Number(a[1]||$("price").value)}});const data={id:$("pid").value.trim(),name:$("pname").value.trim(),category:$("category").value,colour:$("colour").value,price:Number($("price").value),description:$("description").value,details:$("details").value.split("\n").filter(Boolean),care:$("care").value.split("\n").filter(Boolean),sizes,image_key:imageKey,published:$("published").checked,featured:$("featured").checked};await request("/api/admin/products",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});status("Product saved.");resetForm();window.currentImageKey="";await loadProducts();}catch(e){status(e.message);}};
-$("auth-btn").onclick=authAction;$("new-product").onclick=resetForm;$("logout").onclick=async()=>{try{await request("/api/logout",{method:"POST"});}catch{}sessionStorage.removeItem("vanta_admin_token");token=null;location.reload();};start();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VANTA Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-wrap { max-width: 1100px; margin: 40px auto; padding: 24px; }
+    .admin-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+    .admin-panel { background: #f5f3ef; color: #111; padding: 30px; margin: 20px 0; border: 1px solid var(--line); }
+    .admin-panel input, .admin-panel textarea, .admin-panel select { width: 100%; padding: 13px; margin: 8px 0 16px; border: 1px solid #bbb; background: white; color: #111; box-sizing: border-box; font: 12px "DM Sans", sans-serif; }
+    .admin-panel label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; }
+    .admin-panel button { background: #111; color: white; border: 0; padding: 14px 22px; cursor: pointer; font: 700 11px Manrope, sans-serif; letter-spacing: .12em; margin: 5px 6px 5px 0; transition: opacity 0.2s; }
+    .admin-panel button:hover { opacity: 0.85; }
+    .admin-panel button.secondary { background: #e0ded9; color: #111; }
+    .admin-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; margin-top: 20px; }
+    .admin-product { background: #f5f3ef; color: #111; padding: 18px; border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
+    .admin-product img { width: 100%; height: 200px; object-fit: cover; background: #ddd; margin-bottom: 12px; }
+    .admin-hidden { display: none !important; }
+    .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width: 650px) { .admin-row { grid-template-columns: 1fr; } }
+    .status-banner { padding: 12px 16px; margin: 15px 0; font-size: 12px; display: none; }
+    .status-banner.show { display: block; }
+    .status-banner.info { background: #e8f4fd; color: #0d47a1; border-left: 4px solid #1976d2; }
+    .status-banner.success { background: #e8f5e9; color: #1b5e20; border-left: 4px solid #2e7d32; }
+    .status-banner.error { background: #ffebee; color: #b71c1c; border-left: 4px solid #c62828; }
+  </style>
+</head>
+<body>
+  <div class="announcement">
+    <span>VANTA / PRIVATE STORE ADMINISTRATION</span>
+    <span class="api-status-pill" id="api-status-pill"><span class="api-dot"></span> API ONLINE</span>
+  </div>
+  <header class="site-header">
+    <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a class="cart-button" href="index.html" target="_blank">VIEW STORE ↗</a>
+      <button id="logout-btn" class="admin-hidden" style="background:none;border:none;cursor:pointer;font:700 10px Manrope;letter-spacing:.1em;color:#555">SIGN OUT</button>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <div class="admin-header-bar">
+      <div>
+        <p class="eyebrow">STORE OPERATIONS</p>
+        <h1 class="page-title" style="margin-bottom:0">ADMIN DASHBOARD.</h1>
+      </div>
+    </div>
+
+    <div id="status-box" class="status-banner"></div>
+
+    <!-- AUTHENTICATION PANEL -->
+    <section id="auth-panel" class="admin-panel">
+      <h2 id="auth-title" style="font:800 16px Manrope;margin-top:0">ADMIN ACCESS</h2>
+      <p id="auth-help" style="font-size:12px;color:#666;line-height:1.7">Connecting to Cloudflare Workers API backend...</p>
+      
+      <div style="max-width:400px;margin-top:20px">
+        <label for="password">ADMIN PASSWORD</label>
+        <input id="password" type="password" minlength="12" autocomplete="current-password" placeholder="Minimum 12 characters">
+        <button id="auth-btn">CONTINUE</button>
+      </div>
+    </section>
+
+    <!-- DASHBOARD PANEL -->
+    <section id="dashboard-panel" class="admin-hidden">
+      <!-- Quick Statistics -->
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <span id="stat-total-label">TOTAL PRODUCTS</span>
+          <strong id="stat-total">0</strong>
+        </div>
+        <div class="admin-stat-card">
+          <span>PUBLISHED (LIVE)</span>
+          <strong id="stat-published" style="color:#2e7d32">0</strong>
+        </div>
+        <div class="admin-stat-card">
+          <span>FEATURED ON HOME</span>
+          <strong id="stat-featured" style="color:#0277bd">0</strong>
+        </div>
+      </div>
+
+      <!-- Product Form -->
+      <div class="admin-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid #ddd;padding-bottom:14px">
+          <h2 id="form-heading" style="font:800 16px Manrope;margin:0">PRODUCT EDITOR</h2>
+          <button type="button" id="reset-form-btn" class="secondary" style="margin:0;padding:8px 14px;font-size:10px">+ NEW PRODUCT</button>
+        </div>
+
+        <form id="product-form">
+          <div class="admin-row">
+            <div>
+              <label for="pid">PRODUCT ID * (e.g. tee-white, hoodie-vanta)</label>
+              <input id="pid" required placeholder="tee-signature">
+            </div>
+            <div>
+              <label for="pname">PRODUCT NAME *</label>
+              <input id="pname" required placeholder="VANTA Signature Tee">
+            </div>
+          </div>
+
+          <div class="admin-row">
+            <div>
+              <label for="category">CATEGORY</label>
+              <input id="category" value="T-SHIRT">
+            </div>
+            <div>
+              <label for="colour">COLOUR</label>
+              <input id="colour" placeholder="Black / White / Charcoal">
+            </div>
+          </div>
+
+          <div class="admin-row">
+            <div>
+              <label for="price">PRICE (USD) *</label>
+              <input id="price" type="number" step="0.01" required placeholder="39.99">
+            </div>
+            <div>
+              <label for="image">PRODUCT IMAGE (R2 CLOUDFLARE STORAGE)</label>
+              <input id="image" type="file" accept="image/*">
+              <div id="image-preview" style="font-size:11px;color:#666;margin-top:-8px;margin-bottom:12px"></div>
+            </div>
+          </div>
+
+          <label for="description">DESCRIPTION</label>
+          <textarea id="description" rows="3" placeholder="Minimalist product copy..."></textarea>
+
+          <div class="admin-row">
+            <div>
+              <label for="details">PRODUCT DETAILS (ONE BULLET PER LINE)</label>
+              <textarea id="details" rows="4" placeholder="Medium-weight 6 oz / 170 GSM fabric&#10;Relaxed silhouette with dropped shoulders&#10;Double-needle stitching"></textarea>
+            </div>
+            <div>
+              <label for="care">CARE INSTRUCTIONS (ONE PER LINE)</label>
+              <textarea id="care" rows="4" placeholder="Machine wash cold, up to 30°C&#10;Tumble dry on low heat&#10;Iron on low heat"></textarea>
+            </div>
+          </div>
+
+          <label for="sizes">SIZES & PRICES (ONE PER LINE, FORMAT: SIZE|PRICE)</label>
+          <textarea id="sizes" rows="4" placeholder="XS|39.99&#10;S|39.99&#10;M|39.99&#10;L|39.99&#10;XL|39.99&#10;2XL|39.99&#10;3XL|40.99"></textarea>
+
+          <div class="admin-row" style="margin: 15px 0 25px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input id="published" type="checkbox" checked style="width:auto;margin:0">
+              <span>PUBLISHED (VISIBLE ON STOREFRONT)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input id="featured" type="checkbox" style="width:auto;margin:0">
+              <span>FEATURED ON HOMEPAGE</span>
+            </label>
+          </div>
+
+          <div>
+            <button type="submit" id="save-btn">SAVE PRODUCT</button>
+            <button type="button" id="cancel-btn" class="secondary">CLEAR FORM</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Product List -->
+      <h2 style="font:800 18px Manrope;margin:35px 0 15px">CATALOG PRODUCTS</h2>
+      <div id="products-grid" class="admin-products"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="wordmark" href="index.html">VANTA<span>®</span></a>
+    <p>VANTA CLOUDFLARE WORKER & D1 BACKEND ACTIVE</p>
+  </footer>
+
+  <script>
+    const API = "https://vanta-api.rizzify.workers.dev";
+    let token = sessionStorage.getItem("vanta_admin_token");
+    let setupMode = false;
+    let catalogCache = [];
+
+    const $ = id => document.getElementById(id);
+    const notify = (msg, type = "info") => {
+      const box = $("status-box");
+      box.className = `status-banner show ${type}`;
+      box.textContent = msg;
+    };
+
+    async function request(path, opts = {}) {
+      const headers = { ...(opts.headers || {}) };
+      if (token) headers.Authorization = "Bearer " + token;
+      const res = await fetch(API + path, { ...opts, headers });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Request failed");
+      return data;
+    }
+
+    async function initAdmin() {
+      try {
+        // Verify backend health
+        const health = await fetch(API + "/api/health").then(r => r.json());
+        $("api-status-pill").innerHTML = '<span class="api-dot"></span> API ONLINE';
+
+        if (token) {
+          const session = await request("/api/admin/session");
+          if (session.authenticated) {
+            showDashboard();
+            return;
+          }
+        }
+
+        // Show Auth
+        setupMode = !!health.setupRequired;
+        $("auth-title").textContent = setupMode ? "FIRST-TIME ADMIN SETUP" : "ADMIN SIGN IN";
+        $("auth-help").textContent = setupMode 
+          ? "Create your master admin password (at least 12 characters). It will be hashed securely with PBKDF2 in Cloudflare D1."
+          : "Enter your store master password to manage catalog, pricing, and media.";
+        $("auth-btn").textContent = setupMode ? "CREATE ADMIN" : "SIGN IN";
+      } catch (err) {
+        notify("Could not reach Cloudflare API: " + err.message, "error");
+        $("api-status-pill").innerHTML = '<span class="api-dot" style="background:#c62828"></span> API ERROR';
+      }
+    }
+
+    function showDashboard() {
+      $("auth-panel").classList.add("admin-hidden");
+      $("dashboard-panel").classList.remove("admin-hidden");
+      $("logout-btn").classList.remove("admin-hidden");
+      notify("Authenticated with Cloudflare D1 backend.", "success");
+      loadProducts();
+    }
+
+    async function handleAuth() {
+      const password = $("password").value;
+      if (!password || password.length < 12) {
+        notify("Password must be at least 12 characters.", "error");
+        return;
+      }
+      try {
+        if (setupMode) {
+          await request("/api/setup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password })
+          });
+          setupMode = false;
+          notify("Master admin created! Signing you in...", "success");
+        }
+
+        const login = await request("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password })
+        });
+
+        token = login.token;
+        sessionStorage.setItem("vanta_admin_token", token);
+        showDashboard();
+      } catch (err) {
+        notify(err.message, "error");
+      }
+    }
+
+    function resetForm() {
+      $("product-form").reset();
+      $("pid").disabled = false;
+      $("category").value = "T-SHIRT";
+      $("published").checked = true;
+      $("featured").checked = false;
+      $("form-heading").textContent = "PRODUCT EDITOR";
+      window.currentImageKey = "";
+      $("image-preview").textContent = "";
+    }
+
+    function populateForm(p) {
+      $("pid").value = p.id;
+      $("pid").disabled = true;
+      $("pname").value = p.name;
+      $("category").value = p.category || "T-SHIRT";
+      $("colour").value = p.colour || "";
+      $("price").value = p.price;
+      $("description").value = p.description || "";
+      $("details").value = (p.details || []).join("\n");
+      $("care").value = (p.care || []).join("\n");
+      $("sizes").value = (p.sizes || []).map(x => x.size + "|" + x.price).join("\n");
+      $("published").checked = !!p.published;
+      $("featured").checked = !!p.featured;
+      window.currentImageKey = p.image_key || "";
+      $("image-preview").textContent = p.image_key ? "Current image: " + p.image_key : "";
+      $("form-heading").textContent = "EDITING PRODUCT: " + p.name;
+      window.scrollTo({ top: 120, behavior: "smooth" });
+    }
+
+    async function loadProducts() {
+      try {
+        const data = await request("/api/admin/products");
+        catalogCache = data.products || [];
+
+        // Update stats
+        $("stat-total").textContent = catalogCache.length;
+        $("stat-published").textContent = catalogCache.filter(p => p.published).length;
+        $("stat-featured").textContent = catalogCache.filter(p => p.featured).length;
+
+        const grid = $("products-grid");
+        if (catalogCache.length === 0) {
+          grid.innerHTML = '<p style="grid-column:1/-1;color:#777">No products found in D1 database.</p>';
+          return;
+        }
+
+        grid.innerHTML = catalogCache.map(p => {
+          const imgUrl = p.image ? (p.image.startsWith("http") ? p.image : API + p.image) : "";
+          const imgTag = imgUrl 
+            ? `<img src="${imgUrl}" alt="${p.name}">`
+            : `<div style="height:200px;background:#e5e1d8;display:grid;place-items:center;font-size:11px;color:#777;margin-bottom:12px">NO IMAGE</div>`;
+
+          const pubBadge = p.published 
+            ? '<span class="admin-badge admin-badge-live">PUBLISHED</span>' 
+            : '<span class="admin-badge admin-badge-draft">DRAFT</span>';
+          const featBadge = p.featured 
+            ? '<span class="admin-badge admin-badge-featured">FEATURED</span>' 
+            : '';
+
+          return `
+            <article class="admin-product">
+              <div>
+                ${imgTag}
+                <div style="margin-bottom:8px">${pubBadge} ${featBadge}</div>
+                <h3 style="font:700 14px Manrope;margin:4px 0">${p.name}</h3>
+                <p style="font-size:12px;color:#555;margin:0 0 10px">${p.colour || ''} · $${Number(p.price).toFixed(2)}</p>
+              </div>
+              <div style="display:flex;gap:6px">
+                <button type="button" data-edit="${p.id}" style="flex:1">EDIT</button>
+                <button type="button" class="secondary" data-del="${p.id}" style="flex:1">DELETE</button>
+              </div>
+            </article>
+          `;
+        }).join("");
+
+        grid.querySelectorAll("[data-edit]").forEach(btn => {
+          btn.onclick = () => {
+            const p = catalogCache.find(x => x.id === btn.dataset.edit);
+            if (p) populateForm(p);
+          };
+        });
+
+        grid.querySelectorAll("[data-del]").forEach(btn => {
+          btn.onclick = async () => {
+            if (confirm("Permanently delete " + btn.dataset.del + " from D1 database?")) {
+              try {
+                await request("/api/admin/products/" + encodeURIComponent(btn.dataset.del), { method: "DELETE" });
+                notify("Product deleted.", "info");
+                await loadProducts();
+              } catch (e) {
+                notify(e.message, "error");
+              }
+            }
+          };
+        });
+      } catch (err) {
+        notify("Failed to load products: " + err.message, "error");
+      }
+    }
+
+    // Save product handler
+    $("product-form").onsubmit = async e => {
+      e.preventDefault();
+      $("save-btn").textContent = "SAVING...";
+      $("save-btn").disabled = true;
+
+      try {
+        let imageKey = window.currentImageKey || null;
+        const file = $("image").files[0];
+        if (file) {
+          notify("Uploading image to Cloudflare R2 bucket...", "info");
+          const form = new FormData();
+          form.append("file", file);
+          const up = await request("/api/admin/upload", { method: "POST", body: form });
+          imageKey = up.key;
+        }
+
+        const sizes = $("sizes").value.split("\n").filter(Boolean).map(line => {
+          const parts = line.split("|");
+          return { size: parts[0].trim(), price: Number(parts[1] || $("price").value) };
+        });
+
+        const payload = {
+          id: $("pid").value.trim(),
+          name: $("pname").value.trim(),
+          category: $("category").value || "T-SHIRT",
+          colour: $("colour").value || "",
+          price: Number($("price").value),
+          description: $("description").value,
+          details: $("details").value.split("\n").filter(Boolean),
+          care: $("care").value.split("\n").filter(Boolean),
+          sizes: sizes.length ? sizes : [{ size: "M", price: Number($("price").value) }],
+          image_key: imageKey,
+          published: $("published").checked,
+          featured: $("featured").checked
+        };
+
+        await request("/api/admin/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        notify("✓ Product successfully saved to Cloudflare D1 database!", "success");
+        resetForm();
+        await loadProducts();
+      } catch (err) {
+        notify(err.message, "error");
+      } finally {
+        $("save-btn").textContent = "SAVE PRODUCT";
+        $("save-btn").disabled = false;
+      }
+    };
+
+    $("auth-btn").onclick = handleAuth;
+    $("reset-form-btn").onclick = resetForm;
+    $("cancel-btn").onclick = resetForm;
+    $("logout-btn").onclick = async () => {
+      try { await request("/api/logout", { method: "POST" }); } catch {}
+      sessionStorage.removeItem("vanta_admin_token");
+      token = null;
+      location.reload();
+    };
+
+    initAdmin();
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "vanta-store",
+  "version": "1.0.0",
+  "description": "VANTA — Luxury Minimalist Streetwear Storefront",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/verify-seo.mjs",
+    "check": "node scripts/verify-seo.mjs",
+    "test": "node scripts/verify-seo.mjs"
+  },
+  "keywords": [
+    "streetwear",
+    "vanta",
+    "monochrome",
+    "seo"
+  ],
+  "author": "VANTA",
+  "license": "UNLICENSED"
+}

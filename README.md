@@ -4,8 +4,8 @@ XANTA is an independent streetwear label built around understated design, consid
 
 This repository contains the code for the XANTA online storefront and its store-management foundation. The first release is focused on **XANTA Essentials**: minimalist everyday clothing, beginning with signature T-shirts in black and white, with hoodies planned for a later release.
 
-**Storefront:** https://vanta-store-8kn.pages.dev  
-**Admin dashboard:** https://vanta-store-8kn.pages.dev/admin.html
+**Storefront:** https://xanta.pages.dev  
+**Admin dashboard:** https://xanta.pages.dev/admin.html
 
 > XANTA's brand line: **THE ART OF STANDING APART.**
 

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://vanta-store-8kn.pages.dev/sitemap.xml
+Sitemap: https://xanta.pages.dev/sitemap.xml

@@ -12,7 +12,7 @@ function injectProductSchema(product) {
   }
   const imgUrl = product.image
     ? (product.image.startsWith("http") ? product.image : XANTA_API + product.image)
-    : "https://vanta-store-8kn.pages.dev/styles.css";
+    : "https://xanta.pages.dev/og-image.png";
 
   const schema = {
     "@context": "https://schema.org",

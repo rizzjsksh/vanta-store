@@ -1,19 +1,19 @@
-# VANTA — The Art of Standing Apart.
+# XANTA — The Art of Standing Apart.
 
-VANTA is an independent streetwear label built around understated design, considered essentials and the confidence to stand apart without needing to be loud.
+XANTA is an independent streetwear label built around understated design, considered essentials and the confidence to stand apart without needing to be loud.
 
-This repository contains the code for the VANTA online storefront and its store-management foundation. The first release is focused on **VANTA Essentials**: minimalist everyday clothing, beginning with signature T-shirts in black and white, with hoodies planned for a later release.
+This repository contains the code for the XANTA online storefront and its store-management foundation. The first release is focused on **XANTA Essentials**: minimalist everyday clothing, beginning with signature T-shirts in black and white, with hoodies planned for a later release.
 
 **Storefront:** https://vanta-store-8kn.pages.dev  
 **Admin dashboard:** https://vanta-store-8kn.pages.dev/admin.html
 
-> VANTA's brand line: **THE ART OF STANDING APART.**
+> XANTA's brand line: **THE ART OF STANDING APART.**
 
 ---
 
-## What VANTA is
+## What XANTA is
 
-VANTA is a fashion and streetwear brand, not a general marketplace or a clothing supplier. The goal is to offer a focused collection of clean, versatile pieces with a premium visual identity.
+XANTA is a fashion and streetwear brand, not a general marketplace or a clothing supplier. The goal is to offer a focused collection of clean, versatile pieces with a premium visual identity.
 
 The brand direction is:
 - **Minimal:** restrained graphics, clean typography and uncluttered layouts.
@@ -30,7 +30,7 @@ The initial audience is shoppers in the United States, United Kingdom and Canada
 - Product detail pages with descriptions, sizes and pricing.
 - Featured product areas and collection presentation.
 - Shopping-bag interface foundation.
-- Product catalogue loading from the VANTA API.
+- Product catalogue loading from the XANTA API.
 
 ### Private store administration
 - First-time admin password setup and sign-in.
@@ -41,15 +41,15 @@ The initial audience is shoppers in the United States, United Kingdom and Canada
 
 ### Cloudflare services
 - **Cloudflare Pages:** hosts the storefront and admin interface.
-- **Cloudflare Workers:** provides the VANTA API.
+- **Cloudflare Workers:** provides the XANTA API.
 - **Cloudflare D1:** stores product information and admin session records.
 - **Cloudflare R2:** stores uploaded product images.
 
 ## Products and fulfilment model
 
-The first collection is **VANTA Essentials**. The initial catalogue contains:
-- VANTA Signature Tee — White.
-- VANTA Oversized Signature Tee — Black.
+The first collection is **XANTA Essentials**. The initial catalogue contains:
+- XANTA Signature Tee — White.
+- XANTA Oversized Signature Tee — Black.
 
 The current intended fulfilment workflow uses Printify for print production and shipping. At launch, orders are intended to be reviewed and submitted manually in Printify after the customer's payment has been verified. Printify production and shipping costs must be funded separately when placing each order.
 
@@ -84,7 +84,7 @@ This is an active storefront project, not a finished e-commerce operation.
 - `styles.css` — visual styling and responsive layouts.
 - `app.js` — storefront interactions and catalogue rendering.
 
-The VANTA API is deployed separately as a Cloudflare Worker and connects to the D1 and R2 resources configured in the Cloudflare account.
+The XANTA API is deployed separately as a Cloudflare Worker and connects to the D1 and R2 resources configured in the Cloudflare account.
 
 ## Development and deployment
 
@@ -92,7 +92,7 @@ The storefront is deployed through Cloudflare Pages and connected to this GitHub
 
 For a static Pages deployment:
 1. Open **Workers & Pages** in the Cloudflare dashboard.
-2. Select the VANTA Pages project.
+2. Select the XANTA Pages project.
 3. Confirm the GitHub repository and deployment branch.
 4. Use the **None** framework preset for this plain HTML/CSS/JavaScript storefront.
 5. Set the build output directory to the repository root.
@@ -113,4 +113,4 @@ The API Worker and its D1/R2 bindings are separate from the Pages static-site de
 
 ---
 
-**VANTA — THE ART OF STANDING APART.**
+**XANTA — THE ART OF STANDING APART.**

@@ -11,7 +11,7 @@ function injectProductSchema(product) {
     document.head.appendChild(script);
   }
   const imgUrl = product.image
-    ? (product.image.startsWith("http") ? product.image : VANTA_API + product.image)
+    ? (product.image.startsWith("http") ? product.image : XANTA_API + product.image)
     : "https://vanta-store-8kn.pages.dev/styles.css";
 
   const schema = {
@@ -19,11 +19,11 @@ function injectProductSchema(product) {
     "@type": "Product",
     "name": product.name,
     "image": [imgUrl],
-    "description": product.description || "VANTA 280 GSM luxury heavyweight cotton streetwear t-shirt in architectural box-cut silhouette.",
+    "description": product.description || "XANTA 280 GSM luxury heavyweight cotton streetwear t-shirt in architectural box-cut silhouette.",
     "sku": product.id,
     "brand": {
       "@type": "Brand",
-      "name": "VANTA"
+      "name": "XANTA"
     },
     "offers": {
       "@type": "Offer",
@@ -35,7 +35,7 @@ function injectProductSchema(product) {
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "VANTA"
+        "name": "XANTA"
       },
       "eligibleRegion": [
         { "@type": "Country", "name": "United States", "identifier": "US" },
@@ -65,19 +65,19 @@ function injectProductSchema(product) {
 }
 
 /* ==========================================================================
-   VANTA Storefront Engine
+   XANTA Storefront Engine
    High-End E-Commerce & State Management
    ========================================================================== */
 
-const VANTA_API = "https://vanta-api.rizzify.workers.dev";
-const CART_STORAGE_KEY = "vanta_cart";
-const ORDERS_STORAGE_KEY = "vanta_orders";
+const XANTA_API = "https://vanta-api.rizzify.workers.dev";
+const CART_STORAGE_KEY = "xanta_cart";
+const ORDERS_STORAGE_KEY = "xanta_orders";
 
 // Fallback catalog in case Cloudflare API is temporarily offline
 const fallbackProducts = [
   {
     id: "tee-white",
-    name: "VANTA Signature Tee",
+    name: "XANTA Signature Tee",
     type: "T-SHIRT",
     category: "T-SHIRT",
     colour: "White",
@@ -86,7 +86,7 @@ const fallbackProducts = [
     dark: false,
     price: 39.99,
     priceFrom: 39.99,
-    description: "Quiet confidence. Unmistakable identity. The VANTA Signature Tee brings minimalist design into everyday streetwear. Featuring understated VANTA lettering, a relaxed silhouette and dropped shoulders, it delivers a clean, effortless look without unnecessary detail. Made with medium-weight cotton fabric, it combines everyday comfort with durable double-needle stitching.",
+    description: "Quiet confidence. Unmistakable identity. The XANTA Signature Tee brings minimalist design into everyday streetwear. Featuring understated XANTA lettering, a relaxed silhouette and dropped shoulders, it delivers a clean, effortless look without unnecessary detail. Made with medium-weight cotton fabric, it combines everyday comfort with durable double-needle stitching.",
     details: [
       "Custom heavyweight 6 oz / 280 GSM combed cotton",
       "Relaxed architectural silhouette with dropped shoulders",
@@ -115,7 +115,7 @@ const fallbackProducts = [
   },
   {
     id: "tee-black",
-    name: "VANTA Oversized Signature Tee",
+    name: "XANTA Oversized Signature Tee",
     type: "T-SHIRT",
     category: "T-SHIRT",
     colour: "Black",
@@ -124,7 +124,7 @@ const fallbackProducts = [
     dark: true,
     price: 39.99,
     priceFrom: 39.99,
-    description: "Make a statement without saying too much. The VANTA Oversized Signature Tee brings a relaxed boxy silhouette together with understated VANTA lettering. Its dropped shoulders and clean minimalist design create a confident streetwear look. Made from soft, combed and ring-spun cotton, this medium-weight tee offers everyday comfort with a modern oversized shape.",
+    description: "Make a statement without saying too much. The XANTA Oversized Signature Tee brings a relaxed boxy silhouette together with understated XANTA lettering. Its dropped shoulders and clean minimalist design create a confident streetwear look. Made from soft, combed and ring-spun cotton, this medium-weight tee offers everyday comfort with a modern oversized shape.",
     details: [
       "100% Airlume combed and ring-spun heavyweight cotton",
       "Medium-weight 6 oz / 280 GSM luxury jersey weave",
@@ -250,7 +250,7 @@ function showCartToast(item) {
 function productCard(p) {
   const isDark = (p.colour || "").toLowerCase() === "black";
   const imgHtml = p.image 
-    ? `<img src="${p.image.startsWith('http') ? p.image : VANTA_API + p.image}" alt="${p.name}">`
+    ? `<img src="${p.image.startsWith('http') ? p.image : XANTA_API + p.image}" alt="${p.name}">`
     : `
       <div class="mock-garment ${isDark ? 'dark' : ''}">
         <svg class="mock-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +258,7 @@ function productCard(p) {
           <path d="M 38,12 L 38,24" stroke-dasharray="2,2" />
           <path d="M 62,12 L 62,24" stroke-dasharray="2,2" />
         </svg>
-        <div class="mock-garment-label">VANTA</div>
+        <div class="mock-garment-label">XANTA</div>
       </div>
     `;
   const priceDisplay = Number(p.price || (p.sizes && p.sizes[0] && p.sizes[0].price) || 39.99).toFixed(2);
@@ -313,26 +313,26 @@ function renderProductDetail() {
   if (titleEl) titleEl.textContent = product.name;
 
   if (product.name) {
-    document.title = `${product.name} — 280 GSM Heavyweight Tee | VANTA`;
+    document.title = `${product.name} — 280 GSM Heavyweight Tee | XANTA`;
   }
   injectProductSchema(product);
 
-  if (typeEl) typeEl.textContent = `VANTA ESSENTIALS 001 · ${String(product.colour || "").toUpperCase()}`;
+  if (typeEl) typeEl.textContent = `XANTA ESSENTIALS 001 · ${String(product.colour || "").toUpperCase()}`;
   if (descEl) descEl.textContent = product.description || "";
   
   if (visualEl) {
     visualEl.className = `product-visual detail-visual ${isDark ? "dark" : ""}`;
     visualEl.innerHTML = product.image
-      ? `<img src="${product.image.startsWith('http') ? product.image : VANTA_API + product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover">`
+      ? `<img src="${product.image.startsWith('http') ? product.image : XANTA_API + product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover">`
       : `
-        <span class="product-tag">VANTA / ESSENTIALS 001</span>
+        <span class="product-tag">XANTA / ESSENTIALS 001</span>
         <div class="mock-garment ${isDark ? 'dark' : ''}">
           <svg class="mock-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
             <path d="M 30,10 Q 50,22 70,10 L 94,30 L 82,46 L 74,40 L 74,110 L 26,110 L 26,40 L 18,46 L 6,30 Z" />
             <path d="M 38,12 L 38,24" stroke-dasharray="2,2" />
             <path d="M 62,12 L 62,24" stroke-dasharray="2,2" />
           </svg>
-          <div class="mock-garment-label">VANTA</div>
+          <div class="mock-garment-label">XANTA</div>
         </div>
       `;
   }
@@ -458,8 +458,8 @@ function renderCartPage() {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     const imgHtml = item.image
-      ? `<img src="${item.image.startsWith('http') ? item.image : VANTA_API + item.image}" alt="${item.name}" class="cart-item-thumb">`
-      : `<div class="cart-item-thumb">VANTA</div>`;
+      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" alt="${item.name}" class="cart-item-thumb">`
+      : `<div class="cart-item-thumb">XANTA</div>`;
 
     return `
       <div class="cart-item-row">
@@ -511,8 +511,8 @@ function renderCheckoutPage() {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     const imgHtml = item.image
-      ? `<img src="${item.image.startsWith('http') ? item.image : VANTA_API + item.image}" class="summary-item-thumb">`
-      : `<div class="summary-item-thumb">VANTA</div>`;
+      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" class="summary-item-thumb">`
+      : `<div class="summary-item-thumb">XANTA</div>`;
 
     return `
       <div class="summary-item-card">
@@ -555,7 +555,7 @@ function renderCheckoutPage() {
   if (form) {
     form.onsubmit = e => {
       e.preventDefault();
-      const orderId = "VANTA-" + Math.floor(100000 + Math.random() * 900000);
+      const orderId = "XANTA-" + Math.floor(100000 + Math.random() * 900000);
       const email = document.getElementById("cust-email").value;
       const firstName = document.getElementById("cust-fname").value;
       const lastName = document.getElementById("cust-lname").value;
@@ -624,17 +624,63 @@ function renderCheckoutPage() {
 /* --------------------------------------------------------------------------
    Fetch Live Catalog from Cloudflare Worker
    -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   Front Page Hero Dynamic Showcase
+   -------------------------------------------------------------------------- */
+function renderHeroShowcase(settings) {
+  const frame = document.getElementById("hero-showcase-frame");
+  if (!frame) return;
+
+  const footerTag = document.getElementById("hero-footer-tag");
+  let heroUrl = (settings && settings.hero_image_url) || null;
+  let heroTitle = (settings && settings.hero_title) || "ESSENTIALS 001";
+  let heroBadge = (settings && settings.hero_badge) || "LIMITED RUN // 280 GSM";
+
+  // Fallback to any featured product that has an image
+  if (!heroUrl && typeof liveCatalog !== "undefined" && Array.isArray(liveCatalog)) {
+    const withImg = liveCatalog.find(p => p.image);
+    if (withImg) {
+      heroUrl = withImg.image;
+      heroTitle = withImg.name;
+    }
+  }
+
+  if (heroUrl) {
+    frame.classList.add("has-image");
+    frame.innerHTML = `
+      <img src="${heroUrl}" alt="${heroTitle}" class="hero-showcase-img">
+      <div class="hero-garment-brand" id="hero-showcase-badge">${heroTitle}</div>
+    `;
+  }
+  if (footerTag && heroBadge) {
+    footerTag.textContent = heroBadge;
+  }
+}
+
 async function loadVantaCatalog() {
+  // Try immediate cached hero render
   try {
-    const res = await fetch(VANTA_API + "/api/products");
+    const cachedSettings = JSON.parse(localStorage.getItem("xanta_hero_settings") || "null");
+    if (cachedSettings) renderHeroShowcase(cachedSettings);
+  } catch(_) {}
+
+  try {
+    const res = await fetch(XANTA_API + "/api/products");
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data.products) && data.products.length > 0) {
         liveCatalog = data.products;
       }
+      if (data.settings) {
+        try { localStorage.setItem("xanta_hero_settings", JSON.stringify(data.settings)); } catch(_) {}
+        renderHeroShowcase(data.settings);
+      } else {
+        renderHeroShowcase(null);
+      }
     }
   } catch (err) {
-    console.warn("VANTA: Live Cloudflare API offline; using fallback catalog.", err);
+    console.warn("XANTA: Live Cloudflare API offline; using fallback catalog.", err);
   }
 
   // Render on homepage

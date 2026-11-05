@@ -1,7 +1,7 @@
 {
   "name": "vanta-store",
   "version": "1.0.0",
-  "description": "VANTA — Luxury Minimalist Streetwear Storefront",
+  "description": "XANTA — Luxury Minimalist Streetwear Storefront",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,10 +11,10 @@
   },
   "keywords": [
     "streetwear",
-    "vanta",
+    "xanta",
     "monochrome",
     "seo"
   ],
-  "author": "VANTA",
+  "author": "XANTA",
   "license": "UNLICENSED"
 }

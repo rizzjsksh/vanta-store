@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VANTA / Store Admin & Operations</title>
+  <title>XANTA / Store Admin & Operations</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Manrope:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -113,7 +113,7 @@
 
     /* Header */
     .admin-header {
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -122,7 +122,7 @@
     }
     .admin-header-copy h1 {
       font-family: "Manrope", sans-serif;
-      font-size: clamp(28px, 3.5vw, 44px);
+      font-size: clamp(26px, 3.2vw, 40px);
       font-weight: 800;
       letter-spacing: -0.02em;
       margin: 6px 0 0;
@@ -137,17 +137,239 @@
       text-transform: uppercase;
     }
 
+    /* Storefront Display Boxes Section */
+    .display-boxes-section {
+      background: #ffffff;
+      border: 1px solid var(--admin-border);
+      padding: 28px;
+      margin-bottom: 36px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+    .section-title-row h2 {
+      font-family: "Manrope", sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-desc {
+      font-size: 12px;
+      color: var(--admin-muted);
+      margin: -10px 0 20px;
+      line-height: 1.5;
+    }
+
+    .boxes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .display-box-card {
+      background: #faf9f6;
+      border: 2px solid var(--admin-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .display-box-card.hero-slot {
+      border-color: #0f0f0f;
+      background: #141414;
+      color: #ffffff;
+    }
+    .display-box-card:hover {
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .box-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+    .hero-slot .box-badge {
+      background: #ffffff;
+      color: #000000;
+    }
+    .product-slot .box-badge {
+      background: #e6e2d9;
+      color: #333333;
+    }
+
+    .box-title {
+      font-family: "Manrope", sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin: 0 0 6px;
+      text-transform: uppercase;
+    }
+    .hero-slot .box-title {
+      color: #ffffff;
+    }
+    .product-slot .box-title {
+      color: #111111;
+    }
+
+    .box-sub {
+      font-size: 11px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .hero-slot .box-sub {
+      color: #aaaaaa;
+    }
+    .product-slot .box-sub {
+      color: #777777;
+    }
+
+    /* Miniature Visual Frame */
+    .box-visual-frame {
+      width: 100%;
+      height: 200px;
+      background: rgba(0,0,0,0.06);
+      border: 1px dashed var(--admin-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .hero-slot .box-visual-frame {
+      background: #080808;
+      border: 1px dashed #333333;
+    }
+    .box-visual-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .box-empty-prompt {
+      text-align: center;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .box-empty-icon {
+      font-size: 32px;
+      margin-bottom: 4px;
+      opacity: 0.5;
+    }
+    .box-empty-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .hero-slot .box-empty-label {
+      color: #cccccc;
+    }
+    .product-slot .box-empty-label {
+      color: #666666;
+    }
+    .box-empty-hint {
+      font-size: 10px;
+      color: #888888;
+    }
+
+    /* Box Buttons */
+    .box-actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-upload-direct {
+      width: 100%;
+      background: #0f0f0f;
+      color: #ffffff;
+      border: 1px solid #0f0f0f;
+      padding: 11px 16px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .hero-slot .btn-upload-direct {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+    }
+    .hero-slot .btn-upload-direct:hover {
+      background: #ece8df;
+    }
+    .btn-upload-direct:hover {
+      background: #2a2a2a;
+    }
+    .btn-box-secondary {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--admin-border);
+      color: inherit;
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .hero-slot .btn-box-secondary {
+      border-color: #333333;
+      color: #aaaaaa;
+    }
+    .hero-slot .btn-box-secondary:hover {
+      border-color: #666;
+      color: #ffffff;
+    }
+    .btn-box-secondary:hover {
+      background: #eee;
+    }
+
     /* Metrics Grid */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-bottom: 36px;
     }
     .metric-card {
       background: var(--admin-surface);
       border: 1px solid var(--admin-border);
-      padding: 22px 24px;
+      padding: 20px 24px;
       position: relative;
     }
     .metric-card::after {
@@ -169,7 +391,7 @@
     }
     .metric-value {
       font-family: "Manrope", sans-serif;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 800;
       color: var(--admin-text);
       line-height: 1;
@@ -180,7 +402,7 @@
       margin-top: 6px;
     }
 
-    /* Cards & Panels */
+    /* Panels */
     .panel {
       background: var(--admin-surface);
       border: 1px solid var(--admin-border);
@@ -260,7 +482,6 @@
       margin-top: 5px;
     }
 
-    /* Checkbox & Radio */
     .checkbox-row {
       display: flex;
       gap: 24px;
@@ -276,14 +497,8 @@
       text-transform: uppercase;
       cursor: pointer;
     }
-    .checkbox-label input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #0f0f0f;
-      cursor: pointer;
-    }
 
-    /* Image Upload Dropzone */
+    /* Image Dropzone in Editor */
     .image-dropzone {
       border: 2px dashed var(--admin-border);
       background: #faf9f6;
@@ -308,25 +523,7 @@
       opacity: 0;
       cursor: pointer;
     }
-    .dropzone-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-      color: var(--admin-muted);
-    }
-    .dropzone-text {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--admin-text);
-    }
-    .dropzone-sub {
-      font-size: 11px;
-      color: var(--admin-muted);
-      margin-top: 4px;
-    }
 
-    /* Image Preview Box */
     .image-preview-container {
       background: #f0eee8;
       border: 1px solid var(--admin-border);
@@ -348,39 +545,6 @@
       flex: 1;
       font-size: 11px;
     }
-    .image-preview-filename {
-      font-weight: 700;
-      color: var(--admin-text);
-      word-break: break-all;
-      margin-bottom: 4px;
-    }
-    .image-preview-badge {
-      display: inline-block;
-      padding: 2px 6px;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      background: #10b981;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .btn-remove-image {
-      background: transparent;
-      border: 1px solid var(--admin-border);
-      color: var(--admin-danger);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-remove-image:hover {
-      background: var(--admin-danger);
-      color: #fff;
-      border-color: var(--admin-danger);
-    }
 
     /* Buttons */
     .btn {
@@ -388,7 +552,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 13px 24px;
+      padding: 12px 22px;
       font-family: inherit;
       font-size: 11px;
       font-weight: 700;
@@ -433,7 +597,7 @@
       cursor: not-allowed;
     }
 
-    /* Product Table */
+    /* Table */
     .table-wrapper {
       overflow-x: auto;
     }
@@ -459,9 +623,6 @@
       vertical-align: middle;
       font-size: 13px;
     }
-    .admin-table tr:hover td {
-      background: #faf8f3;
-    }
     .table-thumb {
       width: 44px;
       height: 52px;
@@ -481,18 +642,6 @@
       color: #888;
       border: 1px solid var(--admin-border);
     }
-    .prod-name {
-      font-weight: 700;
-      color: var(--admin-text);
-      display: block;
-    }
-    .prod-id {
-      font-family: "Space Mono", monospace;
-      font-size: 11px;
-      color: var(--admin-muted);
-      margin-top: 2px;
-      display: block;
-    }
 
     /* Badges */
     .badge {
@@ -503,35 +652,26 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
     }
-    .badge-success {
-      background: #e6f7ed;
-      color: #1b873f;
-    }
-    .badge-draft {
-      background: #eae8e1;
-      color: #666;
-    }
-    .badge-featured {
-      background: #fef3c7;
-      color: #92400e;
-    }
+    .badge-success { background: #e6f7ed; color: #1b873f; }
+    .badge-draft { background: #eae8e1; color: #666; }
+    .badge-featured { background: #fef3c7; color: #92400e; }
 
-    /* Notification Banner */
+    /* Toast */
     .toast-banner {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      max-width: 420px;
-      padding: 14px 18px;
+      max-width: 440px;
+      padding: 16px 20px;
       background: #111;
       color: #fff;
       font-size: 12px;
-      font-weight: 500;
-      line-height: 1.4;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      font-weight: 600;
+      line-height: 1.5;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
       z-index: 1000;
       display: none;
-      border-left: 4px solid #10b981;
+      border-left: 5px solid #10b981;
     }
     .toast-banner.error {
       border-left-color: #ef4444;
@@ -546,7 +686,7 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Auth Box */
+    /* Auth Screen */
     .auth-overlay {
       min-height: calc(100vh - 60px);
       display: grid;
@@ -566,15 +706,8 @@
       font-family: "Manrope", sans-serif;
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: -0.01em;
       margin: 0 0 8px;
       text-transform: uppercase;
-    }
-    .auth-box p {
-      font-size: 13px;
-      color: var(--admin-muted);
-      line-height: 1.5;
-      margin: 0 0 24px;
     }
     .alert-error {
       background: #fdf2f2;
@@ -589,10 +722,13 @@
 </head>
 <body>
 
+  <!-- Hidden Direct File Input used by Quick Upload buttons -->
+  <input type="file" id="direct-file-input" accept="image/png, image/jpeg, image/webp, image/gif" style="display:none;">
+
   <!-- Admin Navigation Bar -->
   <header class="admin-nav">
     <div class="nav-brand">
-      <span class="logo-text">VANTA</span>
+      <span class="logo-text">XANTA</span>
       <span class="tag">ADMIN CONSOLE</span>
       <div id="api-status" class="api-status-chip">
         <span class="status-dot online"></span>
@@ -600,12 +736,12 @@
       </div>
     </div>
     <div class="nav-actions">
-      <a href="https://vanta-store-8kn.pages.dev" target="_blank" rel="noopener">VIEW STORE ↗</a>
+      <a href="https://vanta-store-8kn.pages.dev" target="_blank" rel="noopener">VIEW STOREFRONT ↗</a>
       <a href="javascript:void(0)" id="btn-logout" style="display:none;">LOGOUT</a>
     </div>
   </header>
 
-  <!-- Auth Screen (Login / Setup) -->
+  <!-- Auth Screen -->
   <section id="auth-screen" class="auth-overlay">
     <div class="auth-box">
       <div id="auth-error-box" class="alert-error"></div>
@@ -614,12 +750,11 @@
       <form id="setup-form" style="display:none;">
         <span style="font-size:10px;font-weight:700;letter-spacing:0.2em;color:#10b981;text-transform:uppercase;">INITIALIZATION REQUIRED</span>
         <h2>CREATE MASTER ADMIN</h2>
-        <p>Set your master store administrator password (minimum 12 characters). It will be hashed securely with PBKDF2 in Cloudflare D1.</p>
+        <p>Set your master administrator password (minimum 12 characters). It will be hashed securely in Cloudflare D1.</p>
         
         <div class="field-group">
           <label for="setup-password">Admin Password</label>
           <input type="password" id="setup-password" minlength="12" required placeholder="Choose a secure password (12+ chars)" autocomplete="new-password">
-          <div class="help-text">Must be at least 12 characters long.</div>
         </div>
 
         <button type="submit" id="setup-submit-btn" class="btn btn-primary" style="width:100%;margin-top:12px;">
@@ -631,7 +766,7 @@
       <form id="login-form" style="display:none;">
         <span style="font-size:10px;font-weight:700;letter-spacing:0.2em;color:var(--admin-muted);text-transform:uppercase;">AUTHENTICATION</span>
         <h2>STORE SIGN IN</h2>
-        <p>Enter your master administrator password to manage catalog, images, and inventory.</p>
+        <p>Enter your master administrator password to manage catalog, images, and front page showcase.</p>
 
         <div class="field-group">
           <label for="login-password">Master Password</label>
@@ -645,14 +780,14 @@
     </div>
   </section>
 
-  <!-- Main Admin Dashboard (Hidden until authenticated) -->
+  <!-- Main Admin Dashboard -->
   <main id="admin-main" class="admin-container" style="display:none;">
     
     <!-- Header -->
     <div class="admin-header">
       <div class="admin-header-copy">
-        <div class="eyebrow">Cloudflare D1 & R2 Backend</div>
-        <h1>PRODUCT OPERATIONS</h1>
+        <div class="eyebrow">Cloudflare D1 & R2 Backend · XANTA Operations</div>
+        <h1>STOREFRONT &amp; CATALOG OPERATIONS</h1>
       </div>
       <div>
         <button id="btn-scroll-add" class="btn btn-primary">
@@ -661,31 +796,110 @@
       </div>
     </div>
 
-    <!-- Live Metrics Grid -->
+    <!-- NEW INTERACTIVE SECTION: CHOOSE WHICH BOX TO UPLOAD TO -->
+    <section class="display-boxes-section">
+      <div class="section-title-row">
+        <h2>📦 CHOOSE WHERE TO UPLOAD PHOTO (STOREFRONT DISPLAY BOXES)</h2>
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--admin-muted)">CLICK ANY BUTTON BELOW TO UPLOAD DIRECTLY</span>
+      </div>
+      <p class="section-desc">
+        Select the exact box you want to populate on your website. Uploaded photos are stored instantly in your Cloudflare R2 bucket and served globally.
+      </p>
+
+      <div class="boxes-grid" id="display-boxes-grid">
+        
+        <!-- Box 1: Front Page Hero Box (Homepage Centerpiece) -->
+        <div class="display-box-card hero-slot" id="card-hero-slot">
+          <span class="box-badge">🌟 HOMEPAGE CENTERPIECE</span>
+          <div class="box-title">FRONT PAGE HERO BOX</div>
+          <div class="box-sub">This is the large centerpiece showcase displayed at the top of your front page.</div>
+          
+          <div class="box-visual-frame" id="hero-box-preview" title="Click to upload photo for Front Page Hero Box">
+            <!-- Rendered by JS: Image or Vector Empty Prompt -->
+          </div>
+
+          <div class="box-actions">
+            <button type="button" class="btn-upload-direct" id="btn-upload-hero">
+              📷 UPLOAD PHOTO TO FRONT PAGE BOX
+            </button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <button type="button" class="btn-box-secondary" id="btn-edit-hero-meta">EDIT TEXT</button>
+              <button type="button" class="btn-box-secondary" id="btn-clear-hero" style="color:#ef4444;">CLEAR PHOTO</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 2: White Tee Product Box -->
+        <div class="display-box-card product-slot" id="slot-tee-white">
+          <span class="box-badge">CATALOG ITEM // 001</span>
+          <div class="box-title">SIGNATURE TEE (WHITE)</div>
+          <div class="box-sub">Displayed in the "XANTA Essentials" grid and on <code>/product.html?id=tee-white</code>.</div>
+
+          <div class="box-visual-frame" id="preview-tee-white" title="Click to upload photo for White Tee">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="box-actions">
+            <button type="button" class="btn-upload-direct" onclick="triggerDirectUpload('tee-white', 'XANTA Signature Tee (White)')">
+              📷 UPLOAD PHOTO (WHITE TEE)
+            </button>
+            <button type="button" class="btn-box-secondary" onclick="editProduct('tee-white')">
+              EDIT DETAILS &amp; PRICING ↗
+            </button>
+          </div>
+        </div>
+
+        <!-- Box 3: Black Tee Product Box -->
+        <div class="display-box-card product-slot" id="slot-tee-black">
+          <span class="box-badge">CATALOG ITEM // 002</span>
+          <div class="box-title">OVERSIZED TEE (BLACK)</div>
+          <div class="box-sub">Displayed in the "XANTA Essentials" grid and on <code>/product.html?id=tee-black</code>.</div>
+
+          <div class="box-visual-frame" id="preview-tee-black" title="Click to upload photo for Black Tee">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="box-actions">
+            <button type="button" class="btn-upload-direct" onclick="triggerDirectUpload('tee-black', 'XANTA Oversized Signature Tee (Black)')">
+              📷 UPLOAD PHOTO (BLACK TEE)
+            </button>
+            <button type="button" class="btn-box-secondary" onclick="editProduct('tee-black')">
+              EDIT DETAILS &amp; PRICING ↗
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Additional Products Container for dynamic D1 items -->
+      <div id="extra-products-boxes" class="boxes-grid" style="margin-top:20px;"></div>
+    </section>
+
+    <!-- Metrics Grid -->
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-label">TOTAL INVENTORY</div>
+        <div class="metric-label">TOTAL PRODUCTS</div>
         <div class="metric-value" id="metric-total">0</div>
-        <div class="metric-sub">Items configured in D1</div>
+        <div class="metric-sub">Configured in Cloudflare D1</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">PUBLISHED & ACTIVE</div>
+        <div class="metric-label">PUBLISHED ON STORE</div>
         <div class="metric-value" id="metric-published">0</div>
-        <div class="metric-sub">Live on storefront catalog</div>
+        <div class="metric-sub">Active in public catalogue</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">FEATURED HIGHLIGHTS</div>
-        <div class="metric-value" id="metric-featured">0</div>
-        <div class="metric-sub">Hero & grid placement</div>
+        <div class="metric-label">HOMEPAGE HERO BOX</div>
+        <div class="metric-value" id="metric-hero-status" style="font-size:20px;margin-top:4px;">ACTIVE</div>
+        <div class="metric-sub" id="metric-hero-sub">Photo linked from R2</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">DRAFTS / HIDDEN</div>
-        <div class="metric-value" id="metric-drafts">0</div>
-        <div class="metric-sub">Unpublished products</div>
+        <div class="metric-label">R2 PHOTO ASSETS</div>
+        <div class="metric-value" id="metric-images">0</div>
+        <div class="metric-sub">Items with live photos</div>
       </div>
     </div>
 
-    <!-- Product Editor Form Panel -->
+    <!-- Product Editor Panel -->
     <section class="panel" id="product-editor-panel">
       <div class="panel-header">
         <h2 id="form-panel-title">ADD NEW PRODUCT</h2>
@@ -694,10 +908,14 @@
         </button>
       </div>
 
+      <div id="editing-target-banner" style="display:none;background:#f0eee8;border-left:4px solid #0f0f0f;padding:10px 14px;margin-bottom:20px;font-size:12px;font-weight:700;">
+        TARGET DISPLAY BOX: <span id="target-box-name" style="color:#0f0f0f">None</span>
+      </div>
+
       <form id="product-form">
         <div class="form-grid">
           
-          <!-- Column 1: Product Specifications -->
+          <!-- Column 1: Specifications -->
           <div>
             <div class="form-row">
               <div class="field-group">
@@ -707,7 +925,7 @@
               </div>
               <div class="field-group">
                 <label for="pname">Product Name *</label>
-                <input type="text" id="pname" required placeholder="e.g. VANTA Washed Heavyweight Tee">
+                <input type="text" id="pname" required placeholder="e.g. XANTA Washed Heavyweight Tee">
               </div>
             </div>
 
@@ -733,7 +951,7 @@
             <div class="form-row">
               <div class="field-group">
                 <label for="price">Base Price ($ USD) *</label>
-                <input type="number" id="price" step="0.01" min="0" required placeholder="45.00">
+                <input type="number" id="price" step="0.01" min="0" required placeholder="39.99">
               </div>
               <div class="field-group">
                 <label for="sort_order">Display Sort Order</label>
@@ -743,13 +961,13 @@
 
             <div class="field-group">
               <label for="description">Story & Description</label>
-              <textarea id="description" rows="3" placeholder="Handcrafted 300GSM combed cotton jersey with subtle distressed wash and dropped shoulder cut."></textarea>
+              <textarea id="description" rows="3" placeholder="Handcrafted 280 GSM combed cotton jersey with dropped shoulder architectural cut."></textarea>
             </div>
 
             <div class="form-row">
               <div class="field-group">
                 <label for="details">Details (1 per line)</label>
-                <textarea id="details" rows="3" placeholder="300 GSM Heavyweight Cotton&#10;Ribbed 1.25-inch crew collar&#10;Pre-shrunk treatment"></textarea>
+                <textarea id="details" rows="3" placeholder="280 GSM Heavyweight Cotton&#10;Ribbed 1.25-inch crew collar&#10;Pre-shrunk architectural drape"></textarea>
               </div>
               <div class="field-group">
                 <label for="care">Care Instructions (1 per line)</label>
@@ -759,8 +977,7 @@
 
             <div class="field-group">
               <label for="sizes">Sizes & Variants (Size | Price, 1 per line)</label>
-              <textarea id="sizes" rows="3" placeholder="S | 45.00&#10;M | 45.00&#10;L | 45.00&#10;XL | 45.00"></textarea>
-              <div class="help-text">Format: <code>Size | Price</code> (leave price empty to use base price).</div>
+              <textarea id="sizes" rows="3" placeholder="XS | 39.99&#10;S | 39.99&#10;M | 39.99&#10;L | 39.99&#10;XL | 39.99&#10;2XL | 39.99&#10;3XL | 40.99"></textarea>
             </div>
 
             <div class="checkbox-row">
@@ -770,40 +987,37 @@
               </label>
               <label class="checkbox-label">
                 <input type="checkbox" id="featured">
-                Featured on Homepage
+                Featured on Homepage Grid
               </label>
             </div>
           </div>
 
-          <!-- Column 2: Product Image & R2 Storage -->
+          <!-- Column 2: Photo Dropzone -->
           <div>
             <div class="field-group">
-              <label>PRODUCT IMAGE (CLOUDFLARE R2)</label>
+              <label id="upload-box-label">PRODUCT PHOTO (CLOUDFLARE R2)</label>
               
-              <!-- Drag and drop zone -->
               <div class="image-dropzone" id="dropzone">
                 <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp, image/gif">
-                <div class="dropzone-icon">📷</div>
-                <div class="dropzone-text">DRAG & DROP PRODUCT PHOTO</div>
-                <div class="dropzone-sub">or click to browse from your device (PNG, JPG, WEBP up to 15MB)</div>
+                <div style="font-size:32px;margin-bottom:8px">📷</div>
+                <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">DRAG &amp; DROP PRODUCT PHOTO</div>
+                <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">or click to browse from device (PNG, JPG, WEBP up to 15MB)</div>
               </div>
 
-              <!-- Preview container -->
               <div id="image-preview-container" class="image-preview-container" style="display:none;">
                 <img id="preview-img" class="image-preview-thumb" alt="Product preview">
                 <div class="image-preview-meta">
-                  <div id="preview-badge" class="image-preview-badge">ATTACHED</div>
-                  <div id="preview-filename" class="image-preview-filename">image.jpg</div>
-                  <button type="button" id="btn-remove-preview" class="btn-remove-image">Remove Image</button>
+                  <div id="preview-badge" style="display:inline-block;padding:2px 6px;font-size:9px;font-weight:700;letter-spacing:0.1em;background:#10b981;color:#fff;margin-bottom:6px;">ATTACHED</div>
+                  <div id="preview-filename" style="font-weight:700;color:var(--admin-text);word-break:break-all;margin-bottom:8px;">photo.jpg</div>
+                  <button type="button" id="btn-remove-preview" class="btn btn-sm btn-danger">Remove Photo</button>
                 </div>
               </div>
 
               <div class="help-text">
-                Images are uploaded straight to your Cloudflare R2 bucket (<code>vanta-product-images</code>) and served globally via Cloudflare edge CDN.
+                Photos are uploaded straight to your Cloudflare R2 bucket (<code>vanta-product-images</code>) and delivered globally.
               </div>
             </div>
 
-            <!-- Submit buttons -->
             <div style="margin-top: 32px;">
               <button type="submit" id="save-product-btn" class="btn btn-primary" style="width: 100%;">
                 SAVE PRODUCT TO CLOUDFLARE
@@ -818,7 +1032,7 @@
     <!-- Product Inventory Table -->
     <section class="panel">
       <div class="panel-header">
-        <h2>STORE CATALOG INVENTORY</h2>
+        <h2>ALL STORE CATALOG PRODUCTS</h2>
         <button id="btn-refresh-table" class="btn btn-secondary btn-sm">
           REFRESH CATALOG
         </button>
@@ -828,8 +1042,8 @@
         <table class="admin-table">
           <thead>
             <tr>
-              <th style="width: 60px;">IMAGE</th>
-              <th>NAME & IDENTIFIER</th>
+              <th style="width: 60px;">PHOTO</th>
+              <th>NAME &amp; IDENTIFIER</th>
               <th>CATEGORY</th>
               <th>COLOUR</th>
               <th>PRICE</th>
@@ -850,18 +1064,20 @@
 
   </main>
 
-  <!-- Toast Notification Banner -->
+  <!-- Toast Banner -->
   <div id="toast-banner" class="toast-banner"></div>
 
   <script>
     const API_BASE = "https://vanta-api.rizzify.workers.dev";
-    const TOKEN_KEY = "vanta_admin_token";
+    const TOKEN_KEY = "xanta_admin_token";
 
-    let currentToken = localStorage.getItem(TOKEN_KEY) || "";
+    let currentToken = localStorage.getItem(TOKEN_KEY) || localStorage.getItem("vanta_admin_token") || "";
     let activeProducts = [];
+    let currentSettings = {};
     let selectedImageFile = null;
     let existingImageKey = null;
     let existingImageUrl = null;
+    let directUploadTarget = null; // { type: 'hero' } or { type: 'product', id: '...', name: '...' }
 
     const $ = id => document.getElementById(id);
 
@@ -871,7 +1087,7 @@
       banner.className = "toast-banner " + (isError ? "error" : "") + " visible";
       setTimeout(() => {
         banner.className = "toast-banner";
-      }, 4500);
+      }, 5000);
     }
 
     async function apiRequest(path, options = {}) {
@@ -896,7 +1112,6 @@
         $("api-status").querySelector(".status-dot").className = "status-dot online";
 
         if (health.setupRequired) {
-          // Show first-time setup form
           $("auth-screen").style.display = "grid";
           $("setup-form").style.display = "block";
           $("login-form").style.display = "none";
@@ -905,7 +1120,6 @@
           return;
         }
 
-        // Setup already done: check session
         if (currentToken) {
           try {
             const sess = await apiRequest("/api/admin/session");
@@ -919,7 +1133,6 @@
           }
         }
 
-        // Show standard login
         $("auth-screen").style.display = "grid";
         $("setup-form").style.display = "none";
         $("login-form").style.display = "block";
@@ -937,10 +1150,10 @@
       $("auth-screen").style.display = "none";
       $("admin-main").style.display = "block";
       $("btn-logout").style.display = "inline";
-      loadProducts();
+      loadProductsAndSettings();
     }
 
-    // First time setup handler
+    // Setup handler
     $("setup-form").onsubmit = async e => {
       e.preventDefault();
       const pw = $("setup-password").value;
@@ -963,7 +1176,6 @@
           body: JSON.stringify({ password: pw })
         });
 
-        // Automatically log in with the newly created password
         const loginData = await apiRequest("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1025,7 +1237,309 @@
       location.reload();
     };
 
-    // Image Upload Dropzone & Preview Logic
+    // Load Products and Settings
+    async function loadProductsAndSettings() {
+      try {
+        const data = await apiRequest("/api/admin/products");
+        activeProducts = data.products || [];
+        currentSettings = data.settings || {};
+
+        renderHeroBoxPreview();
+        renderProductSlots();
+        renderTable();
+        updateMetrics();
+
+      } catch (err) {
+        showToast("Error loading catalog: " + err.message, true);
+      }
+    }
+
+    // Render Front Page Hero Showcase Box
+    function renderHeroBoxPreview() {
+      const container = $("hero-box-preview");
+      const heroUrl = currentSettings.hero_image_url;
+
+      if (heroUrl) {
+        container.innerHTML = `
+          <img src="${heroUrl}" alt="Front page hero showcase">
+          <div style="position:absolute;top:10px;left:10px;background:#10b981;color:#fff;font-size:9px;font-weight:800;letter-spacing:0.12em;padding:3px 8px;">
+            ● ACTIVE ON FRONT PAGE
+          </div>
+          <div style="position:absolute;bottom:10px;left:0;width:100%;text-align:center;background:rgba(0,0,0,0.8);color:#fff;font-size:9px;letter-spacing:0.2em;padding:6px;">
+            ${escapeHtml(currentSettings.hero_title || 'ESSENTIALS 001')}
+          </div>
+        `;
+        $("metric-hero-status").textContent = "ACTIVE";
+        $("metric-hero-status").style.color = "#10b981";
+        $("metric-hero-sub").textContent = "Photo live in R2";
+      } else {
+        container.innerHTML = `
+          <div class="box-empty-prompt">
+            <div class="box-empty-icon">🔲</div>
+            <div class="box-empty-label">EMPTY (SHOWING VECTOR OUTLINE)</div>
+            <div class="box-empty-hint">Click below to upload photo to this front page box</div>
+          </div>
+        `;
+        $("metric-hero-status").textContent = "EMPTY";
+        $("metric-hero-status").style.color = "#f59e0b";
+        $("metric-hero-sub").textContent = "Showing outline vector";
+      }
+    }
+
+    // Render Dedicated Product Slots
+    function renderProductSlots() {
+      // Slot 1: White Tee
+      const whiteTee = activeProducts.find(p => p.id === "tee-white");
+      const whitePreview = $("preview-tee-white");
+      if (whitePreview) {
+        if (whiteTee && whiteTee.image) {
+          whitePreview.innerHTML = `
+            <img src="${whiteTee.image}" alt="${escapeHtml(whiteTee.name)}">
+            <div style="position:absolute;top:8px;left:8px;background:#10b981;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;">PHOTO LIVE</div>
+          `;
+        } else {
+          whitePreview.innerHTML = `
+            <div class="box-empty-prompt">
+              <div class="box-empty-icon">👕</div>
+              <div class="box-empty-label">NO PHOTO ATTACHED</div>
+              <div class="box-empty-hint">Click below to upload White Tee photo</div>
+            </div>
+          `;
+        }
+      }
+
+      // Slot 2: Black Tee
+      const blackTee = activeProducts.find(p => p.id === "tee-black");
+      const blackPreview = $("preview-tee-black");
+      if (blackPreview) {
+        if (blackTee && blackTee.image) {
+          blackPreview.innerHTML = `
+            <img src="${blackTee.image}" alt="${escapeHtml(blackTee.name)}">
+            <div style="position:absolute;top:8px;left:8px;background:#10b981;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;">PHOTO LIVE</div>
+          `;
+        } else {
+          blackPreview.innerHTML = `
+            <div class="box-empty-prompt">
+              <div class="box-empty-icon">👕</div>
+              <div class="box-empty-label">NO PHOTO ATTACHED</div>
+              <div class="box-empty-hint">Click below to upload Black Tee photo</div>
+            </div>
+          `;
+        }
+      }
+
+      // Extra products
+      const extras = activeProducts.filter(p => p.id !== "tee-white" && p.id !== "tee-black");
+      const extrasContainer = $("extra-products-boxes");
+      if (extras.length === 0) {
+        extrasContainer.innerHTML = "";
+        return;
+      }
+
+      extrasContainer.innerHTML = extras.map(p => {
+        const imgMarkup = p.image 
+          ? `<img src="${p.image}" alt="${escapeHtml(p.name)}"><div style="position:absolute;top:8px;left:8px;background:#10b981;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;">PHOTO LIVE</div>`
+          : `<div class="box-empty-prompt"><div class="box-empty-icon">👕</div><div class="box-empty-label">NO PHOTO</div></div>`;
+
+        return `
+          <div class="display-box-card product-slot">
+            <span class="box-badge">${escapeHtml(p.category || 'PRODUCT')}</span>
+            <div class="box-title">${escapeHtml(p.name)}</div>
+            <div class="box-sub">${escapeHtml(p.colour || '')} · $${Number(p.price).toFixed(2)} · ID: <code>${escapeHtml(p.id)}</code></div>
+            <div class="box-visual-frame">${imgMarkup}</div>
+            <div class="box-actions">
+              <button type="button" class="btn-upload-direct" onclick="triggerDirectUpload('${p.id}', '${escapeHtml(p.name)}')">
+                📷 UPLOAD PHOTO FOR THIS BOX
+              </button>
+              <button type="button" class="btn-box-secondary" onclick="editProduct('${p.id}')">
+                EDIT DETAILS &amp; PRICING ↗
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Direct Upload Handler
+    const directFileInput = $("direct-file-input");
+
+    window.triggerDirectUpload = (targetId, targetName) => {
+      directUploadTarget = { type: 'product', id: targetId, name: targetName };
+      directFileInput.value = "";
+      directFileInput.click();
+    };
+
+    $("btn-upload-hero").onclick = () => {
+      directUploadTarget = { type: 'hero', name: 'Front Page Hero Showcase' };
+      directFileInput.value = "";
+      directFileInput.click();
+    };
+    $("hero-box-preview").onclick = () => {
+      $("btn-upload-hero").click();
+    };
+
+    directFileInput.onchange = async e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file || !directUploadTarget) return;
+
+      if (!file.type.startsWith("image/")) {
+        showToast("Please select an image file (PNG, JPG, WEBP)", true);
+        return;
+      }
+
+      showToast(`Uploading photo to ${directUploadTarget.name}...`);
+
+      try {
+        // 1. Upload to R2
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadRes = await apiRequest("/api/admin/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        const imageKey = uploadRes.key;
+
+        // 2. Link to Target
+        if (directUploadTarget.type === 'hero') {
+          await apiRequest("/api/admin/settings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ hero_image_key: imageKey })
+          });
+          showToast(`✓ Photo successfully uploaded to Front Page Hero Box! It is now live on your homepage.`);
+        } else if (directUploadTarget.type === 'product') {
+          const prod = activeProducts.find(p => p.id === directUploadTarget.id);
+          if (prod) {
+            const payload = {
+              id: prod.id,
+              name: prod.name,
+              category: prod.category || "T-SHIRT",
+              colour: prod.colour || "",
+              price: prod.price,
+              sort_order: prod.sort_order || 1,
+              description: prod.description || "",
+              details: prod.details || [],
+              care: prod.care || [],
+              sizes: prod.sizes || [],
+              image_key: imageKey,
+              published: prod.published,
+              featured: prod.featured
+            };
+
+            await apiRequest("/api/admin/products", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+            showToast(`✓ Photo uploaded for ${directUploadTarget.name}!`);
+          }
+        }
+
+        await loadProductsAndSettings();
+
+      } catch (err) {
+        showToast("Upload failed: " + err.message, true);
+      }
+    };
+
+    // Clear Hero photo
+    $("btn-clear-hero").onclick = async () => {
+      if (!confirm("Remove photo from the Front Page Hero Box and revert to the vector outline?")) return;
+      try {
+        await apiRequest("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hero_image_key: "" })
+        });
+        showToast("✓ Front Page Hero photo cleared. Outline vector restored.");
+        await loadProductsAndSettings();
+      } catch (err) {
+        showToast("Error: " + err.message, true);
+      }
+    };
+
+    // Edit Hero Meta text
+    $("btn-edit-hero-meta").onclick = async () => {
+      const currentTitle = currentSettings.hero_title || "ESSENTIALS 001";
+      const currentBadge = currentSettings.hero_badge || "LIMITED RUN // 280 GSM";
+
+      const newTitle = prompt("Enter Front Page Box Title:", currentTitle);
+      if (newTitle === null) return;
+      const newBadge = prompt("Enter Front Page Badge Tagline:", currentBadge);
+      if (newBadge === null) return;
+
+      try {
+        await apiRequest("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            hero_title: newTitle.trim() || "ESSENTIALS 001",
+            hero_badge: newBadge.trim() || "LIMITED RUN // 280 GSM"
+          })
+        });
+        showToast("✓ Front Page Box text updated!");
+        await loadProductsAndSettings();
+      } catch (err) {
+        showToast("Error updating text: " + err.message, true);
+      }
+    };
+
+    // Update Metrics
+    function updateMetrics() {
+      $("metric-total").textContent = activeProducts.length;
+      $("metric-published").textContent = activeProducts.filter(p => p.published).length;
+      $("metric-images").textContent = activeProducts.filter(p => p.image).length + (currentSettings.hero_image_url ? 1 : 0);
+    }
+
+    // Render Table
+    function renderTable() {
+      const tbody = $("product-table-body");
+      if (activeProducts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:36px;color:#888;">No products in database.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = activeProducts.map(p => {
+        const imgHtml = p.image 
+          ? `<img src="${p.image}" class="table-thumb" alt="${escapeHtml(p.name)}">`
+          : `<div class="table-thumb-placeholder">NO IMG</div>`;
+
+        const pubBadge = p.published
+          ? `<span class="badge badge-success">PUBLISHED</span>`
+          : `<span class="badge badge-draft">DRAFT</span>`;
+
+        const featBadge = p.featured
+          ? ` <span class="badge badge-featured">FEATURED</span>`
+          : ``;
+
+        return `
+          <tr>
+            <td>${imgHtml}</td>
+            <td>
+              <strong style="color:var(--admin-text);display:block">${escapeHtml(p.name)}</strong>
+              <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--admin-muted)">${escapeHtml(p.id)}</span>
+            </td>
+            <td><span class="badge" style="background:#f0eee8;">${escapeHtml(p.category || 'T-SHIRT')}</span></td>
+            <td>${escapeHtml(p.colour || '—')}</td>
+            <td style="font-weight:700;font-family:'Space Mono',monospace;">$${Number(p.price).toFixed(2)}</td>
+            <td>${pubBadge}${featBadge}</td>
+            <td style="text-align:right;white-space:nowrap;">
+              <button class="btn btn-secondary btn-sm" onclick="editProduct('${p.id}')">EDIT</button>
+              <a href="https://vanta-store-8kn.pages.dev/product.html?id=${encodeURIComponent(p.id)}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">VIEW ↗</a>
+              <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name)}')">DELETE</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function escapeHtml(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    // Editor Form Drag & Drop
     const imageInput = $("image-input");
     const dropzone = $("dropzone");
     const previewContainer = $("image-preview-container");
@@ -1035,19 +1549,16 @@
 
     imageInput.onchange = e => {
       const file = e.target.files[0];
-      if (!file) return;
-      handleSelectedImage(file);
+      if (file) handleSelectedImage(file);
     };
 
     dropzone.ondragover = e => {
       e.preventDefault();
       dropzone.classList.add("dragover");
     };
-
     dropzone.ondragleave = () => {
       dropzone.classList.remove("dragover");
     };
-
     dropzone.ondrop = e => {
       e.preventDefault();
       dropzone.classList.remove("dragover");
@@ -1081,76 +1592,19 @@
       previewContainer.style.display = "none";
     };
 
-    // Load Catalog and update metrics
-    async function loadProducts() {
-      const tbody = $("product-table-body");
-      try {
-        const data = await apiRequest("/api/admin/products");
-        activeProducts = data.products || [];
-
-        // Update metrics
-        $("metric-total").textContent = activeProducts.length;
-        $("metric-published").textContent = activeProducts.filter(p => p.published).length;
-        $("metric-featured").textContent = activeProducts.filter(p => p.featured).length;
-        $("metric-drafts").textContent = activeProducts.filter(p => !p.published).length;
-
-        if (activeProducts.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:36px;color:#888;">No products found in database. Create your first product above!</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = activeProducts.map(p => {
-          const imgHtml = p.image 
-            ? `<img src="${p.image}" class="table-thumb" alt="${p.name}">`
-            : `<div class="table-thumb-placeholder">NO IMG</div>`;
-
-          const pubBadge = p.published
-            ? `<span class="badge badge-success">PUBLISHED</span>`
-            : `<span class="badge badge-draft">DRAFT</span>`;
-
-          const featBadge = p.featured
-            ? ` <span class="badge badge-featured">FEATURED</span>`
-            : ``;
-
-          return `
-            <tr>
-              <td>${imgHtml}</td>
-              <td>
-                <span class="prod-name">${escapeHtml(p.name)}</span>
-                <span class="prod-id">${escapeHtml(p.id)}</span>
-              </td>
-              <td><span class="badge" style="background:#f0eee8;">${escapeHtml(p.category || 'T-SHIRT')}</span></td>
-              <td>${escapeHtml(p.colour || '—')}</td>
-              <td style="font-weight:700;font-family:'Space Mono',monospace;">$${Number(p.price).toFixed(2)}</td>
-              <td>${pubBadge}${featBadge}</td>
-              <td style="text-align:right;white-space:nowrap;">
-                <button class="btn btn-secondary btn-sm" onclick="editProduct('${p.id}')">EDIT</button>
-                <a href="https://vanta-store-8kn.pages.dev/product.html?id=${encodeURIComponent(p.id)}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">VIEW ↗</a>
-                <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}', '${escapeHtml(p.name)}')">DELETE</button>
-              </td>
-            </tr>
-          `;
-        }).join("");
-
-      } catch (err) {
-        showToast("Error loading catalog: " + err.message, true);
-      }
-    }
-
-    function escapeHtml(s) {
-      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-    }
-
-    // Edit Product
+    // Edit Product in Detailed Form
     window.editProduct = id => {
       const p = activeProducts.find(x => x.id === id);
       if (!p) return;
 
-      $("form-panel-title").textContent = "EDIT PRODUCT: " + p.name;
+      $("form-panel-title").textContent = "EDIT PRODUCT DETAILS: " + p.name;
       $("btn-cancel-edit").style.display = "inline-flex";
 
+      $("editing-target-banner").style.display = "block";
+      $("target-box-name").textContent = `${p.name} (ID: ${p.id})`;
+
       $("pid").value = p.id;
-      $("pid").readOnly = true; // prevent changing handle during edit
+      $("pid").readOnly = true;
       $("pname").value = p.name;
       $("category").value = p.category || "T-SHIRT";
       $("colour").value = p.colour || "";
@@ -1169,8 +1623,8 @@
 
       if (existingImageUrl) {
         previewImg.src = existingImageUrl;
-        previewFilename.textContent = `Existing R2 Image (${existingImageKey})`;
-        previewBadge.textContent = "STORED IN R2";
+        previewFilename.textContent = `Stored in R2 (${existingImageKey})`;
+        previewBadge.textContent = "CURRENT PHOTO";
         previewBadge.style.background = "#10b981";
         previewContainer.style.display = "flex";
       } else {
@@ -1185,6 +1639,7 @@
       $("pid").readOnly = false;
       $("form-panel-title").textContent = "ADD NEW PRODUCT";
       $("btn-cancel-edit").style.display = "none";
+      $("editing-target-banner").style.display = "none";
       selectedImageFile = null;
       existingImageKey = null;
       existingImageUrl = null;
@@ -1197,9 +1652,9 @@
       resetForm();
       $("product-editor-panel").scrollIntoView({ behavior: "smooth" });
     };
-    $("btn-refresh-table").onclick = loadProducts;
+    $("btn-refresh-table").onclick = loadProductsAndSettings;
 
-    // Save Product (handles R2 image upload + D1 record creation)
+    // Save Product
     $("product-form").onsubmit = async e => {
       e.preventDefault();
       const saveBtn = $("save-product-btn");
@@ -1209,9 +1664,8 @@
       try {
         let finalImageKey = existingImageKey;
 
-        // 1. If a new image was selected, upload it to R2
         if (selectedImageFile) {
-          saveBtn.textContent = "UPLOADING PHOTO TO R2 BUCKET...";
+          saveBtn.textContent = "UPLOADING PHOTO TO R2...";
           const formData = new FormData();
           formData.append("file", selectedImageFile);
 
@@ -1223,7 +1677,6 @@
           finalImageKey = uploadRes.key;
         }
 
-        // 2. Parse sizes
         const sizeLines = $("sizes").value.split("\n").map(l => l.trim()).filter(Boolean);
         const parsedSizes = sizeLines.map(line => {
           const parts = line.split("|");
@@ -1233,7 +1686,6 @@
           };
         });
 
-        // 3. Prepare D1 product payload
         const payload = {
           id: $("pid").value.trim(),
           name: $("pname").value.trim(),
@@ -1257,9 +1709,9 @@
           body: JSON.stringify(payload)
         });
 
-        showToast("✓ Product successfully saved and published!");
+        showToast("✓ Product successfully saved!");
         resetForm();
-        await loadProducts();
+        await loadProductsAndSettings();
 
       } catch (err) {
         showToast("Save failed: " + err.message, true);
@@ -1279,13 +1731,13 @@
           method: "DELETE"
         });
         showToast(`✓ Deleted "${name}"`);
-        await loadProducts();
+        await loadProductsAndSettings();
       } catch (err) {
         showToast("Delete failed: " + err.message, true);
       }
     };
 
-    // Auto-slugify handle from product name if empty
+    // Auto-slugify
     $("pname").oninput = e => {
       if (!$("pid").readOnly && !$("pid").value) {
         $("pid").value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

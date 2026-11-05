@@ -39,7 +39,7 @@ function warn(name, message) {
   console.log(`  ${YELLOW}⚠${RESET} ${name}: ${YELLOW}${message}${RESET}`);
 }
 
-console.log(`\n${BOLD}${CYAN}=== VANTA BUILD-TIME SEO & METADATA VERIFICATION ===${RESET}`);
+console.log(`\n${BOLD}${CYAN}=== XANTA BUILD-TIME SEO & METADATA VERIFICATION ===${RESET}`);
 console.log(`${GRAY}Target Base URL: ${BASE_URL}${RESET}\n`);
 
 // 1. Robots.txt Check
@@ -264,10 +264,10 @@ if (!fs.existsSync(errorPagePath)) {
     pass('404.html provides link to shop.html');
   }
 
-  if (!errorHtml.includes('VANTA')) {
-    fail('404.html branding', '404 page is missing VANTA brand wordmark');
+  if (!errorHtml.includes('XANTA')) {
+    fail('404.html branding', '404 page is missing XANTA brand wordmark');
   } else {
-    pass('404.html is branded with VANTA design system');
+    pass('404.html is branded with XANTA design system');
   }
 }
 

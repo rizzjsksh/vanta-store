@@ -1062,6 +1062,67 @@
       </div>
     </section>
 
+  
+    <!-- Yoycol Print-on-Demand Integration Panel -->
+    <section class="panel" id="yoycol-panel">
+      <div class="panel-header">
+        <div>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;color:var(--admin-muted);text-transform:uppercase;">Print-on-Demand Fulfillment</span>
+          <h2 style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+            YOYCOL INTEGRATION
+            <span id="yoycol-status-badge" class="badge badge-success">CHECKING...</span>
+          </h2>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button id="btn-check-yoycol" class="btn btn-secondary btn-sm" onclick="checkYoycolStatus(true)">
+            VERIFY CONNECTION
+          </button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;margin-bottom:28px;">
+        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">API Key Status</div>
+          <div id="yoycol-key-status" style="font-size:14px;font-weight:800;color:#10b981;">CONFIGURED &amp; ENCRYPTED</div>
+          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">Cloudflare Worker Secrets (HMAC-SHA256)</div>
+        </div>
+        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">Endpoint Base</div>
+          <div style="font-size:13px;font-weight:700;font-family:'Space Mono',monospace;">https://api.yoycol.com</div>
+          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">API v4 Open Catalog &amp; Orders</div>
+        </div>
+        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">Catalog Integration</div>
+          <div id="yoycol-items-count" style="font-size:14px;font-weight:800;">READY TO SYNC</div>
+          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">Direct browse &amp; quick import to XANTA</div>
+        </div>
+      </div>
+
+      <!-- Catalog Browser Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding-top:12px;border-top:1px solid var(--admin-border);">
+        <div>
+          <h3 style="font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin:0 0 4px;">BROWSE YOYCOL PRODUCT CATALOG</h3>
+          <p style="font-size:11px;color:var(--admin-muted);margin:0;">Search or load products from your Yoycol account to quickly import designs and details into XANTA.</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="yoycol-search-query" placeholder="Search product (e.g. Tee, Hoodie)" style="padding:8px 12px;font-size:12px;border:1px solid var(--admin-border);background:#faf9f6;width:220px;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="loadYoycolCatalog(1)">FETCH CATALOG</button>
+        </div>
+      </div>
+
+      <div id="yoycol-catalog-container" style="min-height:120px;display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px;">
+        <div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;border:1px dashed var(--admin-border);background:#faf9f6;">
+          Click <strong>FETCH CATALOG</strong> to load your available print-on-demand products from Yoycol.
+        </div>
+      </div>
+
+      <div id="yoycol-pagination" style="display:none;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--admin-border);">
+        <button id="yoycol-prev-btn" class="btn btn-secondary btn-sm" onclick="changeYoycolPage(-1)">PREVIOUS</button>
+        <span id="yoycol-page-indicator" style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--admin-muted);">PAGE 1</span>
+        <button id="yoycol-next-btn" class="btn btn-secondary btn-sm" onclick="changeYoycolPage(1)">NEXT</button>
+      </div>
+    </section>
+
   </main>
 
   <!-- Toast Banner -->
@@ -1151,6 +1212,7 @@
       $("admin-main").style.display = "block";
       $("btn-logout").style.display = "inline";
       loadProductsAndSettings();
+      checkYoycolStatus();
     }
 
     // Setup handler
@@ -1745,6 +1807,124 @@
     };
 
     init();
+  
+    let yoycolCurrentPage = 1;
+    let yoycolTotalPages = 1;
+
+    async function checkYoycolStatus(manual = false) {
+      const badge = $("yoycol-status-badge");
+      const keyStatus = $("yoycol-key-status");
+      if (!badge || !keyStatus) return;
+      try {
+        const res = await apiRequest("/api/admin/yoycol/status");
+        if (res.configured) {
+          badge.textContent = "CONNECTED";
+          badge.className = "badge badge-success";
+          keyStatus.textContent = "CONFIGURED & ENCRYPTED";
+          keyStatus.style.color = "#10b981";
+          if (manual) showToast("Yoycol API credentials verified successfully.");
+        } else {
+          badge.textContent = "KEYS NOT CONFIGURED";
+          badge.className = "badge badge-draft";
+          keyStatus.textContent = "MISSING KEYS";
+          keyStatus.style.color = "#ef4444";
+          if (manual) showToast("Yoycol keys are not yet configured in Worker secrets.", true);
+        }
+      } catch (err) {
+        badge.textContent = "ERROR";
+        badge.className = "badge badge-draft";
+        keyStatus.textContent = "OFFLINE";
+        keyStatus.style.color = "#ef4444";
+        if (manual) showToast("Failed to check Yoycol status: " + err.message, true);
+      }
+    }
+
+    async function loadYoycolCatalog(page = 1) {
+      const container = $("yoycol-catalog-container");
+      const query = ($("yoycol-search-query").value || "").trim();
+      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;">Connecting to Yoycol v4 catalog...</div>`;
+
+      try {
+        let path = `/api/admin/yoycol/catalog?page=${page}&size=8`;
+        if (query) path += `&query=${encodeURIComponent(query)}`;
+        const res = await apiRequest(path);
+        const data = res.data || res;
+        const records = (data.records || (res.records) || []);
+        yoycolCurrentPage = page;
+        yoycolTotalPages = data.pages || Math.ceil((data.total || 0) / 8) || 1;
+
+        $("yoycol-items-count").textContent = `${data.total || records.length} PRODUCTS`;
+
+        if (!records.length) {
+          container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;">No products found in Yoycol catalog.</div>`;
+          $("yoycol-pagination").style.display = "none";
+          return;
+        }
+
+        container.innerHTML = records.map(p => {
+          const img = p.spuDisplayImg || p.image || '';
+          const name = p.name || 'Unnamed Product';
+          const spu = p.spuCode || p.id || '';
+          const variants = p.variantCount ? `${p.variantCount} variants` : '';
+          const encodedData = encodeURIComponent(JSON.stringify(p));
+          return `
+            <div style="background:#ffffff;border:1px solid var(--admin-border);padding:14px;display:flex;flex-direction:column;justify-content:space-between;">
+              <div>
+                <div style="height:140px;background:#f3f3f3;margin-bottom:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                  ${img ? `<img src="${img}" alt="${name}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:10px;color:#999;">NO IMAGE</span>`}
+                </div>
+                <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:4px;">SPU: ${spu} ${variants ? '• ' + variants : ''}</div>
+                <div style="font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;color:var(--admin-text);margin-bottom:12px;line-height:1.3;max-height:32px;overflow:hidden;text-overflow:ellipsis;">${name}</div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" style="width:100%;" onclick="importYoycolToEditor('${encodedData}')">
+                + LOAD INTO EDITOR
+              </button>
+            </div>
+          `;
+        }).join("");
+
+        $("yoycol-pagination").style.display = "flex";
+        $("yoycol-page-indicator").textContent = `PAGE ${yoycolCurrentPage} OF ${yoycolTotalPages}`;
+        $("yoycol-prev-btn").disabled = yoycolCurrentPage <= 1;
+        $("yoycol-next-btn").disabled = yoycolCurrentPage >= yoycolTotalPages;
+
+      } catch (err) {
+        container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:#c5221f;font-size:12px;">Failed to fetch Yoycol catalog: ${err.message}</div>`;
+        $("yoycol-pagination").style.display = "none";
+      }
+    }
+
+    function changeYoycolPage(delta) {
+      const target = yoycolCurrentPage + delta;
+      if (target >= 1 && target <= yoycolTotalPages) {
+        loadYoycolCatalog(target);
+      }
+    }
+
+    function importYoycolToEditor(encodedJson) {
+      try {
+        const p = JSON.parse(decodeURIComponent(encodedJson));
+        const slug = (p.spuCode ? 'yoycol-' + p.spuCode : 'yoycol-' + (p.id || Date.now())).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+        $("pid").value = slug;
+        $("pname").value = "XANTA " + (p.name || "").replace(/^All-Over Print /i, "");
+        if (p.spuDisplayImg) {
+          existingImageUrl = p.spuDisplayImg;
+          existingImageKey = null;
+          selectedImageFile = null;
+          $("preview-img").src = p.spuDisplayImg;
+          $("preview-filename").textContent = "Yoycol Catalog Image (" + (p.spuCode || p.id) + ")";
+          $("preview-badge").textContent = "YOYCOL ASSET";
+          $("preview-badge").style.background = "#0f0f0f";
+          $("image-preview-container").style.display = "flex";
+          $("dropzone").style.display = "none";
+        }
+        $("product-editor-panel").scrollIntoView({ behavior: 'smooth' });
+        showToast("Loaded " + (p.name || 'product') + " into editor. Set pricing and save!");
+      } catch (err) {
+        showToast("Error importing product: " + err.message, true);
+      }
+    }
+
   </script>
 </body>
 </html>

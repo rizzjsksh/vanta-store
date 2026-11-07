@@ -3,3 +3,4 @@ Allow: /
 Disallow: /admin.html
 
 Sitemap: https://xanta.pages.dev/sitemap.xml
+Sitemap: https://vanta-store-8kn.pages.dev/sitemap-live.xml

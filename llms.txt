@@ -1,0 +1,52 @@
+# XANTA
+
+> Minimalist luxury streetwear and architectural heavyweight garments. Engineered in 280 GSM combed cotton with relaxed, structured silhouettes. Designed for the modern uniform and serving customers across the United States, the United Kingdom, and Canada.
+
+## Brand Identity & Overview
+XANTA is an independent monochrome streetwear label founded on principles of structural minimalism, heavyweight textile engineering, and enduring design. Every piece is crafted in limited, focused production runs using premium materials built for longevity, drape, and daily wear.
+
+- **Primary Product Focus**: 280 GSM heavyweight boxy tees, architectural minimalist cut-and-sew apparel, and monochrome luxury essentials.
+- **Color Palette**: Strict monochrome — deep black, optic white, and concrete grey.
+- **Target Markets**: United States, United Kingdom, and Canada with tracked, carbon-conscious fulfillment.
+- **Aesthetic**: Brutalist typography, relaxed dropped shoulders, reinforced collar ribs, and zero loud logos.
+
+## Canonical Storefront Pages
+- [Homepage / New Arrivals](https://xanta.pages.dev/): Current collection, brand statement, and flagship silhouettes. (Markdown mirror: https://xanta.pages.dev/index.md)
+- [Complete Catalogue](https://xanta.pages.dev/shop.html): Full line of heavyweight t-shirts and monochrome apparel. (Markdown mirror: https://xanta.pages.dev/shop.md)
+- [About XANTA](https://xanta.pages.dev/about.html): Brand ethos, 280 GSM fabric specifications, and design philosophy. (Markdown mirror: https://xanta.pages.dev/about.md)
+- [Client Service & Inquiries](https://xanta.pages.dev/contact.html): Client care, sizing consultation, order support, and press contacts. (Markdown mirror: https://xanta.pages.dev/contact.md)
+
+## Core Collection & Product Specifications
+
+### 1. XANTA Heavyweight Boxy Tee — Optic White
+- **SKU / ID**: tee-white
+- **Product URL**: https://xanta.pages.dev/product.html?id=tee-white
+- **Markdown Mirror**: https://xanta.pages.dev/product-tee-white.md
+- **Price**: $48.00 USD / £40.00 GBP / $65.00 CAD
+- **Weight & Fabric**: 280 GSM (8.25 oz/yd²) 100% combed ring-spun organic cotton. Dense, pre-shrunk tight-knit jersey.
+- **Fit & Construction**: Relaxed boxy cut with dropped shoulders, high 1-inch reinforced ribbed crewneck collar, and twin-needle hems designed to resist warping across washes.
+- **Sizing**: S, M, L, XL, XXL (True to relaxed boxy fit; size down for a standard tailored fit).
+
+### 2. XANTA Heavyweight Boxy Tee — Pitch Black
+- **SKU / ID**: tee-black
+- **Product URL**: https://xanta.pages.dev/product.html?id=tee-black
+- **Markdown Mirror**: https://xanta.pages.dev/product-tee-black.md
+- **Price**: $48.00 USD / £40.00 GBP / $65.00 CAD
+- **Weight & Fabric**: 280 GSM (8.25 oz/yd²) 100% combed ring-spun organic cotton with reactive vat dye for deep, wash-resistant black.
+- **Fit & Construction**: Architectural drape, zero cling, seamless body balance, and reinforced double-stitched seams.
+- **Sizing**: S, M, L, XL, XXL.
+
+## Shipping & Delivery Policies
+- **United States**: Tracked standard shipping (3–5 business days). Expedited delivery available.
+- **United Kingdom**: Tracked Royal Mail / courier shipping (4–7 business days). Duties and taxes included.
+- **Canada**: Tracked cross-border delivery (5–8 business days).
+- **Packaging**: Recycled matte black mailers with bio-based protective garment bags.
+
+## Returns & Exchanges
+- 30-day window from delivery for unwashed, unworn items with original tags and packaging intact.
+- Direct exchanges for sizing adjustments are complimentary.
+
+## Contact & Brand Inquiries
+- **General & Orders**: care@xanta.store / concierge@xanta.pages.dev
+- **Press & Partnerships**: press@xanta.store
+- **Operating Hours**: Monday – Friday, 09:00 – 18:00 EST

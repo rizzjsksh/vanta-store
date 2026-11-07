@@ -38,27 +38,89 @@
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "XANTA 280 GSM Heavyweight Tee",
+    "image": [
+      "https://xanta.pages.dev/og-image.png"
+    ],
     "description": "280 GSM luxury heavyweight cotton t-shirt with dropped shoulder and architectural box cut.",
+    "sku": "tee-white",
+    "mpn": "XANTA-TEE-001",
+    "category": "Apparel & Accessories > Clothing > Shirts & Tops",
+    "material": "280 GSM Combed Cotton",
     "brand": {
       "@type": "Brand",
-      "name": "XANTA"
+      "name": "XANTA",
+      "logo": "https://xanta.pages.dev/android-chrome-512x512.png"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "XANTA",
+      "url": "https://xanta.pages.dev/"
     },
     "offers": {
       "@type": "Offer",
+      "url": "https://xanta.pages.dev/product.html",
       "priceCurrency": "USD",
       "price": "39.99",
+      "priceValidUntil": "2027-12-31",
       "itemCondition": "https://schema.org/NewCondition",
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "XANTA"
+        "name": "XANTA",
+        "url": "https://xanta.pages.dev/",
+        "logo": "https://xanta.pages.dev/android-chrome-512x512.png"
       },
       "eligibleRegion": [
         { "@type": "Country", "name": "United States", "identifier": "US" },
         { "@type": "Country", "name": "United Kingdom", "identifier": "GB" },
         { "@type": "Country", "name": "Canada", "identifier": "CA" }
-      ]
+      ],
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0.00",
+          "currency": "USD"
+        },
+        "shippingDestination": [
+          { "@type": "DefinedRegion", "addressCountry": "US" },
+          { "@type": "DefinedRegion", "addressCountry": "GB" },
+          { "@type": "DefinedRegion", "addressCountry": "CA" }
+        ],
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "d"
+          }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": ["US", "GB", "CA"],
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      }
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "XANTA",
+    "legalName": "XANTA Streetwear",
+    "url": "https://xanta.pages.dev/",
+    "logo": "https://xanta.pages.dev/android-chrome-512x512.png",
+    "areaServed": [
+      { "@type": "Country", "name": "United States", "identifier": "US" },
+      { "@type": "Country", "name": "United Kingdom", "identifier": "GB" },
+      { "@type": "Country", "name": "Canada", "identifier": "CA" }
+    ]
   }
   </script>
 

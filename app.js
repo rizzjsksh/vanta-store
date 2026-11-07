@@ -1,5 +1,18 @@
 
 /* --------------------------------------------------------------------------
+   HTML Escaping Helper
+   -------------------------------------------------------------------------- */
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/* --------------------------------------------------------------------------
    Dynamic Schema.org Product JSON-LD Injection
    -------------------------------------------------------------------------- */
 function injectProductSchema(product) {
@@ -14,6 +27,8 @@ function injectProductSchema(product) {
     ? (product.image.startsWith("http") ? product.image : XANTA_API + product.image)
     : "https://xanta.pages.dev/og-image.png";
 
+  const productUrl = `https://xanta.pages.dev/product.html?id=${encodeURIComponent(product.id || 'tee-white')}`;
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -21,13 +36,24 @@ function injectProductSchema(product) {
     "image": [imgUrl],
     "description": product.description || "XANTA 280 GSM luxury heavyweight cotton streetwear t-shirt in architectural box-cut silhouette.",
     "sku": product.id,
+    "mpn": `XANTA-${String(product.id || '').toUpperCase()}`,
+    "category": "Apparel & Accessories > Clothing > Shirts & Tops",
+    "material": "280 GSM Combed Cotton",
+    "color": product.colour || "Monochrome",
     "brand": {
       "@type": "Brand",
-      "name": "XANTA"
+      "name": "XANTA",
+      "logo": "https://xanta.pages.dev/android-chrome-512x512.png"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "XANTA",
+      "url": "https://xanta.pages.dev/",
+      "logo": "https://xanta.pages.dev/android-chrome-512x512.png"
     },
     "offers": {
       "@type": "Offer",
-      "url": window.location.href,
+      "url": productUrl,
       "priceCurrency": "USD",
       "price": (Number(product.price) || 39.99).toFixed(2),
       "priceValidUntil": "2027-12-31",
@@ -35,7 +61,9 @@ function injectProductSchema(product) {
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "XANTA"
+        "name": "XANTA",
+        "url": "https://xanta.pages.dev/",
+        "logo": "https://xanta.pages.dev/android-chrome-512x512.png"
       },
       "eligibleRegion": [
         { "@type": "Country", "name": "United States", "identifier": "US" },
@@ -44,6 +72,11 @@ function injectProductSchema(product) {
       ],
       "shippingDetails": {
         "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0.00",
+          "currency": "USD"
+        },
         "shippingDestination": [
           { "@type": "DefinedRegion", "addressCountry": "US" },
           { "@type": "DefinedRegion", "addressCountry": "GB" },
@@ -58,6 +91,14 @@ function injectProductSchema(product) {
             "unitCode": "d"
           }
         }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": ["US", "GB", "CA"],
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
       }
     }
   };
@@ -250,7 +291,10 @@ function showCartToast(item) {
 function productCard(p) {
   const isDark = (p.colour || "").toLowerCase() === "black";
   const imgHtml = p.image 
-    ? `<img src="${p.image.startsWith('http') ? p.image : XANTA_API + p.image}" alt="${p.name}">`
+    ? (() => {
+        const altText = `${p.name} — ${p.colour ? p.colour + ' ' : ''}280 GSM Heavyweight Streetwear Boxy Tee | XANTA`;
+        return `<img src="${p.image.startsWith('http') ? p.image : XANTA_API + p.image}" alt="${escapeHtml(altText)}" title="${escapeHtml(p.name)} — XANTA Essentials 001" loading="lazy" decoding="async" width="600" height="720">`;
+      })()
     : `
       <div class="mock-garment ${isDark ? 'dark' : ''}">
         <svg class="mock-garment-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
@@ -323,7 +367,10 @@ function renderProductDetail() {
   if (visualEl) {
     visualEl.className = `product-visual detail-visual ${isDark ? "dark" : ""}`;
     visualEl.innerHTML = product.image
-      ? `<img src="${product.image.startsWith('http') ? product.image : XANTA_API + product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover">`
+      ? (() => {
+        const detailAlt = `${product.name} — ${product.colour ? product.colour + ' ' : ''}Minimalist Luxury 280 GSM Heavyweight Cotton Box-Cut Streetwear T-Shirt | XANTA`;
+        return `<img src="${product.image.startsWith('http') ? product.image : XANTA_API + product.image}" alt="${escapeHtml(detailAlt)}" title="${escapeHtml(product.name)} — XANTA Essentials 001" loading="eager" fetchpriority="high" decoding="async" width="800" height="960" style="width:100%;height:100%;object-fit:cover">`;
+      })()
       : `
         <span class="product-tag">XANTA / ESSENTIALS 001</span>
         <div class="mock-garment ${isDark ? 'dark' : ''}">
@@ -458,7 +505,7 @@ function renderCartPage() {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     const imgHtml = item.image
-      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" alt="${item.name}" class="cart-item-thumb">`
+      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" alt="${escapeHtml(item.name)} in ${escapeHtml(item.colour || '')} (${escapeHtml(item.size)}) — XANTA Shopping Bag" title="${escapeHtml(item.name)}" class="cart-item-thumb" loading="lazy" decoding="async" width="80" height="96">`
       : `<div class="cart-item-thumb">XANTA</div>`;
 
     return `
@@ -511,7 +558,7 @@ function renderCheckoutPage() {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
     const imgHtml = item.image
-      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" class="summary-item-thumb">`
+      ? `<img src="${item.image.startsWith('http') ? item.image : XANTA_API + item.image}" alt="${escapeHtml(item.name)} in ${escapeHtml(item.colour || '')} (${escapeHtml(item.size)}) — XANTA Order Summary" title="${escapeHtml(item.name)}" class="summary-item-thumb" loading="lazy" decoding="async" width="80" height="96">`
       : `<div class="summary-item-thumb">XANTA</div>`;
 
     return `
@@ -649,7 +696,7 @@ function renderHeroShowcase(settings) {
   if (heroUrl) {
     frame.classList.add("has-image");
     frame.innerHTML = `
-      <img src="${heroUrl}" alt="${heroTitle}" class="hero-showcase-img">
+      <img src="${heroUrl}" alt="${escapeHtml(heroTitle)} — XANTA Minimalist Luxury Streetwear &amp; 280 GSM Heavyweight Essentials Showcase" title="${escapeHtml(heroTitle)} — XANTA Showcase" class="hero-showcase-img" loading="eager" fetchpriority="high" decoding="async" width="1200" height="800">
       <div class="hero-garment-brand" id="hero-showcase-badge">${heroTitle}</div>
     `;
   }

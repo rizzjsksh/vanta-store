@@ -1130,6 +1130,14 @@
       </div>
     </section>
 
+    <section class="panel" id="messages-panel">
+      <div class="panel-header">
+        <div><h2>Customer Messages</h2><p>Recent inquiries submitted through the contact page.</p></div>
+        <button class="btn btn-secondary btn-sm" type="button" onclick="loadContactMessages()">Refresh</button>
+      </div>
+      <div id="contact-messages-list" class="contact-messages-list"><p>Sign in to view customer messages.</p></div>
+    </section>
+
   </main>
 
   <!-- Toast Banner -->
@@ -1220,6 +1228,22 @@
       $("btn-logout").style.display = "inline";
       loadProductsAndSettings();
       checkYoycolStatus();
+      loadContactMessages();
+    }
+
+    async function loadContactMessages() {
+      const host = $("contact-messages-list");
+      if (!host || !currentToken) return;
+      host.innerHTML = "<p>Loading messages…</p>";
+      try {
+        const data = await apiRequest("/api/admin/messages");
+        const messages = Array.isArray(data.messages) ? data.messages : [];
+        host.innerHTML = messages.length ? messages.map(item => `<article class="contact-message-card"><div class="contact-message-heading"><strong>${escapeAdminHtml(item.subject || "General inquiry")}</strong><time>${escapeAdminHtml(item.created_at || "")}</time></div><p><strong>${escapeAdminHtml(item.name || "")}</strong> · <a href="mailto:${encodeURIComponent(item.email || "")}">${escapeAdminHtml(item.email || "")}</a></p><p>${escapeAdminHtml(item.message || "")}</p></article>`).join("") : "<p>No customer messages yet.</p>";
+      } catch (error) { host.textContent = "Unable to load messages: " + error.message; }
+    }
+
+    function escapeAdminHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[char]));
     }
 
     // Setup handler

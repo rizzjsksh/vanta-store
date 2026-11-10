@@ -1996,3 +1996,79 @@ ul, ol {
 .detail-thumb-btn.active .detail-thumb-caption {
   color: #f5f5f5;
 }
+
+/* --------------------------------------------------------------------------
+   Hero Showcase Placeholder (Empty state when no hero image is assigned)
+   -------------------------------------------------------------------------- */
+.hero-showcase-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: radial-gradient(circle at center, #1b1b22 0%, #0d0d10 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  text-align: center;
+  min-height: 280px;
+}
+
+.hero-showcase-placeholder-mark {
+  font-family: var(--font-display);
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.hero-showcase-placeholder-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Catalog Empty Notice (Shown when live product catalog has no items yet)
+   -------------------------------------------------------------------------- */
+.catalog-empty-notice {
+  grid-column: 1 / -1;
+  padding: 72px 24px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  margin: 20px 0;
+}
+
+.catalog-empty-notice .empty-mark {
+  font-family: var(--font-display);
+  font-size: 44px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.catalog-empty-notice .empty-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.catalog-empty-notice .empty-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.6;
+}

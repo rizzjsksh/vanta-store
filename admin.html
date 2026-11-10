@@ -725,6 +725,16 @@
       margin-bottom: 20px;
       display: none;
     }
+
+    .colourway-card { background:#faf9f6; border:1px solid var(--admin-border); border-radius:8px; padding:16px; margin:8px 0; }
+    .colourway-card-header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .colourway-images-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; margin-top:12px; }
+    .colourway-image-slot { position:relative; background:#fff; border:1px solid var(--admin-border); border-radius:6px; padding:8px; text-align:center; }
+    .colourway-image-slot img { width:100%; height:112px; object-fit:contain; background:#171719; border-radius:4px; }
+    .colourway-image-slot input[type=text] { width:100%; box-sizing:border-box; font-size:13px; padding:8px; margin-top:6px; }
+    .btn-remove-slot { position:absolute; top:5px; right:5px; border:0; border-radius:50%; width:28px; height:28px; color:#fff; background:#b42318; cursor:pointer; font-size:18px; }
+    @media(max-width:700px) { .colourway-images-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
   </style>
 </head>
 <body>
@@ -915,7 +925,7 @@
         </button>
       </div>
 
-      <div id="editing-target-banner" style="display:none;background:#f0eee8;border-left:4px solid #0f0f0f;padding:10px 14px;margin-bottom:20px;font-size:12px;font-weight:700;">
+      <div id="editing-target-banner" style="display:none;background:#f0eee8;border-left:4px solid #0f0f0f;padding:10px 14px;margin-bottom:20px;font-size:14px;font-weight:700;">
         TARGET DISPLAY BOX: <span id="target-box-name" style="color:#0f0f0f">None</span>
       </div>
 
@@ -942,11 +952,8 @@
                 <select id="category">
                   <option value="T-SHIRT">T-SHIRT</option>
                   <option value="HOODIE">HOODIE</option>
-                  <option value="SWEATPANTS">SWEATPANTS</option>
-                  <option value="JACKET">JACKET</option>
-                  <option value="HEADWEAR">HEADWEAR</option>
-                  <option value="ACCESSORY">ACCESSORY</option>
-                  <option value="FOOTWEAR">FOOTWEAR</option>
+                  <option value="PANTS">PANTS</option>
+                  <option value="DENIM">DENIM</option>
                 </select>
               </div>
               <div class="field-group">
@@ -999,36 +1006,37 @@
             </div>
           </div>
 
-          <!-- Column 2: Photo Dropzone -->
+          <!-- Column 2: Product Images & Colorways -->
           <div>
             <div class="field-group">
-              <label id="upload-box-label">PRODUCT PHOTO (CLOUDFLARE R2)</label>
-              
-              <div class="image-dropzone" id="dropzone">
-                <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp, image/gif">
-                <div style="font-size:32px;margin-bottom:8px">📷</div>
-                <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">DRAG &amp; DROP PRODUCT PHOTO</div>
-                <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">or click to browse from device (PNG, JPG, WEBP up to 15MB)</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+                <div>
+                  <label id="upload-box-label" style="font-size:14px;font-weight:800;letter-spacing:0.04em;margin:0;">Product Images &amp; Colorways</label>
+                  <div class="help-text" style="font-size:12px;line-height:1.4;margin-top:3px;">Upload front, back and detail views, plus multiple colors in one product listing.</div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-add-colourway" style="padding:8px 14px;font-size:11px;">+ ADD COLOR</button>
               </div>
-
-              <div id="image-preview-container" class="image-preview-container" style="display:none;">
-                <img id="preview-img" class="image-preview-thumb" alt="Product preview">
-                <div class="image-preview-meta">
-                  <div id="preview-badge" style="display:inline-block;padding:2px 6px;font-size:9px;font-weight:700;letter-spacing:0.1em;background:#10b981;color:#fff;margin-bottom:6px;">ATTACHED</div>
-                  <div id="preview-filename" style="font-weight:700;color:var(--admin-text);word-break:break-all;margin-bottom:8px;">photo.jpg</div>
-                  <button type="button" id="btn-remove-preview" class="btn btn-sm btn-danger">Remove Photo</button>
+              <div id="colourways-editor-container" style="display:flex;flex-direction:column;gap:14px;margin-bottom:18px;"></div>
+              <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:16px;border-radius:6px;">
+                <div style="font-size:14px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">Primary / Default Storefront Image</div>
+                <div id="image-preview-container" class="image-preview-container" style="display:none;margin-bottom:10px;">
+                  <img id="preview-img" class="image-preview-thumb" alt="Product preview">
+                  <div class="image-preview-meta">
+                    <div id="preview-badge" style="display:inline-block;padding:2px 6px;font-size:10px;font-weight:700;letter-spacing:0.1em;background:#10b981;color:#fff;margin-bottom:4px;">ATTACHED TO R2</div>
+                    <div id="preview-filename" style="font-weight:700;color:var(--admin-text);word-break:break-all;margin-bottom:8px;font-size:12px;">photo.jpg</div>
+                    <button type="button" id="btn-remove-preview" class="btn btn-sm btn-danger" style="font-size:11px;padding:6px 12px;">Remove Photo</button>
+                  </div>
+                </div>
+                <div class="image-dropzone" id="dropzone" style="padding:18px;">
+                  <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp, image/gif">
+                  <div style="font-size:26px;margin-bottom:4px">📷</div>
+                  <div style="font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">UPLOAD MAIN PHOTO</div>
+                  <div style="font-size:13px;color:var(--admin-muted);margin-top:2px;">PNG, JPG, WEBP up to 15MB</div>
                 </div>
               </div>
-
-              <div class="help-text">
-                Photos are uploaded straight to your Cloudflare R2 bucket (<code>vanta-product-images</code>) and delivered globally.
-              </div>
             </div>
-
-            <div style="margin-top: 32px;">
-              <button type="submit" id="save-product-btn" class="btn btn-primary" style="width: 100%;">
-                SAVE PRODUCT TO CLOUDFLARE
-              </button>
+            <div style="margin-top:24px;">
+              <button type="submit" id="save-product-btn" class="btn btn-primary" style="width:100%;padding:14px;font-size:13px;font-weight:800;letter-spacing:0.12em;">SAVE PRODUCT TO CLOUDFLARE</button>
             </div>
           </div>
 
@@ -1070,66 +1078,6 @@
     </section>
 
   
-    <!-- Yoycol Print-on-Demand Integration Panel -->
-    <section class="panel" id="yoycol-panel">
-      <div class="panel-header">
-        <div>
-          <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;color:var(--admin-muted);text-transform:uppercase;">Print-on-Demand Fulfillment</span>
-          <h2 style="display:flex;align-items:center;gap:10px;margin-top:4px;">
-            YOYCOL INTEGRATION
-            <span id="yoycol-status-badge" class="badge badge-success">CHECKING...</span>
-          </h2>
-        </div>
-        <div style="display:flex;gap:10px;">
-          <button id="btn-check-yoycol" class="btn btn-secondary btn-sm" onclick="checkYoycolStatus(true)">
-            VERIFY CONNECTION
-          </button>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:16px;margin-bottom:28px;">
-        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">API Key Status</div>
-          <div id="yoycol-key-status" style="font-size:14px;font-weight:800;color:#10b981;">CONFIGURED &amp; ENCRYPTED</div>
-          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">Cloudflare Worker Secrets (HMAC-SHA256)</div>
-        </div>
-        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">Endpoint Base</div>
-          <div style="font-size:13px;font-weight:700;font-family:'Space Mono',monospace;">https://api.yoycol.com</div>
-          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">API v4 Open Catalog &amp; Orders</div>
-        </div>
-        <div style="background:#faf9f6;border:1px solid var(--admin-border);padding:18px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:6px;">Catalog Integration</div>
-          <div id="yoycol-items-count" style="font-size:14px;font-weight:800;">READY TO SYNC</div>
-          <div style="font-size:11px;color:var(--admin-muted);margin-top:4px;">Direct browse &amp; quick import to XANTA</div>
-        </div>
-      </div>
-
-      <!-- Catalog Browser Header -->
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding-top:12px;border-top:1px solid var(--admin-border);">
-        <div>
-          <h3 style="font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin:0 0 4px;">BROWSE YOYCOL PRODUCT CATALOG</h3>
-          <p style="font-size:11px;color:var(--admin-muted);margin:0;">Search or load products from your Yoycol account to quickly import designs and details into XANTA.</p>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <input type="text" id="yoycol-search-query" placeholder="Search product (e.g. Tee, Hoodie)" style="padding:8px 12px;font-size:12px;border:1px solid var(--admin-border);background:#faf9f6;width:220px;">
-          <button type="button" class="btn btn-primary btn-sm" onclick="loadYoycolCatalog(1)">FETCH CATALOG</button>
-        </div>
-      </div>
-
-      <div id="yoycol-catalog-container" style="min-height:120px;display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px;">
-        <div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;border:1px dashed var(--admin-border);background:#faf9f6;">
-          Click <strong>FETCH CATALOG</strong> to load your available print-on-demand products from Yoycol.
-        </div>
-      </div>
-
-      <div id="yoycol-pagination" style="display:none;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--admin-border);">
-        <button id="yoycol-prev-btn" class="btn btn-secondary btn-sm" onclick="changeYoycolPage(-1)">PREVIOUS</button>
-        <span id="yoycol-page-indicator" style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--admin-muted);">PAGE 1</span>
-        <button id="yoycol-next-btn" class="btn btn-secondary btn-sm" onclick="changeYoycolPage(1)">NEXT</button>
-      </div>
-    </section>
-
     <section class="panel" id="messages-panel">
       <div class="panel-header">
         <div><h2>Customer Messages</h2><p>Recent inquiries submitted through the contact page.</p></div>
@@ -1153,6 +1101,7 @@
     let selectedImageFile = null;
     let existingImageKey = null;
     let existingImageUrl = null;
+    let colourwayDrafts = [];
     let directUploadTarget = null; // { type: 'hero' } or { type: 'product', id: '...', name: '...' }
 
     const $ = id => document.getElementById(id);
@@ -1227,7 +1176,6 @@
       $("admin-main").style.display = "block";
       $("btn-logout").style.display = "inline";
       loadProductsAndSettings();
-      checkYoycolStatus();
       loadContactMessages();
     }
 
@@ -1632,6 +1580,71 @@
       return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
 
+    // Multi-image gallery and colorway editor, persisted with each product record.
+    function escGallery(value) {
+      return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function renderColourwayEditor() {
+      const host = $("colourways-editor-container");
+      if (!host) return;
+      host.innerHTML = colourwayDrafts.map((cw, ci) => `
+        <div class="colourway-card" data-cw="${ci}">
+          <div class="colourway-card-header">
+            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:180px">
+              <input type="color" class="cw-hex" value="${escGallery(cw.hex || '#222222')}" aria-label="Color swatch" style="width:42px;height:40px;padding:2px;border:1px solid var(--admin-border);background:#fff">
+              <input type="text" class="cw-name" value="${escGallery(cw.colour || '')}" placeholder="Color name (e.g. Ink Black)" style="flex:1;min-width:140px;padding:10px;border:1px solid var(--admin-border);font-size:14px">
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer;padding:9px 12px;font-size:11px">+ Add photos<input class="cw-files" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden></label>
+              <button type="button" class="btn btn-danger btn-sm cw-remove" style="font-size:11px;padding:8px 12px">Remove color</button>
+            </div>
+          </div>
+          <p class="help-text" style="margin:4px 0 0">Upload several views, then label each one Front, Back or Detail.</p>
+          <div class="colourway-images-grid">${(cw.images || []).map((img, ii) => `
+            <div class="colourway-image-slot" data-img="${ii}">
+              <button type="button" class="btn-remove-slot" aria-label="Remove image">×</button>
+              <img src="${escGallery(img.preview || img.url || '')}" alt="${escGallery(img.label || 'Product image')}">
+              <input type="text" class="cw-image-label" value="${escGallery(img.label || '')}" placeholder="Front / Back">
+              <span class="help-text">${img.file ? 'Ready to upload' : (img.key ? 'Saved image' : 'New image')}</span>
+            </div>`).join('')}
+          </div>
+        </div>`).join('');
+
+      host.querySelectorAll('.colourway-card').forEach(card => {
+        const ci = Number(card.dataset.cw);
+        card.querySelector('.cw-name').oninput = e => { colourwayDrafts[ci].colour = e.target.value; };
+        card.querySelector('.cw-hex').oninput = e => { colourwayDrafts[ci].hex = e.target.value; };
+        card.querySelector('.cw-remove').onclick = () => { colourwayDrafts.splice(ci, 1); renderColourwayEditor(); };
+        card.querySelector('.cw-files').onchange = e => {
+          for (const file of [...(e.target.files || [])]) {
+            if (!file.type.startsWith('image/') || file.size > 15 * 1024 * 1024) { showToast('Choose image files under 15MB each.', true); continue; }
+            const images = colourwayDrafts[ci].images;
+            const label = images.length === 0 ? 'Front' : images.length === 1 ? 'Back' : `View ${images.length + 1}`;
+            images.push({ file, preview: URL.createObjectURL(file), label, key: '', url: '' });
+          }
+          renderColourwayEditor();
+        };
+        card.querySelectorAll('.colourway-image-slot').forEach(slot => {
+          const ii = Number(slot.dataset.img);
+          slot.querySelector('.cw-image-label').oninput = e => { colourwayDrafts[ci].images[ii].label = e.target.value; };
+          slot.querySelector('.btn-remove-slot').onclick = () => { colourwayDrafts[ci].images.splice(ii, 1); renderColourwayEditor(); };
+        });
+      });
+    }
+
+    function addColourway(seed = {}) {
+      colourwayDrafts.push({ colour: seed.colour || "", hex: seed.hex || "#222222", images: (seed.images || []).map((im, i) => {
+        const x = typeof im === "string" ? { key: im } : im;
+        const key = x.key || x.image_key || "";
+        return { key, url: x.url || (key ? `${API_BASE}/images/${encodeURIComponent(key)}` : ""), label: x.label || (i === 0 ? "Front" : i === 1 ? "Back" : `View ${i+1}`), file: null, preview: "" };
+      }) });
+      renderColourwayEditor();
+    }
+
+    $("btn-add-colourway").onclick = () => addColourway();
+    renderColourwayEditor();
+
     // Editor Form Drag & Drop
     const imageInput = $("image-input");
     const dropzone = $("dropzone");
@@ -1713,6 +1726,24 @@
       selectedImageFile = null;
       existingImageKey = p.image_key || null;
       existingImageUrl = p.image || null;
+      colourwayDrafts = Array.isArray(p.colourways) ? p.colourways.map(cw => ({
+        colour: cw.colour || "",
+        hex: cw.hex || "#222222",
+        images: (cw.images || []).map((im, i) => {
+          const x = typeof im === "string" ? { key: im } : im;
+          const key = x.key || x.image_key || "";
+          return { key, url: x.url || (key ? `${API_BASE}/images/${encodeURIComponent(key)}` : ""), label: x.label || (i === 0 ? "Front" : i === 1 ? "Back" : `View ${i+1}`), file: null, preview: "" };
+        })
+      })) : [];
+      if (!colourwayDrafts.length && Array.isArray(p.gallery) && p.gallery.length) {
+        colourwayDrafts = [{ colour: p.colour || "", hex: String(p.colour || "").toLowerCase().includes("black") ? "#111111" : "#f3f3f3", images: p.gallery.map((im, i) => {
+          const x = typeof im === "string" ? { key: im } : im;
+          const key = x.key || x.image_key || "";
+          return { key, url: x.url || (key ? `${API_BASE}/images/${encodeURIComponent(key)}` : ""), label: x.label || (i === 0 ? "Front" : i === 1 ? "Back" : `View ${i+1}`), file: null, preview: "" };
+        }) }];
+      }
+      if (!colourwayDrafts.length && existingImageKey) colourwayDrafts = [{ colour: p.colour || "", hex: "#222222", images: [{ key: existingImageKey, url: existingImageUrl || `${API_BASE}/images/${encodeURIComponent(existingImageKey)}`, label: "Front", file: null, preview: "" }] }];
+      renderColourwayEditor();
 
       if (existingImageUrl) {
         previewImg.src = existingImageUrl;
@@ -1736,6 +1767,8 @@
       selectedImageFile = null;
       existingImageKey = null;
       existingImageUrl = null;
+      colourwayDrafts = [];
+      renderColourwayEditor();
       imageInput.value = "";
       previewContainer.style.display = "none";
     }
@@ -1770,6 +1803,23 @@
           finalImageKey = uploadRes.key;
         }
 
+        const savedColourways = [];
+        for (const cw of colourwayDrafts) {
+          const images = [];
+          for (const img of (cw.images || [])) {
+            let key = img.key || "";
+            if (img.file) {
+              saveBtn.textContent = "UPLOADING GALLERY PHOTOS...";
+              const fd = new FormData();
+              fd.append("file", img.file);
+              const uploaded = await apiRequest("/api/admin/upload", { method: "POST", body: fd });
+              key = uploaded.key;
+            }
+            if (key || img.url) images.push({ key: key || null, url: img.url || null, label: img.label || "View" });
+          }
+          savedColourways.push({ colour: cw.colour.trim(), hex: cw.hex || "", images });
+        }
+
         const sizeLines = $("sizes").value.split("\n").map(l => l.trim()).filter(Boolean);
         const parsedSizes = sizeLines.map(line => {
           const parts = line.split("|");
@@ -1790,7 +1840,9 @@
           details: $("details").value.split("\n").map(l => l.trim()).filter(Boolean),
           care: $("care").value.split("\n").map(l => l.trim()).filter(Boolean),
           sizes: parsedSizes.length ? parsedSizes : [{ size: "M", price: Number($("price").value) }],
-          image_key: finalImageKey,
+          image_key: finalImageKey || savedColourways[0]?.images?.[0]?.key || null,
+          gallery: savedColourways[0]?.images || (finalImageKey ? [{ key: finalImageKey, label: "Front" }] : []),
+          colourways: savedColourways,
           published: $("published").checked,
           featured: $("featured").checked
         };
@@ -1839,122 +1891,6 @@
 
     init();
   
-    let yoycolCurrentPage = 1;
-    let yoycolTotalPages = 1;
-
-    async function checkYoycolStatus(manual = false) {
-      const badge = $("yoycol-status-badge");
-      const keyStatus = $("yoycol-key-status");
-      if (!badge || !keyStatus) return;
-      try {
-        const res = await apiRequest("/api/admin/yoycol/status");
-        if (res.configured) {
-          badge.textContent = "CONNECTED";
-          badge.className = "badge badge-success";
-          keyStatus.textContent = "CONFIGURED & ENCRYPTED";
-          keyStatus.style.color = "#10b981";
-          if (manual) showToast("Yoycol API credentials verified successfully.");
-        } else {
-          badge.textContent = "KEYS NOT CONFIGURED";
-          badge.className = "badge badge-draft";
-          keyStatus.textContent = "MISSING KEYS";
-          keyStatus.style.color = "#ef4444";
-          if (manual) showToast("Yoycol keys are not yet configured in Worker secrets.", true);
-        }
-      } catch (err) {
-        badge.textContent = "ERROR";
-        badge.className = "badge badge-draft";
-        keyStatus.textContent = "OFFLINE";
-        keyStatus.style.color = "#ef4444";
-        if (manual) showToast("Failed to check Yoycol status: " + err.message, true);
-      }
-    }
-
-    async function loadYoycolCatalog(page = 1) {
-      const container = $("yoycol-catalog-container");
-      const query = ($("yoycol-search-query").value || "").trim();
-      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;">Connecting to Yoycol v4 catalog...</div>`;
-
-      try {
-        let path = `/api/admin/yoycol/catalog?page=${page}&size=8`;
-        if (query) path += `&query=${encodeURIComponent(query)}`;
-        const res = await apiRequest(path);
-        const data = res.data || res;
-        const records = (data.records || (res.records) || []);
-        yoycolCurrentPage = page;
-        yoycolTotalPages = data.pages || Math.ceil((data.total || 0) / 8) || 1;
-
-        $("yoycol-items-count").textContent = `${data.total || records.length} PRODUCTS`;
-
-        if (!records.length) {
-          container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--admin-muted);font-size:12px;">No products found in Yoycol catalog.</div>`;
-          $("yoycol-pagination").style.display = "none";
-          return;
-        }
-
-        container.innerHTML = records.map(p => {
-          const img = p.spuDisplayImg || p.image || '';
-          const name = p.name || 'Unnamed Product';
-          const spu = p.spuCode || p.id || '';
-          const variants = p.variantCount ? `${p.variantCount} variants` : '';
-          const encodedData = encodeURIComponent(JSON.stringify(p));
-          return `
-            <div style="background:#ffffff;border:1px solid var(--admin-border);padding:14px;display:flex;flex-direction:column;justify-content:space-between;">
-              <div>
-                <div style="height:140px;background:#f3f3f3;margin-bottom:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-                  ${img ? `<img src="${img}" alt="${name}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:10px;color:#999;">NO IMAGE</span>`}
-                </div>
-                <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--admin-muted);text-transform:uppercase;margin-bottom:4px;">SPU: ${spu} ${variants ? '• ' + variants : ''}</div>
-                <div style="font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;color:var(--admin-text);margin-bottom:12px;line-height:1.3;max-height:32px;overflow:hidden;text-overflow:ellipsis;">${name}</div>
-              </div>
-              <button type="button" class="btn btn-secondary btn-sm" style="width:100%;" onclick="importYoycolToEditor('${encodedData}')">
-                + LOAD INTO EDITOR
-              </button>
-            </div>
-          `;
-        }).join("");
-
-        $("yoycol-pagination").style.display = "flex";
-        $("yoycol-page-indicator").textContent = `PAGE ${yoycolCurrentPage} OF ${yoycolTotalPages}`;
-        $("yoycol-prev-btn").disabled = yoycolCurrentPage <= 1;
-        $("yoycol-next-btn").disabled = yoycolCurrentPage >= yoycolTotalPages;
-
-      } catch (err) {
-        container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:#c5221f;font-size:12px;">Failed to fetch Yoycol catalog: ${err.message}</div>`;
-        $("yoycol-pagination").style.display = "none";
-      }
-    }
-
-    function changeYoycolPage(delta) {
-      const target = yoycolCurrentPage + delta;
-      if (target >= 1 && target <= yoycolTotalPages) {
-        loadYoycolCatalog(target);
-      }
-    }
-
-    function importYoycolToEditor(encodedJson) {
-      try {
-        const p = JSON.parse(decodeURIComponent(encodedJson));
-        const slug = (p.spuCode ? 'yoycol-' + p.spuCode : 'yoycol-' + (p.id || Date.now())).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
-        $("pid").value = slug;
-        $("pname").value = "XANTA " + (p.name || "").replace(/^All-Over Print /i, "");
-        if (p.spuDisplayImg) {
-          existingImageUrl = p.spuDisplayImg;
-          existingImageKey = null;
-          selectedImageFile = null;
-          $("preview-img").src = p.spuDisplayImg;
-          $("preview-filename").textContent = "Yoycol Catalog Image (" + (p.spuCode || p.id) + ")";
-          $("preview-badge").textContent = "YOYCOL ASSET";
-          $("preview-badge").style.background = "#0f0f0f";
-          $("image-preview-container").style.display = "flex";
-          $("dropzone").style.display = "none";
-        }
-        $("product-editor-panel").scrollIntoView({ behavior: 'smooth' });
-        showToast("Loaded " + (p.name || 'product') + " into editor. Set pricing and save!");
-      } catch (err) {
-        showToast("Error importing product: " + err.message, true);
-      }
-    }
 
   </script>
 </body>

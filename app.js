@@ -235,7 +235,7 @@ const fallbackProducts = [
   }
 ];
 
-let liveCatalog = [...fallbackProducts];
+let liveCatalog = [];
 
 /* --------------------------------------------------------------------------
    Cart State Management
@@ -409,66 +409,137 @@ function renderProductDetail() {
   if (titleEl) titleEl.textContent = product.name || "XANTA Essential";
   document.title = `${product.name || "XANTA Essential"} | XANTA`;
   injectProductSchema(product);
-  const colourName = product.colour || "Not specified";
+  const colourName = product.colour || "Standard";
   if (typeEl) typeEl.textContent = `XANTA ESSENTIALS · ${colourName.toUpperCase()}`;
   if (colourLabel) colourLabel.textContent = colourName.toUpperCase();
   if (descEl) descEl.textContent = product.description || "";
-  if (visualEl) {
-    visualEl.className = `product-visual detail-visual ${isDark ? "dark" : ""}`;
-    visualEl.innerHTML = product.image
-      ? `<img src="${product.image.startsWith('http') ? product.image : XANTA_API + product.image}" alt="${escapeHtml(product.name || 'XANTA product')} in ${escapeHtml(colourName)}" loading="eager" fetchpriority="high" decoding="async" width="800" height="960">`
-      : `<div class="product-image-unavailable" role="img" aria-label="Product image unavailable">XANTA</div>`;
+
+  // Determine available colourways: either inline inside product.colourways or separate products
+  let colourways = Array.isArray(product.colourways) && product.colourways.length ? product.colourways : [];
+  if (!colourways.length && product.colour) {
+    colourways = [{
+      id: product.id,
+      colour: product.colour,
+      hex: String(product.colour).toLowerCase().includes("black") ? "#111111" : (String(product.colour).toLowerCase().includes("wash") ? "#383838" : "#f4f4f4"),
+      images: Array.isArray(product.gallery) && product.gallery.length ? product.gallery : (product.image ? [{ url: product.image, label: "Front View" }] : [])
+    }];
   }
 
+  let activeColourwayIndex = 0;
+  let activeImageIndex = 0;
+
+  function updateVisualDisplay() {
+    const activeCw = colourways[activeColourwayIndex] || { colour: product.colour, images: [] };
+    const images = Array.isArray(activeCw.images) && activeCw.images.length ? activeCw.images : (Array.isArray(product.gallery) && product.gallery.length ? product.gallery : (product.image ? [{ url: product.image, label: "Front View" }] : []));
+    if (activeImageIndex >= images.length) activeImageIndex = 0;
+    const curImg = images[activeImageIndex] || { url: product.image, label: "View" };
+    const curUrl = curImg.url ? (curImg.url.startsWith("http") ? curImg.url : XANTA_API + curImg.url) : (product.image || "");
+
+    if (colourLabel) colourLabel.textContent = (activeCw.colour || product.colour || "Standard").toUpperCase();
+
+    if (visualEl) {
+      const isDarkImg = (activeCw.colour || "").toLowerCase().includes("black") || isDark;
+      visualEl.className = `product-visual detail-visual ${isDarkImg ? "dark" : ""}`;
+      visualEl.innerHTML = curUrl
+        ? `<img src="${escapeHtml(curUrl)}" alt="${escapeHtml(product.name || 'XANTA product')} — ${escapeHtml(activeCw.colour || 'View')} (${escapeHtml(curImg.label || 'Angle')})" loading="eager" fetchpriority="high" decoding="async" width="800" height="960">`
+        : `<div class="product-image-unavailable" role="img" aria-label="Product image unavailable">XANTA</div>`;
+    }
+
+    const thumbRow = document.getElementById("detail-thumbnails-row");
+    if (thumbRow) {
+      if (images.length > 1) {
+        thumbRow.innerHTML = images.map((img, idx) => {
+          const u = img.url ? (img.url.startsWith("http") ? img.url : XANTA_API + img.url) : "";
+          const lbl = img.label || (idx === 0 ? "Front" : (idx === 1 ? "Back" : `View ${idx+1}`));
+          return `<button type="button" class="detail-thumb-btn ${idx === activeImageIndex ? 'active' : ''}" data-idx="${idx}" aria-label="View ${escapeHtml(lbl)}"><img src="${escapeHtml(u)}" alt="${escapeHtml(lbl)}" loading="lazy" width="90" height="110"><span class="detail-thumb-caption">${escapeHtml(lbl)}</span></button>`;
+        }).join("");
+        thumbRow.querySelectorAll(".detail-thumb-btn").forEach(btn => btn.addEventListener("click", () => {
+          activeImageIndex = parseInt(btn.dataset.idx) || 0;
+          updateVisualDisplay();
+        }));
+        thumbRow.style.display = "flex";
+      } else {
+        thumbRow.innerHTML = "";
+        thumbRow.style.display = "none";
+      }
+    }
+  }
+
+  // Populate Colour pills
   if (colourRow) {
-    const variants = liveCatalog.filter(p => p.id !== product.id && p.category === product.category && p.name === product.name);
-    const available = [product, ...variants];
-    colourRow.innerHTML = available.map((v, i) => `<button type="button" class="colour-pill ${v.id === product.id ? 'active' : ''}" data-product-id="${escapeHtml(v.id)}"><span class="colour-swatch" style="background:${String(v.colour || '').toLowerCase().includes('black') ? '#111' : '#eee'}"></span><span>${escapeHtml(v.colour || `Option ${i+1}`)}</span></button>`).join("");
-    colourRow.querySelectorAll(".colour-pill").forEach(pill => pill.addEventListener("click", () => {
-      const target = pill.getAttribute("data-product-id");
-      if (target && target !== product.id) window.location.href = `product.html?id=${encodeURIComponent(target)}`;
-    }));
+    if (colourways.length > 1) {
+      colourRow.innerHTML = colourways.map((cw, i) => {
+        const bg = cw.hex || (String(cw.colour || '').toLowerCase().includes('black') ? '#111' : (String(cw.colour || '').toLowerCase().includes('white') ? '#eee' : '#666'));
+        return `<button type="button" class="colour-pill ${i === activeColourwayIndex ? 'active' : ''}" data-cw-idx="${i}"><span class="colour-swatch" style="background:${bg}"></span><span>${escapeHtml(cw.colour || `Option ${i+1}`)}</span></button>`;
+      }).join("");
+      colourRow.querySelectorAll(".colour-pill").forEach(pill => pill.addEventListener("click", () => {
+        colourRow.querySelectorAll(".colour-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        activeColourwayIndex = parseInt(pill.dataset.cwIdx) || 0;
+        activeImageIndex = 0;
+        updateVisualDisplay();
+      }));
+    } else {
+      const variants = liveCatalog.filter(p => p.id !== product.id && p.category === product.category && p.name === product.name);
+      const available = [product, ...variants];
+      colourRow.innerHTML = available.map((v, i) => `<button type="button" class="colour-pill ${v.id === product.id ? 'active' : ''}" data-product-id="${escapeHtml(v.id)}"><span class="colour-swatch" style="background:${String(v.colour || '').toLowerCase().includes('black') ? '#111' : '#eee'}"></span><span>${escapeHtml(v.colour || `Option ${i+1}`)}</span></button>`).join("");
+      colourRow.querySelectorAll(".colour-pill").forEach(pill => pill.addEventListener("click", () => {
+        const target = pill.getAttribute("data-product-id");
+        if (target && target !== product.id) window.location.href = `product.html?id=${encodeURIComponent(target)}`;
+      }));
+    }
   }
+  updateVisualDisplay();
 
-  const rawSizes = Array.isArray(product.sizes) ? product.sizes : [];
-  const sizes = rawSizes.map(item => {
-    if (typeof item === "string") return { size: item.trim(), price: Number(product.price) };
-    return { size: String(item?.size || "").trim(), price: Number(item?.price ?? product.price) };
-  }).filter(item => item.size && Number.isFinite(item.price) && item.price > 0 && item.size.length <= 12);
-  const uniqueSizes = [...new Map(sizes.map(item => [item.size, item])).values()];
-  if (!uniqueSizes.length) {
-    if (sizePillsContainer) sizePillsContainer.innerHTML = `<p class="size-note">Sizes are currently unavailable. Please contact us for details.</p>`;
-    if (btnAdd) { btnAdd.disabled = true; btnAdd.textContent = "CURRENTLY UNAVAILABLE"; }
-  }
+  // Price & sizes setup
+  const rawSizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : [{ size: "M", price: product.price }];
+  const seenSizes = new Set();
+  const uniqueSizes = rawSizes.filter(s => {
+    if (seenSizes.has(s.size)) return false;
+    seenSizes.add(s.size);
+    return true;
+  });
 
-  const updatePrice = selectedSize => {
-    const selected = uniqueSizes.find(s => s.size === selectedSize);
-    const value = Number(selected?.price ?? product.price);
-    if (Number.isFinite(value) && priceEl) priceEl.textContent = `$${value.toFixed(2)}`;
-    if (Number.isFinite(value) && btnAdd && uniqueSizes.length) btnAdd.textContent = `ADD TO BAG — $${value.toFixed(2)} ↗`;
-    if (sizeLabel) sizeLabel.textContent = selectedSize || "Select";
-  };
-  const initialSize = uniqueSizes.find(s => s.size.toUpperCase() === "M")?.size || uniqueSizes[0]?.size;
-  if (sizePillsContainer) {
-    sizePillsContainer.innerHTML = uniqueSizes.map(size => `<button type="button" class="size-pill ${size.size === initialSize ? 'active' : ''}" data-size="${escapeHtml(size.size)}">${escapeHtml(size.size)}</button>`).join("");
-    sizePillsContainer.querySelectorAll(".size-pill").forEach(pill => pill.addEventListener("click", () => {
-      sizePillsContainer.querySelectorAll(".size-pill").forEach(item => item.classList.remove("active"));
-      pill.classList.add("active");
-      if (sizeSelect) sizeSelect.value = pill.dataset.size;
-      updatePrice(pill.dataset.size);
-    }));
-  }
   if (sizeSelect) {
-    sizeSelect.innerHTML = uniqueSizes.map(s => `<option value="${escapeHtml(s.size)}">${escapeHtml(s.size)}</option>`).join("");
-    sizeSelect.value = initialSize || "";
-    sizeSelect.onchange = () => updatePrice(sizeSelect.value);
+    sizeSelect.innerHTML = uniqueSizes.map(s => `<option value="${escapeHtml(s.size)}" data-price="${s.price || product.price}">${escapeHtml(s.size)} — $${Number(s.price || product.price).toFixed(2)}</option>`).join("");
   }
-  if (initialSize) updatePrice(initialSize);
-  if (featuresEl) featuresEl.innerHTML = (Array.isArray(product.details) ? product.details : []).map(item => `<li>${escapeHtml(String(item))}</li>`).join("");
-  if (careEl) careEl.innerHTML = (Array.isArray(product.care) ? product.care : []).map(item => `<li>${escapeHtml(String(item))}</li>`).join("");
-  if (sizeNoteEl) sizeNoteEl.textContent = uniqueSizes.length ? "Select an available size before adding this product to your bag." : "No valid sizes are listed for this product. Contact us before ordering.";
 
-  const qtyInput = document.getElementById("detail-qty");
+  if (sizePillsContainer) {
+    sizePillsContainer.innerHTML = uniqueSizes.map((s, idx) => `
+      <button type="button" class="size-pill ${idx === 0 ? "active" : ""}" data-size="${escapeHtml(s.size)}" data-price="${s.price || product.price}">
+        ${escapeHtml(s.size)}
+      </button>
+    `).join("");
+
+    sizePillsContainer.querySelectorAll(".size-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        sizePillsContainer.querySelectorAll(".size-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        if (sizeSelect) sizeSelect.value = pill.dataset.size;
+        if (sizeLabel) sizeLabel.textContent = pill.dataset.size;
+        if (priceEl) priceEl.textContent = `$${Number(pill.dataset.price).toFixed(2)}`;
+        if (sizeNoteEl) sizeNoteEl.textContent = "";
+      });
+    });
+  }
+
+  if (uniqueSizes.length > 0) {
+    const initial = uniqueSizes[0];
+    if (sizeLabel) sizeLabel.textContent = initial.size;
+    if (priceEl) priceEl.textContent = `$${Number(initial.price || product.price).toFixed(2)}`;
+  } else if (priceEl) {
+    priceEl.textContent = `$${Number(product.price).toFixed(2)}`;
+  }
+
+  if (featuresEl) {
+    const details = Array.isArray(product.details) ? product.details : [];
+    featuresEl.innerHTML = details.length ? details.map(d => `<li>${escapeHtml(d)}</li>`).join("") : "<li>280 GSM luxury combed cotton construction</li><li>Architectural relaxed drape</li>";
+  }
+
+  if (careEl) {
+    const care = Array.isArray(product.care) ? product.care : [];
+    careEl.innerHTML = care.length ? care.map(c => `<li>${escapeHtml(c)}</li>`).join("") : "<li>Machine wash cold inside out</li><li>Hang dry recommended</li>";
+  }
   const minus = document.getElementById("qty-minus");
   const plus = document.getElementById("qty-plus");
   if (minus && qtyInput) minus.onclick = () => { qtyInput.value = Math.max(1, (parseInt(qtyInput.value) || 1) - 1); };
@@ -477,7 +548,10 @@ function renderProductDetail() {
     const selectedSize = sizePillsContainer?.querySelector(".size-pill.active")?.dataset.size || sizeSelect?.value;
     const selected = uniqueSizes.find(s => s.size === selectedSize);
     if (!selected) { if(sizeNoteEl) sizeNoteEl.textContent = "Please select an available size."; return; }
-    addToCart({ id: product.id, name: product.name, category: product.category || "", colour: colourName, size: selected.size, price: selected.price, image: product.image || null, quantity: Math.max(1, Math.min(99, parseInt(qtyInput?.value) || 1)) });
+    const currentColour = colourways[activeColourwayIndex]?.colour || colourName;
+    const activeCw = colourways[activeColourwayIndex];
+    const currentImage = (activeCw?.images?.[0]?.url) || product.image || null;
+    addToCart({ id: product.id, name: product.name, category: product.category || "", colour: currentColour, size: selected.size, price: selected.price, image: currentImage, quantity: Math.max(1, Math.min(99, parseInt(qtyInput?.value) || 1)) });
   };
   if (relatedEl) relatedEl.innerHTML = liveCatalog.filter(p => p.id !== product.id).slice(0, 4).map(productCard).join("");
 }
@@ -730,7 +804,7 @@ async function loadVantaCatalog() {
     const res = await fetch(XANTA_API + "/api/products");
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data.products) && data.products.length > 0) {
+      if (Array.isArray(data.products)) {
         liveCatalog = data.products;
       }
       if (data.settings) {
@@ -741,7 +815,7 @@ async function loadVantaCatalog() {
       }
     }
   } catch (err) {
-    console.warn("XANTA: Live Cloudflare API offline; using fallback catalog.", err);
+    console.warn("XANTA: Live Cloudflare API unavailable.", err);
   }
 
   // Render on homepage
@@ -795,15 +869,21 @@ function initShopFilters() {
   const buttons = document.querySelectorAll(".shop-filter-bar .filter-pill");
   const grid = document.getElementById("all-products");
   if (!buttons.length || !grid) return;
-  buttons.forEach(button => button.addEventListener("click", () => {
-    buttons.forEach(item => item.classList.toggle("active", item === button));
-    const category = (button.dataset.category || "ALL").toUpperCase();
+  const applyFilter = selected => {
+    buttons.forEach(item => item.classList.toggle("active", item === selected));
+    const category = (selected?.dataset.category || "ALL").toUpperCase();
     const products = category === "ALL" ? liveCatalog : liveCatalog.filter(p => {
-      const value = `${p.category || ""} ${p.name || ""}`.toUpperCase();
-      return category === "T-SHIRT" ? value.includes("TEE") || value.includes("SHIRT") : value.includes("HOODIE");
+      const value = String(p.category || "").toUpperCase();
+      if (category === "T-SHIRT") return ["T-SHIRT", "TSHIRT", "TEE"].includes(value);
+      if (category === "PANTS") return ["PANTS", "SWEATPANTS", "TROUSERS"].includes(value);
+      return value === category;
     });
     grid.innerHTML = products.length ? products.map(productCard).join("") : `<p class="size-note" style="grid-column:1/-1">No products are currently listed in this collection.</p>`;
-  }));
+  };
+  buttons.forEach(button => button.addEventListener("click", () => applyFilter(button)));
+  const requested = new URLSearchParams(location.search).get("category")?.toUpperCase();
+  const initial = [...buttons].find(button => button.dataset.category === requested);
+  if (initial) applyFilter(initial);
 }
 
 /* --------------------------------------------------------------------------

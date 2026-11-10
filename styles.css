@@ -1946,3 +1946,53 @@ ul, ol {
 @media(max-width:480px){.top-pick-card{padding:8px}.card-title{font-size:10px}.card-price{font-size:11px}.btn-card-add-cart{font-size:9px;padding:7px 3px}.catalog-dispatch-card{align-items:flex-start;padding:16px}.add-to-bag-row{align-items:stretch;flex-direction:column}.add-to-bag-row .btn-gold-pill{width:100%}}
 
 .contact-honeypot{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}.contact-message-card{padding:14px;margin:10px 0;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#111}.contact-message-card p{white-space:pre-wrap;overflow-wrap:anywhere}.contact-message-heading{display:flex;justify-content:space-between;gap:12px}.contact-message-heading time{font-size:11px;color:var(--admin-muted)}
+
+/* --------------------------------------------------------------------------
+   Product Gallery Thumbnails (Front / Back / Detail Views)
+   -------------------------------------------------------------------------- */
+.detail-thumbnails-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+.detail-thumb-btn {
+  background: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  min-width: 80px;
+}
+.detail-thumb-btn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.detail-thumb-btn.active {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 1px #d4af37;
+}
+.detail-thumb-btn img {
+  width: 72px;
+  height: 88px;
+  object-fit: contain;
+  background: #171719;
+  border-radius: 2px;
+  display: block;
+}
+.detail-thumb-caption {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a0a0a0;
+  font-weight: 700;
+}
+.detail-thumb-btn.active .detail-thumb-caption {
+  color: #f5f5f5;
+}

@@ -2286,3 +2286,31 @@ ul, ol {
   .xanta-image-lightbox { padding: 48px 38px 34px; }
   .lightbox-image { height: 70vh; }
 }
+
+
+/* Product photography upload placeholders */
+.product-image-pending {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #f4f1eb;
+  background: radial-gradient(circle at center, #202024 0%, #111113 100%);
+}
+.product-image-pending .pending-wordmark {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(25px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: .22em;
+}
+.product-image-pending .pending-caption {
+  color: #9b9b9b;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-align: center;
+}

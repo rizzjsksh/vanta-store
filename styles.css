@@ -2072,3 +2072,217 @@ ul, ol {
   margin: 0 auto;
   line-height: 1.6;
 }
+
+
+/* ==========================================================================
+   XANTA Product Gallery — editorial, responsive product-view experience
+   ========================================================================== */
+.product-detail-layout {
+  grid-template-columns: minmax(0, 1.12fr) minmax(360px, .88fr);
+  align-items: start;
+  gap: clamp(28px, 4vw, 64px);
+  margin-top: 28px;
+}
+.detail-visual-col { min-width: 0; gap: 14px; }
+.detail-visual {
+  position: relative;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 1px solid #e5e2dc;
+  border-radius: 3px;
+  background: #f3f1ec;
+  color: #111;
+}
+.detail-visual img.detail-main-image {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  padding: clamp(12px, 2vw, 28px);
+  object-fit: contain;
+  cursor: zoom-in;
+}
+.detail-visual.dark { background: #e9e8e4; }
+.gallery-view-label {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  padding: 7px 10px;
+  background: rgba(255,255,255,.86);
+  color: #171717;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.gallery-image-count {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 7px 10px;
+  background: rgba(255,255,255,.86);
+  color: #171717;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.gallery-arrow, .gallery-zoom-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(20,20,20,.14);
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: #151515;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.gallery-arrow { top: 50%; transform: translateY(-50%); font-size: 25px; line-height: 1; }
+.gallery-arrow:hover, .gallery-zoom-btn:hover { background: #fff; }
+.gallery-arrow-prev { left: 14px; }
+.gallery-arrow-next { right: 14px; }
+.gallery-zoom-btn { top: 14px; right: 14px; font-size: 19px; }
+.detail-thumbnails-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 0;
+  padding: 2px 0 7px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.detail-thumb-btn {
+  flex: 0 0 82px;
+  min-width: 82px;
+  padding: 4px;
+  gap: 5px;
+  border: 1px solid #343434;
+  border-radius: 3px;
+  background: #171719;
+}
+.detail-thumb-btn img {
+  width: 100%;
+  height: 88px;
+  object-fit: contain;
+  background: #f3f1ec;
+  border-radius: 1px;
+}
+.detail-thumb-btn.active {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+.detail-thumb-caption { font-size: 9px; letter-spacing: .08em; }
+.detail-info-col {
+  position: sticky;
+  top: calc(var(--header-height) + 22px);
+  min-width: 0;
+  padding: 8px 0 28px;
+}
+.detail-info-col .page-title,
+.detail-info-col #detail-name {
+  font-size: clamp(27px, 3vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  margin: 8px 0 2px;
+}
+.detail-price-row { margin: 13px 0 18px; }
+.detail-price { color: #f0c879; font-size: 25px; }
+.product-description { max-width: 54ch; color: #bcbcc1; }
+.variant-section { padding: 16px 0; border-top: 1px solid rgba(255,255,255,.11); margin: 0; }
+.variant-header { align-items: center; }
+.variant-label { letter-spacing: .12em; }
+.colour-pills-row { gap: 9px; }
+.colour-pill {
+  min-height: 42px;
+  padding: 7px 11px;
+  border-radius: 2px;
+  background: #141416;
+}
+.colour-swatch { width: 18px; height: 18px; border-radius: 50%; }
+.colour-pill.active { border-color: var(--gold); background: rgba(229,184,105,.09); }
+.size-pills-row { gap: 8px; margin: 0; }
+.size-pill {
+  min-width: 48px;
+  height: 44px;
+  border-radius: 2px;
+  background: #141416;
+}
+.size-pill.active { background: var(--gold); border-color: var(--gold); color: #111; }
+.add-to-bag-row { gap: 12px; }
+.add-to-bag-btn { min-height: 48px; flex: 1; border-radius: 2px; letter-spacing: .1em; }
+.quantity-control { border-radius: 2px; }
+.product-image-unavailable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #191919;
+  font-size: clamp(38px, 7vw, 76px);
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.product-image-unavailable span {
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: #777;
+}
+.xanta-image-lightbox {
+  width: min(94vw, 1100px);
+  max-width: none;
+  max-height: 94vh;
+  padding: 48px 62px 42px;
+  border: 1px solid #393939;
+  background: #101012;
+  color: #fff;
+  margin: auto;
+  overflow: visible;
+}
+.xanta-image-lightbox::backdrop { background: rgba(0,0,0,.88); backdrop-filter: blur(5px); }
+.lightbox-image {
+  display: block;
+  width: 100%;
+  height: min(76vh, 850px);
+  object-fit: contain;
+}
+.lightbox-close, .lightbox-arrow {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  background: #1c1c1f;
+  color: #fff;
+  cursor: pointer;
+}
+.lightbox-close { top: 10px; right: 10px; font-size: 27px; }
+.lightbox-arrow { top: 50%; font-size: 28px; transform: translateY(-50%); }
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+.lightbox-caption { margin-top: 12px; text-align: center; color: #c7c7c7; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+@media (max-width: 900px) {
+  .product-detail-layout { grid-template-columns: minmax(0,1fr); gap: 24px; }
+  .detail-info-col { position: static; padding: 4px 0 20px; }
+  .detail-visual { aspect-ratio: 4 / 4.5; }
+}
+@media (max-width: 600px) {
+  .product-detail-layout { margin-top: 12px; gap: 22px; }
+  .detail-visual { aspect-ratio: 1 / 1.12; }
+  .gallery-arrow, .gallery-zoom-btn { width: 34px; height: 34px; }
+  .gallery-arrow-prev { left: 8px; }
+  .gallery-arrow-next { right: 8px; }
+  .gallery-zoom-btn { top: 8px; right: 8px; }
+  .detail-thumb-btn { flex-basis: 70px; min-width: 70px; }
+  .detail-thumb-btn img { height: 74px; }
+  .detail-info-col .page-title, .detail-info-col #detail-name { font-size: 29px; }
+  .detail-price { font-size: 23px; }
+  .add-to-bag-row { align-items: stretch; }
+  .quantity-control { flex: 0 0 auto; }
+  .add-to-bag-btn { min-width: 0; padding-inline: 14px; }
+  .xanta-image-lightbox { padding: 48px 38px 34px; }
+  .lightbox-image { height: 70vh; }
+}

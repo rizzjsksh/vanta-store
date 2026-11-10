@@ -19,5 +19,8 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Check Storefront JavaScript Syntax
+        run: node --check app.js
+
       - name: Run Build-Time SEO Verification
         run: node scripts/verify-seo.mjs

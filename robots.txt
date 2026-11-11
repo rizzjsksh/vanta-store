@@ -1,8 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 Disallow: /admin.html
+Disallow: /cart
 Disallow: /cart.html
+Disallow: /checkout
 Disallow: /checkout.html
 
 Sitemap: https://xanta.pages.dev/sitemap.xml
-Sitemap: https://vanta-store-8kn.pages.dev/sitemap-live.xml

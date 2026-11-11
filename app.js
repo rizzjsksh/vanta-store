@@ -35,9 +35,46 @@ function injectProductSchema(product) {
       "url": productUrl,
       "priceCurrency": "USD",
       "price": price.toFixed(2),
+      "priceValidUntil": "2027-12-31",
       "itemCondition": "https://schema.org/NewCondition",
       "availability": product.published === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-      "seller": { "@type": "Organization", "name": "XANTA", "url": "https://xanta.pages.dev/" }
+      "seller": { "@type": "Organization", "name": "XANTA", "url": "https://xanta.pages.dev/" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "12.00",
+          "currency": "USD"
+        },
+        "shippingDestination": [
+          { "@type": "DefinedRegion", "addressCountry": "US" },
+          { "@type": "DefinedRegion", "addressCountry": "GB" },
+          { "@type": "DefinedRegion", "addressCountry": "CA" }
+        ],
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 3,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": ["US", "GB", "CA"],
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      }
     } : undefined
   };
   script.textContent = JSON.stringify(schema, null, 2);

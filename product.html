@@ -33,7 +33,64 @@
 <meta name="twitter:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Default Schema.org (overwritten dynamically per product by app.js) -->
-  <script type="application/ld+json" id="product-schema">{}</script>
+  <script type="application/ld+json" id="product-schema">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "XANTA Luxury Box-Cut Streetwear Tee",
+    "description": "Architectural heavyweight cotton box-cut streetwear t-shirt in monochrome palette. Available in United States, United Kingdom, and Canada.",
+    "image": "https://xanta.pages.dev/og-image.png",
+    "sku": "XANTA-TEE-001",
+    "category": "Apparel > Shirts & Tops > T-Shirts",
+    "brand": { "@type": "Brand", "name": "XANTA" },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://xanta.pages.dev/product.html",
+      "priceCurrency": "USD",
+      "price": "39.99",
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock",
+      "seller": { "@type": "Organization", "name": "XANTA", "url": "https://xanta.pages.dev/" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "12.00",
+          "currency": "USD"
+        },
+        "shippingDestination": [
+          { "@type": "DefinedRegion", "addressCountry": "US" },
+          { "@type": "DefinedRegion", "addressCountry": "GB" },
+          { "@type": "DefinedRegion", "addressCountry": "CA" }
+        ],
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 3,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": ["US", "GB", "CA"],
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      }
+    }
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

@@ -220,7 +220,7 @@ function productCard(p) {
   const cws = Array.isArray(p.colourways) ? p.colourways : [];
   const coloursMarkup = cws.length > 1
     ? `<div class="card-colour-indicators" aria-label="${cws.length} available colours">
-        ${cws.slice(0, 5).map(cw => `<span class="card-colour-dot" style="background:${cw.hex || '#666'}" title="${escapeHtml(cw.colour || '')}"></span>`).join('')}
+        ${cws.slice(0, 5).map(cw => `<a href="product.html?id=${encodeURIComponent(p.id)}&colour=${encodeURIComponent(cw.colour)}&view=front" class="card-colour-dot-link" aria-label="${escapeHtml(p.name)} in ${escapeHtml(cw.colour)}"><span class="card-colour-dot" style="background:${cw.hex || '#666'}" title="${escapeHtml(cw.colour || '')}"></span></a>`).join('')}
         ${cws.length > 5 ? `<span class="card-colour-more">+${cws.length - 5}</span>` : ''}
         <span class="card-colour-count">${cws.length} Colours</span>
        </div>`
@@ -395,6 +395,68 @@ function renderProductDetail() {
       : normaliseImages(product.gallery?.length ? product.gallery : (product.image ? [{ url: product.image, label: "Front" }] : []));
   };
 
+  currentImages = getActiveImages();
+
+  // Resolve initial view from URL parameter (?view=front or ?view=back or ?angle=back)
+  const urlRequestedView = (params.get("view") || params.get("angle") || "").trim().toLowerCase();
+  if (urlRequestedView && currentImages.length) {
+    if (urlRequestedView === "back") {
+      const backIdx = currentImages.findIndex(img => /back/i.test(img.label || ""));
+      activeImageIndex = backIdx >= 0 ? backIdx : (currentImages.length > 1 ? 1 : 0);
+    } else if (urlRequestedView === "front") {
+      const frontIdx = currentImages.findIndex(img => /front/i.test(img.label || ""));
+      activeImageIndex = frontIdx >= 0 ? frontIdx : 0;
+    } else {
+      const matchIdx = currentImages.findIndex(img => (img.label || "").toLowerCase().includes(urlRequestedView));
+      if (matchIdx >= 0) {
+        activeImageIndex = matchIdx;
+      } else {
+        const num = parseInt(urlRequestedView, 10);
+        if (!isNaN(num) && num >= 0 && num < currentImages.length) {
+          activeImageIndex = num;
+        }
+      }
+    }
+  }
+
+  // Helper to keep browser URL in sync with active colourway and angle view
+  function syncProductUrl() {
+    if (!window.history || !window.history.replaceState) return;
+    const currentCw = getActiveColourway();
+    const currentImg = currentImages[activeImageIndex];
+    const viewSlug = currentImg?.label ? currentImg.label.trim().toLowerCase() : "front";
+    const colourParam = currentCw?.colour ? currentCw.colour : defaultColourName;
+    const newUrl = `product.html?id=${encodeURIComponent(product.id)}&colour=${encodeURIComponent(colourParam)}&view=${encodeURIComponent(viewSlug)}`;
+    window.history.replaceState(null, "", newUrl);
+  }
+
+  // Preload alternate angle(s) for the active colourway so mobile view switches are instantaneous
+  function preloadAlternateAngles(images, activeIdx) {
+    if (!Array.isArray(images) || images.length < 2) return;
+    images.forEach((img, idx) => {
+      if (idx !== activeIdx && img && img.url) {
+        const preload = new Image();
+        preload.decoding = "async";
+        preload.src = img.url;
+      }
+    });
+  }
+
+  // Preload primary image for remaining colourways on idle to accelerate colourway switching on mobile
+  function preloadOtherColourways(cws, currentCwIdx) {
+    if (!Array.isArray(cws) || cws.length < 2) return;
+    const timer = window.requestIdleCallback || (cb => setTimeout(cb, 900));
+    timer(() => {
+      cws.forEach((cw, idx) => {
+        if (idx !== currentCwIdx && cw.images && cw.images[0] && cw.images[0].url) {
+          const img = new Image();
+          img.decoding = "async";
+          img.src = cw.images[0].url;
+        }
+      });
+    });
+  }
+
   /* --------------------------------------------------------------------------
      Lightbox with Accessible Modal Dialog & Focus Trap
      -------------------------------------------------------------------------- */
@@ -485,6 +547,7 @@ function renderProductDetail() {
   function moveImage(direction, shouldAnnounce = true) {
     if (currentImages.length < 2) return;
     activeImageIndex = (activeImageIndex + direction + currentImages.length) % currentImages.length;
+    syncProductUrl();
     updateVisualDisplay();
     updateLightbox();
     if (shouldAnnounce) {
@@ -516,6 +579,9 @@ function renderProductDetail() {
     const activeCw = getActiveColourway() || { colour: defaultColourName, images: [] };
     currentImages = getActiveImages();
     if (activeImageIndex >= currentImages.length) activeImageIndex = 0;
+    syncProductUrl();
+    preloadAlternateAngles(currentImages, activeImageIndex);
+    preloadOtherColourways(colourways, activeColourwayIndex);
     const currentImage = currentImages[activeImageIndex];
     const isDarkColour = /black|charcoal|navy|midnight|dark/i.test(activeCw.colour || "");
 
@@ -584,6 +650,7 @@ function renderProductDetail() {
             const newImgIdx = Number(tab.dataset.idx) || 0;
             if (newImgIdx === activeImageIndex) return;
             activeImageIndex = newImgIdx;
+            syncProductUrl();
             updateVisualDisplay();
             announceSr(`Showing ${currentImages[activeImageIndex]?.label} view of ${activeCw.colour}.`);
           });
@@ -606,6 +673,7 @@ function renderProductDetail() {
             }
             if (targetIdx !== null) {
               activeImageIndex = targetIdx;
+              syncProductUrl();
               updateVisualDisplay();
               const nextTab = viewTabsEl.querySelector(`.gallery-view-tab[data-idx="${targetIdx}"]`);
               if (nextTab) nextTab.focus();
@@ -648,6 +716,7 @@ function renderProductDetail() {
             const newImgIdx = Number(button.dataset.idx) || 0;
             if (newImgIdx === activeImageIndex) return;
             activeImageIndex = newImgIdx;
+            syncProductUrl();
             updateVisualDisplay();
             announceSr(`Displaying ${currentImages[activeImageIndex]?.label} view (${activeImageIndex + 1} of ${currentImages.length}) of ${activeCw.colour}.`);
           });
@@ -669,6 +738,7 @@ function renderProductDetail() {
             }
             if (targetIdx !== null) {
               activeImageIndex = targetIdx;
+              syncProductUrl();
               updateVisualDisplay();
               const nextThumb = thumbRow.querySelector(`.detail-thumb-btn[data-idx="${targetIdx}"]`);
               if (nextThumb) nextThumb.focus();
@@ -695,6 +765,10 @@ function renderProductDetail() {
       if (activeBtn) activeBtn.focus();
       return;
     }
+
+    const prevImage = currentImages[activeImageIndex];
+    const prevLabel = prevImage?.label ? prevImage.label.trim().toLowerCase() : "";
+
     activeColourwayIndex = newIdx;
     const currentCw = getActiveColourway();
 
@@ -705,17 +779,23 @@ function renderProductDetail() {
       }
     } catch (e) {}
 
-    // Persist to URL parameter so bookmarks and back button preserve selection
-    if (currentCw && window.history && window.history.replaceState) {
-      const newUrl = `product.html?id=${encodeURIComponent(product.id)}&colour=${encodeURIComponent(currentCw.colour)}`;
-      window.history.replaceState(null, "", newUrl);
-    }
-
-    // Preserve active image angle if available, or clamp to available views
     const newImages = getActiveImages();
-    if (activeImageIndex >= newImages.length) {
+    currentImages = newImages;
+
+    // Preserve active angle view if available in the new colourway (e.g. Back view remains on Back view)
+    if (prevLabel) {
+      const matchIdx = newImages.findIndex(img => (img.label || "").trim().toLowerCase() === prevLabel);
+      if (matchIdx >= 0) {
+        activeImageIndex = matchIdx;
+      } else if (activeImageIndex >= newImages.length) {
+        activeImageIndex = 0;
+      }
+    } else if (activeImageIndex >= newImages.length) {
       activeImageIndex = 0;
     }
+
+    // Persist to URL parameter with both colourway and view angle
+    syncProductUrl();
 
     renderColourPills(shouldFocus);
     updateVisualDisplay();
@@ -796,6 +876,53 @@ function renderProductDetail() {
   // Initial render of colourways and visual
   renderColourPills();
   updateVisualDisplay();
+
+  /* --------------------------------------------------------------------------
+     Shareable Product Link Handler (Preserves active colourway and angle view)
+     -------------------------------------------------------------------------- */
+  const shareBtn = document.getElementById("btn-share-product");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      syncProductUrl();
+      const currentCw = getActiveColourway();
+      const currentImg = currentImages[activeImageIndex];
+      const viewLabel = currentImg?.label || "Front";
+      const shareTitle = `${product.name || "XANTA Product"} — ${currentCw?.colour || defaultColourName} (${viewLabel} View) | XANTA`;
+      const shareUrl = window.location.href;
+
+      let shared = false;
+      if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: `Check out ${product.name || "XANTA product"} in ${currentCw?.colour || defaultColourName} on XANTA.`,
+            url: shareUrl
+          });
+          shared = true;
+        } catch (_) {}
+      }
+
+      if (!shared && navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          shared = true;
+        } catch (_) {}
+      }
+
+      const labelEl = document.getElementById("share-btn-label");
+      const prevText = labelEl ? labelEl.textContent : "Share View";
+      if (labelEl) labelEl.textContent = "Link Copied ✓";
+      shareBtn.classList.add("copied");
+      shareBtn.setAttribute("aria-label", `Link copied to clipboard: ${product.name} in ${currentCw?.colour || defaultColourName}, ${viewLabel} view`);
+      announceSr(`Shareable link copied to clipboard: ${product.name} in ${currentCw?.colour || defaultColourName}, ${viewLabel} view.`);
+
+      setTimeout(() => {
+        if (labelEl) labelEl.textContent = prevText;
+        shareBtn.classList.remove("copied");
+        shareBtn.setAttribute("aria-label", "Copy shareable link for this product colourway and angle view");
+      }, 2400);
+    });
+  }
 
   /* --------------------------------------------------------------------------
      Size Selection & Form Handling

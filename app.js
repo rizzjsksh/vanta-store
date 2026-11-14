@@ -116,6 +116,30 @@ function saveCart(cart) {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Live Price Sync (Shopping Bag / Checkout)
+   Re-prices cart items against the database-backed catalog so the bag and
+   checkout always show current selling prices instead of the snapshot that
+   was captured when an item was first added.
+   -------------------------------------------------------------------------- */
+function syncCartPrices() {
+  if (!liveCatalog.length) return;
+  const cart = getCart();
+  if (!cart.length) return;
+
+  let changed = false;
+  for (const item of cart) {
+    const product = liveCatalog.find(p => String(p.id) === String(item.id));
+    if (!product) continue;
+    const livePrice = Number(product.price);
+    if (Number.isFinite(livePrice) && livePrice > 0 && Number(item.price) !== livePrice) {
+      item.price = livePrice;
+      changed = true;
+    }
+  }
+  if (changed) saveCart(cart);
+}
+
 function updateCartCount() {
   const cart = getCart();
   const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
@@ -927,9 +951,12 @@ function renderProductDetail() {
   /* --------------------------------------------------------------------------
      Size Selection & Form Handling
      -------------------------------------------------------------------------- */
-  const rawSizes = Array.isArray(product.sizes) && product.sizes.length
+  const rawSizes = (Array.isArray(product.sizes) && product.sizes.length
     ? product.sizes
-    : [{ size: "M", price: product.price }];
+    : [{ size: "M", price: product.price }]
+  ).map(entry => (entry && typeof entry === "object"
+    ? { size: entry.size, price: Number(entry.price || product.price) }
+    : { size: String(entry), price: Number(product.price) }));
   const seenSizes = new Set();
   const uniqueSizes = rawSizes.filter(size => {
     const value = String(size.size || "").trim();
@@ -1312,6 +1339,11 @@ async function loadVantaCatalog() {
   } catch (err) {
     console.warn("XANTA: Live Cloudflare API unavailable.", err);
   }
+
+  // Keep the shopping bag and checkout on current database pricing
+  syncCartPrices();
+  renderCartPage();
+  renderCheckoutPage();
 
   // Render on homepage
   const featuredContainer = document.getElementById("featured-products");

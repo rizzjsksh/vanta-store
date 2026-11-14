@@ -1140,6 +1140,27 @@ function renderCheckoutPage() {
   const summaryItemsContainer = document.getElementById("checkout-summary-items");
   if (!checkoutSection || !summaryItemsContainer) return;
 
+  const paymentParams = new URLSearchParams(window.location.search);
+  const paymentState = paymentParams.get("payment");
+  const returnedOrder = paymentParams.get("order");
+  if (paymentState === "success" && returnedOrder) {
+    document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">XANTA / PAYMENT</p><h2>VERIFYING PAYMENT…</h2><p style="color:var(--muted)">Please wait while we confirm your payment securely.</p></div>';
+    fetch(XANTA_API + "/api/checkout/status?order=" + encodeURIComponent(returnedOrder))
+      .then(r => r.json().then(d => ({ok:r.ok,data:d})))
+      .then(({ok,data}) => {
+        if (!ok || !data.ok) throw new Error(data.error || "We could not verify this payment yet.");
+        if (data.order.status === "paid") {
+          localStorage.removeItem(CART_STORAGE_KEY); updateCartCount();
+          document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">PAYMENT VERIFIED</p><h2>THANK YOU FOR YOUR ORDER.</h2><p style="color:var(--muted)">Your payment has been confirmed by Monime. Your XANTA order reference is:</p><div class="order-badge">' + escapeHtml(data.order.reference) + '</div><p>Total paid: $' + Number(data.order.total).toFixed(2) + ' USD</p><p style="color:var(--muted)">We will use your delivery details to process your order.</p><a href="shop.html" class="button button-dark">CONTINUE SHOPPING ↗</a></div>';
+        } else {
+          document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">PAYMENT PENDING</p><h2>WE ARE STILL CONFIRMING.</h2><p style="color:var(--muted)">Your order is not marked as paid yet. Please wait a moment and refresh this page. Do not pay again unless Monime shows the first attempt failed.</p><div class="order-badge">' + escapeHtml(data.order.reference) + '</div><button class="button button-dark" onclick="location.reload()">CHECK PAYMENT STATUS</button></div>';
+        }
+      }).catch(error => { document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><h2>PAYMENT STATUS UNAVAILABLE</h2><p>' + escapeHtml(error.message) + '</p><button class="button button-dark" onclick="location.reload()">TRY AGAIN</button></div>'; });
+    return;
+  }
+  if (paymentState === "cancelled") {
+    document.getElementById("checkout-content").insertAdjacentHTML("afterbegin", '<div class="confirmation-card"><p class="eyebrow">PAYMENT NOT COMPLETED</p><h2>YOUR CART IS SAVED.</h2><p style="color:var(--muted)">Your payment was cancelled or not completed. You can try again below.</p></div>');
+  }
   const cart = getCart();
   if (cart.length === 0) {
     document.getElementById("checkout-content").innerHTML = `
@@ -1198,73 +1219,43 @@ function renderCheckoutPage() {
   if (expressShippingRadio) expressShippingRadio.onchange = updateCheckoutTotal;
   updateCheckoutTotal();
 
-  // Handle Checkout Form Submission
+  // Create a server-priced Monime checkout session; never mark orders paid in the browser.
   const form = document.getElementById("checkout-form");
   if (form) {
-    form.onsubmit = e => {
-      e.preventDefault();
-      const orderId = "XANTA-" + Math.floor(100000 + Math.random() * 900000);
-      const email = document.getElementById("cust-email").value;
-      const firstName = document.getElementById("cust-fname").value;
-      const lastName = document.getElementById("cust-lname").value;
-      const address = document.getElementById("cust-address").value;
-      const city = document.getElementById("cust-city").value;
-      const zip = document.getElementById("cust-zip").value;
-      const country = document.getElementById("cust-country").value;
-      const phone = document.getElementById("cust-phone").value;
-
-      const orderData = {
-        orderId,
-        date: new Date().toISOString(),
-        customer: { firstName, lastName, email, phone },
-        shippingAddress: { address, city, zip, country },
-        items: cart,
-        subtotal,
-        shippingCost,
-        total: subtotal + shippingCost,
-        status: "CONFIRMED_PREORDER"
+    form.onsubmit = async event => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      if (button) { button.disabled = true; button.dataset.originalText = button.textContent; button.textContent = "CONNECTING TO MONIME…"; }
+      const showError = message => {
+        let box = document.getElementById("checkout-payment-error");
+        if (!box) { box = document.createElement("p"); box.id = "checkout-payment-error"; box.setAttribute("role","alert"); box.style.cssText = "color:#b42318;margin:12px 0;font-size:13px"; form.querySelector(".checkout-section:last-child")?.prepend(box); }
+        box.textContent = message;
       };
-
       try {
-        const past = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]");
-        past.unshift(orderData);
-        localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(past));
-      } catch (err) {
-        console.error(err);
+        const response = await fetch(XANTA_API + "/api/checkout/create", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: getCart().map(item => ({ id:item.id, size:item.size, colour:item.colour, quantity:item.quantity })),
+            shippingMethod: document.getElementById("shipping-express")?.checked ? "express" : "standard",
+            customer: {
+              email: document.getElementById("cust-email").value.trim(),
+              phone: document.getElementById("cust-phone").value.trim(),
+              firstName: document.getElementById("cust-fname").value.trim(),
+              lastName: document.getElementById("cust-lname").value.trim(),
+              address: document.getElementById("cust-address").value.trim(),
+              city: document.getElementById("cust-city").value.trim(),
+              zip: document.getElementById("cust-zip").value.trim(),
+              country: document.getElementById("cust-country").value
+            }
+          })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok || !result.redirectUrl) throw new Error(result.error || "Could not start Monime checkout.");
+        window.location.assign(result.redirectUrl);
+      } catch (error) {
+        showError(error.message || "Payment could not be started. Your cart has been saved.");
+        if (button) { button.disabled = false; button.textContent = button.dataset.originalText || "PAY SECURELY WITH MONIME ↗"; }
       }
-
-      // Clear cart
-      localStorage.removeItem(CART_STORAGE_KEY);
-      updateCartCount();
-
-      // Show Confirmation Screen
-      document.getElementById("checkout-content").innerHTML = `
-        <div class="confirmation-card">
-          <p class="eyebrow" style="color:var(--ink)">ORDER RECORDED // 001</p>
-          <h2>THANK YOU, ${firstName.toUpperCase()}.</h2>
-          <p style="color:var(--muted);font-size:14px;line-height:1.7">Your order has been recorded in inventory. A confirmation reference has been registered for your delivery.</p>
-          <div class="order-badge">ORDER REF: ${orderId}</div>
-          
-          <div class="order-recap-box">
-            <strong>DELIVERY DISPATCH DETAILS</strong><br>
-            ${firstName} ${lastName}<br>
-            ${address}<br>
-            ${city}, ${zip}, ${country}<br>
-            Email: ${email} · Phone: ${phone || 'N/A'}<br><br>
-            <strong>ORDER BREAKDOWN</strong><br>
-            ${cart.map(i => `· ${i.quantity}x ${i.name} (${i.colour} / ${i.size}) — $${(i.price * i.quantity).toFixed(2)}`).join("<br>")}<br>
-            Shipping: ${shippingCost === 0 ? "FREE" : "$" + shippingCost.toFixed(2)}<br>
-            <strong>TOTAL: $${(subtotal + shippingCost).toFixed(2)}</strong>
-          </div>
-
-          <p style="font-size:12px;color:var(--muted);line-height:1.8">
-            Your pieces are reserved in production. When live payment gateways (Monime) are activated, tracking and automated dispatch updates will link directly to this order reference.
-          </p>
-
-          <a href="shop.html" class="button button-dark" style="margin-top:24px;display:inline-block">CONTINUE SHOPPING ↗</a>
-        </div>
-      `;
-      window.scrollTo({ top: 0, behavior: "smooth" });
     };
   }
 }

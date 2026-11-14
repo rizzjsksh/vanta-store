@@ -2480,3 +2480,27 @@ ul, ol {
   font-weight: 600;
   letter-spacing: 0.04em;
 }
+
+
+/* --------------------------------------------------------------------------
+   Accessibility: High-Contrast Focus Visible Styles for Keyboard Navigation
+   -------------------------------------------------------------------------- */
+.colour-pill:focus-visible,
+.gallery-view-tab:focus-visible,
+.detail-thumb-btn:focus-visible,
+.gallery-arrow:focus-visible,
+.gallery-zoom-btn:focus-visible,
+.lightbox-close:focus-visible,
+.lightbox-arrow:focus-visible,
+.size-pill:focus-visible,
+.wishlist-btn:focus-visible {
+  outline: 2px solid var(--gold, #d4af37) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.32) !important;
+}
+
+.gallery-view-tab[tabindex="0"]:focus,
+.colour-pill[tabindex="0"]:focus {
+  outline: 2px solid var(--gold, #d4af37);
+  outline-offset: 2px;
+}

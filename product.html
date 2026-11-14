@@ -218,14 +218,15 @@
     <div id="product-detail" class="product-detail-layout">
       <!-- Left Column: Gallery / High-Res Visual -->
       <div class="detail-visual-col" aria-label="Product image gallery">
+        <div id="gallery-sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
         <div id="detail-visual" class="product-visual detail-visual">
           <!-- Rendered dynamically via app.js -->
         </div>
         <!-- Thumbnails carousel / front and back selector -->
         <!-- View selector pills (Front / Back) -->
-        <div class="gallery-view-tabs" id="gallery-view-tabs" aria-label="Switch product angle"></div>
+        <div class="gallery-view-tabs" id="gallery-view-tabs" role="tablist" aria-label="Product view angles"></div>
         <!-- Thumbnails carousel / front and back selector -->
-        <div class="detail-thumbnails-row" id="detail-thumbnails-row" aria-label="Choose product view">
+        <div class="detail-thumbnails-row" id="detail-thumbnails-row" role="region" aria-label="Product angle thumbnail gallery">
           <!-- Thumbnails rendered dynamically via app.js -->
         </div>
         <div class="product-availability-banner">
@@ -247,11 +248,11 @@
         <p id="detail-description" class="product-description"></p>
 
         <!-- Colour Selector -->
-        <div class="variant-section">
+        <div class="variant-section" role="region" aria-labelledby="colour-group-label">
           <div class="variant-header">
-            <label class="variant-label">COLOUR: <span id="selected-colour-label">WHITE</span></label>
+            <span class="variant-label" id="colour-group-label">COLOUR: <span id="selected-colour-label">WHITE</span></span>
           </div>
-          <div class="colour-pills-row" id="colour-pills-row">
+          <div class="colour-pills-row" id="colour-pills-row" role="radiogroup" aria-labelledby="colour-group-label">
             <!-- Rendered dynamically via app.js -->
           </div>
         </div>

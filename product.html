@@ -184,12 +184,6 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </button>
-        <a class="header-icon-btn" href="admin.html" aria-label="Account / Admin Login">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </a>
         <a class="header-icon-btn cart-icon-btn" href="cart.html" aria-label="Shopping Cart">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -213,7 +207,6 @@
       <a class="drawer-sublink" href="shop.html?category=HOODIE">&bull; Hoodies</a>
       <a class="drawer-link" href="about.html">About</a>
       <a class="drawer-link" href="contact.html">Contact</a>
-      <a class="drawer-link" href="admin.html">Admin &amp; Settings</a>
     </div>
   </aside>
 
@@ -228,6 +221,9 @@
         <div id="detail-visual" class="product-visual detail-visual">
           <!-- Rendered dynamically via app.js -->
         </div>
+        <!-- Thumbnails carousel / front and back selector -->
+        <!-- View selector pills (Front / Back) -->
+        <div class="gallery-view-tabs" id="gallery-view-tabs" aria-label="Switch product angle"></div>
         <!-- Thumbnails carousel / front and back selector -->
         <div class="detail-thumbnails-row" id="detail-thumbnails-row" aria-label="Choose product view">
           <!-- Thumbnails rendered dynamically via app.js -->
@@ -256,18 +252,7 @@
             <label class="variant-label">COLOUR: <span id="selected-colour-label">WHITE</span></label>
           </div>
           <div class="colour-pills-row" id="colour-pills-row">
-            <button type="button" class="colour-pill active" data-colour="White" data-product-id="tee-white">
-              <span class="colour-swatch colour-white"></span>
-              <span>White</span>
-            </button>
-            <button type="button" class="colour-pill" data-colour="Monochrome Black" data-product-id="tee-black">
-              <span class="colour-swatch colour-black"></span>
-              <span>Monochrome Black</span>
-            </button>
-            <button type="button" class="colour-pill" data-colour="Vintage Washed" data-product-id="t shirt">
-              <span class="colour-swatch colour-washed"></span>
-              <span>Vintage Washed</span>
-            </button>
+            <!-- Rendered dynamically via app.js -->
           </div>
         </div>
 
@@ -395,7 +380,7 @@
           <ul class="footer-links">
             <li><a href="contact.html#shipping">Priority Dispatch</a></li>
             <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
-            <li><a href="admin.html">Merchant Portal</a></li>
+            <li><a href="contact.html">Customer Support</a></li>
           </ul>
         </div>
       </div>
@@ -428,13 +413,11 @@
       </svg>
       <span>Shop</span>
     </a>
-
-    <a href="admin.html" class="bottom-nav-item">
+    <a href="contact.html" class="bottom-nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       </svg>
-      <span>Account</span>
+      <span>Contact</span>
     </a>
 
     <a href="cart.html" class="bottom-nav-item">

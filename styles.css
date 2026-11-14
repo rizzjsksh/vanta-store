@@ -2328,3 +2328,155 @@ ul, ol {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+
+/* --------------------------------------------------------------------------
+   Colourway-Specific Product Gallery & Front/Back View Controls
+   -------------------------------------------------------------------------- */
+.gallery-view-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.gallery-view-tab {
+  flex: 1;
+  padding: 9px 14px;
+  background: #111114;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  color: #a3a3a3;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.gallery-view-tab:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+  background: #18181c;
+}
+
+.gallery-view-tab.active {
+  color: #0b0b0d;
+  background: #d4af37;
+  border-color: #d4af37;
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.28);
+}
+
+.gallery-view-tab .view-tab-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 10, 12, 0.7);
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  z-index: 5;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.gallery-arrow:hover {
+  background: #d4af37;
+  color: #0a0a0a;
+  border-color: #d4af37;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-arrow-prev {
+  left: 12px;
+}
+
+.gallery-arrow-next {
+  right: 12px;
+}
+
+.single-colour-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--gold);
+  background: rgba(212, 175, 55, 0.12);
+  border-radius: 7px;
+  color: #f5f5f5;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Card Visual Hover & Colour Indicators */
+.card-visual {
+  position: relative;
+}
+
+.card-img-front {
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.35s ease, transform 0.4s ease;
+}
+
+.card-img-back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.4s ease;
+}
+
+.top-pick-card:hover .card-img-front {
+  opacity: 0;
+}
+
+.top-pick-card:hover .card-img-back {
+  opacity: 1;
+  z-index: 2;
+  transform: scale(1.05);
+}
+
+.card-colour-indicators {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+}
+
+.card-colour-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  display: inline-block;
+}
+
+.card-colour-more,
+.card-colour-count {
+  font-size: 10px;
+  color: #a1a1aa;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}

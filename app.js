@@ -196,7 +196,36 @@ function productCard(p) {
   const priceDisplay = Number.isFinite(price) && price > 0 ? `$${price.toFixed(2)}` : "View details";
   const prodId = escapeHtml(p.id);
   const prodName = escapeHtml(p.name || "XANTA Product");
-  const image = imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="${prodName} — ${escapeHtml(p.colour || 'XANTA')} garment" loading="lazy" decoding="async" width="480" height="600">` : `<div class="product-image-unavailable" aria-label="Product image unavailable">XANTA</div>`;
+
+  // Determine back view image if available
+  let backImgUrl = "";
+  if (Array.isArray(p.colourways) && p.colourways[0]?.images?.length > 1) {
+    const backObj = p.colourways[0].images[1];
+    backImgUrl = typeof backObj === "string" ? backObj : (backObj.url || backObj.src || "");
+  } else if (Array.isArray(p.gallery) && p.gallery.length > 1) {
+    const backObj = p.gallery[1];
+    backImgUrl = typeof backObj === "string" ? backObj : (backObj.url || backObj.src || "");
+  }
+  if (backImgUrl && !backImgUrl.startsWith("http") && !backImgUrl.startsWith("/")) {
+    backImgUrl = XANTA_API + backImgUrl;
+  }
+
+  const image = imgUrl
+    ? (backImgUrl
+        ? `<div class="card-visual"><img class="card-img-front" src="${escapeHtml(imgUrl)}" alt="${prodName} — Front View" loading="lazy" decoding="async" width="480" height="600"><img class="card-img-back" src="${escapeHtml(backImgUrl)}" alt="${prodName} — Back View" loading="lazy" decoding="async" width="480" height="600"></div>`
+        : `<div class="card-visual"><img src="${escapeHtml(imgUrl)}" alt="${prodName}" loading="lazy" decoding="async" width="480" height="600"></div>`
+      )
+    : `<div class="card-visual"><div class="product-image-unavailable" aria-label="Product image unavailable">XANTA</div></div>`;
+
+  const cws = Array.isArray(p.colourways) ? p.colourways : [];
+  const coloursMarkup = cws.length > 1
+    ? `<div class="card-colour-indicators" aria-label="${cws.length} available colours">
+        ${cws.slice(0, 5).map(cw => `<span class="card-colour-dot" style="background:${cw.hex || '#666'}" title="${escapeHtml(cw.colour || '')}"></span>`).join('')}
+        ${cws.length > 5 ? `<span class="card-colour-more">+${cws.length - 5}</span>` : ''}
+        <span class="card-colour-count">${cws.length} Colours</span>
+       </div>`
+    : (cws.length === 1 && cws[0]?.images?.length > 1 ? `<div class="card-colour-indicators"><span class="card-colour-count">Front &amp; Back Views</span></div>` : '');
+
   return `
     <article class="top-pick-card" data-product-id="${prodId}">
       <div class="card-top-row">
@@ -205,15 +234,24 @@ function productCard(p) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         </button>
       </div>
-      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}"><div class="card-visual">${image}</div></a>
+
+      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}">
+        ${image}
+      </a>
+
       <div class="card-details-row">
-        <div class="card-meta"><h3 class="card-title"><a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a></h3><span class="card-price">${priceDisplay}</span></div>
+        <div class="card-meta">
+          <h3 class="card-title"><a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a></h3>
+          ${coloursMarkup}
+          <span class="card-price">${priceDisplay}</span>
+        </div>
         <button type="button" class="btn-card-add-cart" onclick="window.location.href='product.html?id=${encodeURIComponent(p.id)}'" aria-label="Choose options for ${prodName}">
-          <span>Choose options</span>
+          <span>Options</span>
         </button>
       </div>
     </article>`;
 }
+
 function quickAddToCart(productId) {
   window.location.href = `product.html?id=${encodeURIComponent(productId)}`;
 }
@@ -232,7 +270,7 @@ function toggleWishlist(btn, productId) {
 }
 
 /* --------------------------------------------------------------------------
-   Product Detail Page
+   Product Detail Page — Colourway-Specific Galleries & Front/Back Views
    -------------------------------------------------------------------------- */
 function renderProductDetail() {
   const container = document.getElementById("product-detail");
@@ -250,6 +288,8 @@ function renderProductDetail() {
   const typeEl = document.getElementById("detail-type");
   const descEl = document.getElementById("detail-description");
   const visualEl = document.getElementById("detail-visual");
+  const viewTabsEl = document.getElementById("gallery-view-tabs");
+  const thumbRow = document.getElementById("detail-thumbnails-row");
   const sizeSelect = document.getElementById("detail-size");
   const sizePillsContainer = document.getElementById("size-pills-row");
   const sizeLabel = document.getElementById("selected-size-label");
@@ -294,30 +334,14 @@ function renderProductDetail() {
     };
   }).filter(image => image.url);
 
-  let colourways = Array.isArray(product.colourways) ? product.colourways.filter(Boolean).map((cw, index) => ({
-    id: cw.id || `${product.id}-colour-${index}`,
-    colour: cw.colour || (index === 0 ? colourName : `Option ${index + 1}`),
-    hex: /^#[0-9a-f]{3,8}$/i.test(cw.hex || "") ? cw.hex : "",
-    images: normaliseImages(cw.images)
-  })) : [];
-
-  if (!colourways.length) {
-    const sameStyleVariants = liveCatalog.filter(candidate =>
-      String(candidate.id) === String(product.id) ||
-      (candidate.id !== product.id &&
-       candidate.category === product.category &&
-       candidate.name === product.name)
-    );
-    if (sameStyleVariants.length > 1) {
-      colourways = sameStyleVariants.map((variant, index) => ({
-        id: variant.id,
-        productId: variant.id,
-        colour: variant.colour || `Option ${index + 1}`,
-        hex: "",
-        images: normaliseImages(variant.gallery?.length ? variant.gallery : (variant.image ? [{ url: variant.image, label: "Front" }] : []))
-      }));
-    }
-  }
+  let colourways = Array.isArray(product.colourways) && product.colourways.length
+    ? product.colourways.filter(Boolean).map((cw, index) => ({
+        id: cw.id || `${product.id}-colour-${index}`,
+        colour: cw.colour || (index === 0 ? colourName : `Option ${index + 1}`),
+        hex: /^#[0-9a-f]{3,8}$/i.test(cw.hex || "") ? cw.hex : "",
+        images: normaliseImages(cw.images && cw.images.length ? cw.images : (cw.image ? [cw.image] : []))
+      }))
+    : [];
 
   if (!colourways.length) {
     colourways = [{
@@ -328,7 +352,18 @@ function renderProductDetail() {
     }];
   }
 
-  let activeColourwayIndex = Math.max(0, colourways.findIndex(cw => cw.productId === product.id));
+  // Support direct linking to colourway via ?colour=... query param
+  const requestedColour = (params.get("colour") || params.get("color") || "").trim().toLowerCase();
+  let activeColourwayIndex = 0;
+  if (requestedColour) {
+    const foundIdx = colourways.findIndex(cw =>
+      cw.colour.toLowerCase() === requestedColour ||
+      cw.id.toLowerCase() === requestedColour ||
+      cw.colour.toLowerCase().includes(requestedColour)
+    );
+    if (foundIdx >= 0) activeColourwayIndex = foundIdx;
+  }
+
   let activeImageIndex = 0;
   let activeSize = "";
   let currentImages = [];
@@ -349,9 +384,9 @@ function renderProductDetail() {
     dialog.className = "xanta-image-lightbox";
     dialog.innerHTML = `
       <button type="button" class="lightbox-close" aria-label="Close image viewer">×</button>
-      <button type="button" class="lightbox-arrow lightbox-prev" aria-label="Previous image">‹</button>
+      <button type="button" class="lightbox-arrow lightbox-prev" aria-label="Previous view">‹</button>
       <img class="lightbox-image" alt="XANTA product enlarged view">
-      <button type="button" class="lightbox-arrow lightbox-next" aria-label="Next image">›</button>
+      <button type="button" class="lightbox-arrow lightbox-next" aria-label="Next view">›</button>
       <p class="lightbox-caption"></p>`;
     document.body.appendChild(dialog);
     dialog.querySelector(".lightbox-close").addEventListener("click", () => dialog.close());
@@ -382,6 +417,21 @@ function renderProductDetail() {
     updateLightbox();
   }
 
+  // Touch swipe support on main image for mobile
+  let touchStartX = 0;
+  if (visualEl && !visualEl.dataset.swipeBound) {
+    visualEl.dataset.swipeBound = "true";
+    visualEl.addEventListener("touchstart", e => {
+      if (e.changedTouches && e.changedTouches[0]) touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    visualEl.addEventListener("touchend", e => {
+      if (e.changedTouches && e.changedTouches[0]) {
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(diff) > 40) moveImage(diff < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+
   function updateVisualDisplay() {
     const activeCw = getActiveColourway() || { colour: colourName, images: [] };
     currentImages = getActiveImages();
@@ -391,15 +441,17 @@ function renderProductDetail() {
 
     if (colourLabel) colourLabel.textContent = (activeCw.colour || colourName).toUpperCase();
 
+    // 1. Render Main Visual
     if (visualEl) {
       visualEl.className = `product-visual detail-visual ${isDarkColour ? "dark" : ""}`;
+      const viewBadgeText = currentImage?.label ? `${currentImage.label.toUpperCase()} VIEW` : "STUDIO VIEW";
       visualEl.innerHTML = currentImage
         ? `
           <img class="detail-main-image" src="${escapeHtml(currentImage.url)}" alt="${escapeHtml(product.name || "XANTA product")} — ${escapeHtml(activeCw.colour || colourName)} — ${escapeHtml(currentImage.label)}" loading="eager" fetchpriority="high" decoding="async" width="1000" height="1200">
-          <span class="gallery-view-label">${escapeHtml(currentImage.label)}</span>
+          <span class="gallery-view-label">${escapeHtml(viewBadgeText)}</span>
           ${currentImages.length > 1 ? `
-            <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous product image">‹</button>
-            <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next product image">›</button>
+            <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous view (Front/Back)">‹</button>
+            <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next view (Front/Back)">›</button>
             <span class="gallery-image-count">${activeImageIndex + 1} / ${currentImages.length}</span>` : ""}
           <button type="button" class="gallery-zoom-btn" aria-label="Enlarge product image">＋</button>`
         : `<div class="product-image-unavailable" role="img" aria-label="Product image will be added">XANTA<span>PRODUCT IMAGE COMING SOON</span></div>`;
@@ -416,12 +468,36 @@ function renderProductDetail() {
       });
     }
 
-    const thumbRow = document.getElementById("detail-thumbnails-row");
+    // 2. Render Dedicated View Selector Tabs (Front View / Back View buttons)
+    if (viewTabsEl) {
+      if (currentImages.length > 1) {
+        viewTabsEl.innerHTML = currentImages.map((img, idx) => `
+          <button type="button" class="gallery-view-tab ${idx === activeImageIndex ? 'active' : ''}" data-idx="${idx}" aria-label="Switch to ${escapeHtml(img.label)} View" aria-pressed="${idx === activeImageIndex}">
+            <svg class="view-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              ${idx === 0 ? '<rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="12" cy="10" r="3"></circle>' : '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line>'}
+            </svg>
+            <span>${escapeHtml(img.label)} View</span>
+          </button>
+        `).join("");
+        viewTabsEl.querySelectorAll(".gallery-view-tab").forEach(tab => {
+          tab.addEventListener("click", () => {
+            activeImageIndex = Number(tab.dataset.idx) || 0;
+            updateVisualDisplay();
+          });
+        });
+        viewTabsEl.style.display = "flex";
+      } else {
+        viewTabsEl.innerHTML = "";
+        viewTabsEl.style.display = "none";
+      }
+    }
+
+    // 3. Render High-Resolution Thumbnail Strip
     if (thumbRow) {
       if (currentImages.length > 1) {
         thumbRow.innerHTML = currentImages.map((image, index) => `
           <button type="button" class="detail-thumb-btn ${index === activeImageIndex ? "active" : ""}" data-idx="${index}" aria-label="View ${escapeHtml(image.label)}" aria-pressed="${index === activeImageIndex}">
-            <img src="${escapeHtml(image.url)}" alt="" loading="lazy" width="100" height="120">
+            <img src="${escapeHtml(image.url)}" alt="${escapeHtml(image.label)} view of ${escapeHtml(activeCw.colour)}" loading="lazy" width="100" height="120">
             <span class="detail-thumb-caption">${escapeHtml(image.label)}</span>
           </button>`).join("");
         thumbRow.querySelectorAll(".detail-thumb-btn").forEach(button => button.addEventListener("click", () => {
@@ -437,40 +513,43 @@ function renderProductDetail() {
     updateLightbox();
   }
 
+  // 4. Render Colourway Pills
   if (colourRow) {
     if (colourways.length > 1) {
       colourRow.innerHTML = colourways.map((cw, index) => {
         const bg = cw.hex || (/white|cream|ivory/i.test(cw.colour) ? "#f4f1eb" : (/blue|navy/i.test(cw.colour) ? "#273b59" : (/brown|mocha/i.test(cw.colour) ? "#72513b" : (/grey|gray/i.test(cw.colour) ? "#858585" : (/black|charcoal/i.test(cw.colour) ? "#171717" : "#777777")))));
-        return `<button type="button" class="colour-pill ${index === activeColourwayIndex ? "active" : ""}" data-cw-idx="${index}" aria-label="Select ${escapeHtml(cw.colour)}" aria-pressed="${index === activeColourwayIndex}">
-          <span class="colour-swatch" style="background:${bg}"></span><span>${escapeHtml(cw.colour)}</span>
+        const viewCount = cw.images?.length || 1;
+        const viewNote = viewCount > 1 ? "2 views" : "1 view";
+        return `<button type="button" class="colour-pill ${index === activeColourwayIndex ? "active" : ""}" data-cw-idx="${index}" aria-label="Select ${escapeHtml(cw.colour)} (${viewNote})" aria-pressed="${index === activeColourwayIndex}">
+          <span class="colour-swatch" style="background:${bg}"></span>
+          <span>${escapeHtml(cw.colour)}</span>
         </button>`;
       }).join("");
       colourRow.querySelectorAll(".colour-pill").forEach(button => button.addEventListener("click", () => {
-        activeColourwayIndex = Number(button.dataset.cwIdx) || 0;
-        activeImageIndex = 0;
+        const newIdx = Number(button.dataset.cwIdx) || 0;
+        if (newIdx === activeColourwayIndex) return;
+        activeColourwayIndex = newIdx;
+        activeImageIndex = 0; // reset to front view on colour switch
         colourRow.querySelectorAll(".colour-pill").forEach(item => {
           const selected = item === button;
           item.classList.toggle("active", selected);
           item.setAttribute("aria-pressed", String(selected));
         });
+        const currentCw = getActiveColourway();
+        if (currentCw && window.history && window.history.replaceState) {
+          const newUrl = `product.html?id=${encodeURIComponent(product.id)}&colour=${encodeURIComponent(currentCw.colour)}`;
+          window.history.replaceState(null, "", newUrl);
+        }
         updateVisualDisplay();
       }));
     } else {
-      const variants = liveCatalog.filter(candidate =>
-        candidate.id !== product.id && candidate.category === product.category && candidate.name === product.name
-      );
-      const available = [product, ...variants];
-      colourRow.innerHTML = available.length > 1 ? available.map((variant, index) => {
-        const active = String(variant.id) === String(product.id);
-        const bg = /white|cream|ivory/i.test(variant.colour || "") ? "#f4f1eb" : (/blue|navy/i.test(variant.colour || "") ? "#273b59" : (/grey|gray/i.test(variant.colour || "") ? "#858585" : "#171717"));
-        return `<button type="button" class="colour-pill ${active ? "active" : ""}" data-product-id="${escapeHtml(variant.id)}" aria-label="Select ${escapeHtml(variant.colour || "colour")}" aria-pressed="${active}">
-          <span class="colour-swatch" style="background:${bg}"></span><span>${escapeHtml(variant.colour || `Option ${index + 1}`)}</span>
-        </button>`;
-      }).join("") : `<span class="single-colour-note">${escapeHtml(colourName)}</span>`;
-      colourRow.querySelectorAll("[data-product-id]").forEach(button => button.addEventListener("click", () => {
-        const target = button.dataset.productId;
-        if (target && target !== product.id) window.location.href = `product.html?id=${encodeURIComponent(target)}`;
-      }));
+      const singleCw = colourways[0] || { colour: colourName, hex: "" };
+      const bg = singleCw.hex || "#6b829e";
+      colourRow.innerHTML = `
+        <div class="single-colour-pill">
+          <span class="colour-swatch" style="background:${bg}"></span>
+          <span>${escapeHtml(singleCw.colour)}</span>
+        </div>`;
     }
   }
 
@@ -558,6 +637,7 @@ function renderProductDetail() {
 
   if (relatedEl) relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(productCard).join("");
 }
+
 /* --------------------------------------------------------------------------
    Shopping Bag Page
    -------------------------------------------------------------------------- */

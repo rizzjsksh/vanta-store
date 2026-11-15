@@ -30,3 +30,20 @@ XANTA ships directly from domestic and regional fulfillment hubs to:
 - **United States** (3–5 business days, tracked)
 - **United Kingdom** (4–7 business days, all VAT/duties prepaid)
 - **Canada** (5–8 business days, tracked cross-border)
+
+## Frequently Asked Questions (FAQ)
+
+### What kind of clothing does XANTA create?
+XANTA designs and manufactures modern luxury streetwear essentials rooted in architectural silhouettes and minimalist restraint. Our current collection includes [heavyweight boxy t-shirts](https://xanta.pages.dev/shop.html?category=T-SHIRT), custom-washed tees, color-block polo shirts, [relaxed straight pants](https://xanta.pages.dev/shop.html?category=PANTS), and [denim pieces](https://xanta.pages.dev/shop.html?category=DENIM). Explore our full [XANTA streetwear collection](https://xanta.pages.dev/shop.html).
+
+### What is the XANTA design philosophy?
+Our philosophy is defined by our motto: *Made to Stand Apart*. We reject loud oversized logos and hyper-commercial branding in favor of sculptural cuts, dropped shoulders, relaxed boxy bodies, and high-density necklines. Discover our brand manifesto on the [XANTA clothing brand homepage](https://xanta.pages.dev/).
+
+### What materials and fabric weights does XANTA use?
+We source ultra-premium heavyweight combed ring-spun organic cotton jersey (240 to 280+ GSM), durable woven cotton twill, and structured denim. Our fabrics undergo pre-shrunk washing cycles and bespoke mineral dye baths to deliver unmatched hand-feel, structural drape, and shape retention. Inspect details on pieces like the [XANTA Mineral Wash Boxy Tee](https://xanta.pages.dev/product.html?id=mineral-wash-boxy-tee).
+
+### How do XANTA garments fit, and how do I choose my size?
+All XANTA tops and bottoms are tailored with an intentional, relaxed streetwear fit featuring dropped shoulders and generous chest width. We recommend taking your standard size for the intended modern boxy drape, or sizing down for a closer, traditional silhouette.
+
+### Which countries does XANTA ship to?
+XANTA exclusively fulfills orders for customers located in the **United States, the United Kingdom, and Canada** with tracked courier dispatch on every order. For support inquiries and shipping policies, consult our [client care page](https://xanta.pages.dev/contact.html).

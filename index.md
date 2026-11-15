@@ -25,3 +25,6 @@ XANTA is an independent luxury streetwear clothing brand built on architectural 
 - [Brand Philosophy & Fabric Specs](/about.html) (`/about.md`)
 - [Client Service & Support](/contact.html) (`/contact.md`)
 - [Machine-Readable Guide for AI Assistants](/llms.txt)
+
+## Frequently Asked Questions & Brand Standards
+For detailed answers on our architectural cuts, 280 GSM combed cotton standard, garment care, and exclusive fulfillment to the USA, UK, and Canada, read our [XANTA Clothing & Materials FAQ](https://xanta.pages.dev/about.html#faq).

@@ -35,3 +35,9 @@ Mirror format: Markdown (`/shop.md`)
 | **XXL** | 28.0" | 32.0" | 24.5" | 10.5" |
 
 *All garments are pre-shrunk. Fit is relaxed boxy; take your usual size for the intended drape, or size down for a classic fit.*
+
+## Design & Craftsmanship Standards
+Every garment in the XANTA collection is drafted with architectural proportions and pre-shrunk heavyweight combed cotton. 
+- Learn more about our philosophy in the [XANTA brand story](https://xanta.pages.dev/about.html).
+- Read answers regarding fabrics, care, and sizing in our [clothing & materials FAQ](https://xanta.pages.dev/about.html#faq).
+- Explore our flagship philosophy on the [XANTA homepage](https://xanta.pages.dev/).

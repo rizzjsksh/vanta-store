@@ -14,6 +14,7 @@ XANTA is an independent luxury streetwear clothing brand founded on principles o
 - [Homepage / New Arrivals](https://xanta.pages.dev/): Current collection, brand statement, and flagship silhouettes. (Markdown mirror: https://xanta.pages.dev/index.md)
 - [Complete Catalogue](https://xanta.pages.dev/shop.html): Full line of heavyweight t-shirts and monochrome apparel. (Markdown mirror: https://xanta.pages.dev/shop.md)
 - [About XANTA](https://xanta.pages.dev/about.html): Brand ethos, 280 GSM fabric specifications, and design philosophy. (Markdown mirror: https://xanta.pages.dev/about.md)
+- [XANTA Clothing & Materials FAQ](https://xanta.pages.dev/about.html#faq): Concise answers covering architectural streetwear design, 280 GSM cotton jersey, fit, and US/UK/CA shipping.
 - [Client Service & Inquiries](https://xanta.pages.dev/contact.html): Client care, sizing consultation, order support, and press contacts. (Markdown mirror: https://xanta.pages.dev/contact.md)
 
 ## Core Collection & Product Specifications

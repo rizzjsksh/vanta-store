@@ -1,4 +1,4 @@
-# About XANTA — The Monochrome Ethos
+# About XANTA — Luxury Streetwear & Clothing Brand Story
 
 > The design philosophy, fabric engineering, and craftsmanship behind XANTA luxury minimalist streetwear.
 
@@ -6,7 +6,7 @@ Canonical URL: https://xanta.pages.dev/about.html
 Mirror format: Markdown (`/about.md`)
 
 ## Our Origin & Ethos
-XANTA was founded on a singular premise: modern streetwear has become oversaturated with transient hype, disposable synthetic blends, and oversized logos. 
+XANTA was founded on a singular premise: modern luxury streetwear has become oversaturated with transient hype, disposable synthetic blends, and oversized logos. 
 
 We build the antithesis: **heavyweight, architectural garments stripped of distraction.**
 

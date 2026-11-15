@@ -1,4 +1,4 @@
-# XANTA — Luxury Streetwear & Heavyweight Tees
+# XANTA Clothing Brand — Luxury Streetwear & Essentials
 
 > Minimalist luxury streetwear and 280 GSM heavyweight boxy tees. Built for longevity with fast delivery in the USA, UK, and Canada.
 
@@ -6,7 +6,7 @@ Canonical URL: https://xanta.pages.dev/
 Mirror format: Markdown (`/index.md`)
 
 ## The XANTA Uniform
-XANTA is an independent streetwear house built on architectural form, tactile weight, and pure monochrome discipline. We produce essentials designed to hold their shape through years of daily wear, eliminating fleeting micro-trends in favor of enduring silhouettes.
+XANTA is an independent luxury streetwear clothing brand built on architectural form, tactile weight, and pure monochrome discipline. We produce essentials designed to hold their shape through years of daily wear, eliminating fleeting micro-trends in favor of enduring silhouettes.
 
 ### Flagship Highlights
 - **Heavyweight 280 GSM Cotton**: Substantial, pre-shrunk combed organic cotton jersey offering structure without rigidity.

@@ -328,7 +328,7 @@ function renderProductDetail() {
   const qtyInput = document.getElementById("detail-qty");
 
   if (titleEl) titleEl.textContent = product.name || "XANTA Essential";
-  document.title = `${product.name || "XANTA Essential"} | XANTA`;
+  document.title = `${product.name || "XANTA Essential"} — XANTA Luxury Streetwear`;
   injectProductSchema(product);
   const defaultColourName = product.colour || "Standard";
   if (descEl) descEl.textContent = product.description || "";

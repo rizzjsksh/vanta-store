@@ -891,7 +891,8 @@ textarea:focus-visible,
 /* Lead tile: bigger type, and a media area that grows into the extra row. */
 .trending-grid > .top-pick-card:first-child .card-visual,
 .product-grid > .top-pick-card:first-child .card-visual {
-  aspect-ratio: 1 / 1;
+  /* 4/5 fills the taller tile so the lead lot has no dead space. */
+  aspect-ratio: 4 / 5;
   flex: 0 0 auto;
   min-height: 0;
 }

@@ -2497,7 +2497,9 @@ ul, ol {
   font-weight: 600;
 }
 
-/* Card Visual Hover & Colour Indicators */
+/* Shop cards always show the front view.
+   Back views remain available in the product detail gallery; hovering or
+   tapping a colour swatch must not replace the front-facing card image. */
 .card-visual {
   position: relative;
 }
@@ -2505,7 +2507,8 @@ ul, ol {
 .card-img-front {
   position: relative;
   z-index: 1;
-  transition: opacity 0.35s ease, transform 0.4s ease;
+  opacity: 1;
+  transition: transform 0.4s ease;
 }
 
 .card-img-back {
@@ -2513,17 +2516,7 @@ ul, ol {
   inset: 0;
   z-index: 0;
   opacity: 0;
-  transition: opacity 0.35s ease, transform 0.4s ease;
-}
-
-.top-pick-card:hover .card-img-front {
-  opacity: 0;
-}
-
-.top-pick-card:hover .card-img-back {
-  opacity: 1;
-  z-index: 2;
-  transform: scale(1.05);
+  pointer-events: none;
 }
 
 .card-colour-indicators {

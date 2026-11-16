@@ -732,13 +732,12 @@ textarea:focus-visible,
   transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.35s ease;
 }
 
-/* Back view crossfade on hover — desktop only */
-.card-img-front { position: relative; z-index: 2; }
-.card-img-back { position: absolute; inset: 0; z-index: 1; opacity: 0; }
+/* Shop cards keep the front view visible across hover, touch and swatch selection.
+   The back view is reserved for the product detail gallery. */
+.card-img-front { position: relative; z-index: 2; opacity: 1; }
+.card-img-back { position: absolute; inset: 0; z-index: 1; opacity: 0; pointer-events: none; }
 
 @media (hover: hover) and (pointer: fine) {
-  .top-pick-card:hover .card-img-front { opacity: 0; }
-  .top-pick-card:hover .card-img-back { opacity: 1; z-index: 3; transform: scale(1.04); }
   .top-pick-card:hover .card-visual img { transform: scale(1.03); }
 }
 

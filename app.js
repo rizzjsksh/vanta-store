@@ -1491,10 +1491,9 @@ async function loadVantaCatalog() {
   // Render on homepage
   const featuredContainer = document.getElementById("featured-products");
   if (featuredContainer) {
-    const featured = liveCatalog.filter(p => p.featured);
-    const toShow = featured.length ? featured : liveCatalog;
+    const toShow = liveCatalog;
     if (toShow.length) {
-      featuredContainer.innerHTML = toShow.map((p, i) => productCard(p, { lead: i === 0 })).join("");
+      featuredContainer.innerHTML = toShow.map(p => productCard(p, { lead: false })).join("");
       if (window.XANTAMotion) window.XANTAMotion.refresh();
     } else {
       featuredContainer.innerHTML = `

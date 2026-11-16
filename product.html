@@ -12,9 +12,9 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <title>Heavyweight Box-Cut Streetwear Tee | XANTA Clothing Brand</title>
-  <meta name="description" content="Shop luxury streetwear essentials by XANTA clothing brand. Detailed product specifications, colourway galleries, and direct checkout for the US, UK, and CA.">
-  <meta name="keywords" content="XANTA, Xanta clothing brand, Xanta luxury streetwear, heavyweight boxy tee, streetwear polo, streetwear pants">
+  <title>Heavyweight Box-Cut Streetwear Tee — Streetwear | XANTA</title>
+  <meta name="description" content="Shop XANTA streetwear essentials. View current product details, available sizes, and checkout shipping options.">
+  <meta name="keywords" content="heavyweight boxy tee, 280 gsm t-shirt streetwear, luxury box cut black tee, luxury heavyweight white tee">
   <link rel="canonical" href="https://xanta.pages.dev/product.html">
 
   <!-- Open Graph / Facebook -->
@@ -22,14 +22,14 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="XANTA">
   <meta property="og:url" content="https://xanta.pages.dev/product.html">
-  <meta property="og:title" content="Heavyweight Box-Cut Streetwear Tee | XANTA Clothing Brand">
-  <meta property="og:description" content="Shop luxury streetwear essentials by XANTA clothing brand. Detailed product specifications, colourway galleries, and direct checkout for the US, UK, and CA.">
+  <meta property="og:title" content="Heavyweight Box-Cut Streetwear Tee — Streetwear | XANTA">
+  <meta property="og:description" content="Shop XANTA streetwear essentials. View current product details, available sizes, and checkout shipping options.">
 <meta property="og:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Heavyweight Box-Cut Streetwear Tee | XANTA Clothing Brand">
-  <meta name="twitter:description" content="Shop luxury streetwear essentials by XANTA clothing brand. Detailed product specifications, colourway galleries, and direct checkout for the US, UK, and CA.">
+  <meta name="twitter:title" content="Heavyweight Box-Cut Streetwear Tee — Streetwear | XANTA">
+  <meta name="twitter:description" content="Shop XANTA streetwear essentials. View current product details, available sizes, and checkout shipping options.">
 <meta name="twitter:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Default Schema.org (overwritten dynamically per product by app.js) -->
@@ -109,10 +109,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <aside class="top-announcement-bar" aria-label="Announcement">
     <div class="announcement-inner">
       <div class="announcement-left">
@@ -123,7 +125,7 @@
           <circle cx="18.5" cy="18.5" r="2.5"></circle>
         </svg>
         <span class="announcement-text">
-          Fast Standard Dispatch <span class="sep">|</span> Premium Streetwear <span class="sep">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
+          Fast Standard Dispatch <span class="sep" aria-hidden="true">|</span> Premium Streetwear <span class="sep" aria-hidden="true">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
         </span>
       </div>
       <div class="announcement-socials" aria-label="Follow XANTA">
@@ -212,19 +214,10 @@
 
   <main class="page-main" id="main-content">
     <div class="back-nav-row">
-      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-        <ol class="breadcrumb-list">
-          <li><a href="index.html">XANTA Home</a></li>
-          <li class="breadcrumb-separator" aria-hidden="true">/</li>
-          <li><a href="shop.html">XANTA Collection</a></li>
-          <li class="breadcrumb-separator" aria-hidden="true">/</li>
-          <li aria-current="page"><span id="breadcrumb-current-name">Heavyweight Tee</span></li>
-        </ol>
-      </nav>
-      <a href="shop.html" class="back-to-shop-link">&larr; BACK TO XANTA COLLECTION</a>
+      <a href="shop.html" class="back-to-shop-link">&larr; BACK TO SHOPPING</a>
     </div>
 
-    <div id="product-detail" class="product-detail-layout">
+    <div id="product-detail" class="product-detail-layout" data-reveal="up">
       <!-- Left Column: Gallery / High-Res Visual -->
       <div class="detail-visual-col" aria-label="Product image gallery">
         <div id="gallery-sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
@@ -282,7 +275,7 @@
         <div class="variant-section">
           <div class="variant-header">
             <label class="variant-label">SELECT SIZE: <span id="selected-size-label">M</span></label>
-            <span class="size-guide-hint"><a href="about.html#faq" class="inline-accent-link">Box-cut fit &amp; sizing FAQ</a></span>
+            <span class="size-guide-hint">Box-cut streetwear fit</span>
           </div>
           <div class="size-pills-row" id="size-pills-row"></div>
           <select id="detail-size" class="size-select" style="display:none" aria-label="Select size"></select>
@@ -295,7 +288,8 @@
           <div class="add-to-bag-row">
             <div class="quantity-control">
               <button type="button" class="quantity-btn" id="qty-minus" aria-label="Decrease quantity">–</button>
-              <input type="text" id="detail-qty" class="quantity-input" value="1" readonly aria-label="Selected quantity">
+              <input type="text" id="detail-qty" class="quantity-input" value="1" readonly aria-label="Quantity" aria-describedby="detail-qty-hint">
+              <span id="detail-qty-hint" class="sr-only">Use the plus and minus buttons to change the quantity.</span>
               <button type="button" class="quantity-btn" id="qty-plus" aria-label="Increase quantity">+</button>
             </div>
             <button type="button" id="add-to-bag" class="btn-gold-pill add-to-bag-btn">
@@ -355,16 +349,6 @@
               <ul id="detail-care" class="detail-list"></ul>
             </div>
           </details>
-
-          <details class="accordion-item">
-            <summary class="accordion-header">
-              <span>DESIGN &amp; MATERIALS PHILOSOPHY</span>
-              <span class="accordion-arrow">&#9662;</span>
-            </summary>
-            <div class="accordion-content">
-              <p>Every piece is developed in line with the <a href="about.html" class="inline-accent-link">XANTA architectural design principles</a> using heavyweight combed cotton and disciplined proportions. Review our <a href="about.html#faq" class="inline-accent-link">clothing, materials &amp; sizing FAQ</a> or browse the complete <a href="shop.html" class="inline-accent-link">XANTA luxury streetwear collection</a>.</p>
-            </div>
-          </details>
         </div>
       </div>
     </div>
@@ -389,7 +373,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">COLLECTION</h4>
+          <h2 class="footer-col-title">COLLECTION</h2>
           <ul class="footer-links">
             <li><a href="shop.html?category=T-SHIRT">Heavyweight Tees</a></li>
             <li><a href="shop.html?category=HOODIE">Luxury Hoodies</a></li>
@@ -398,7 +382,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">INFORMATION</h4>
+          <h2 class="footer-col-title">INFORMATION</h2>
           <ul class="footer-links">
             <li><a href="about.html">About XANTA</a></li>
             <li><a href="contact.html">Client Care</a></li>
@@ -408,7 +392,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">CLIENT SUPPORT</h4>
+          <h2 class="footer-col-title">CLIENT SUPPORT</h2>
           <ul class="footer-links">
             <li><a href="contact.html#shipping">Priority Dispatch</a></li>
             <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
@@ -421,7 +405,7 @@
         <p>&copy; <span id="year">2026</span> XANTA. All rights reserved. Designed to Stand Apart.</p>
         <div class="footer-legal">
           <a href="about.html">Brand Integrity</a>
-          <span class="sep">&bull;</span>
+          <span class="sep" aria-hidden="true">&bull;</span>
           <a href="contact.html">Terms of Care</a>
         </div>
       </div>
@@ -470,5 +454,12 @@
 
   <div id="cart-toast" class="cart-toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
+  <div id="xanta-announcer" class="announce-region" role="status" aria-live="polite"></div>
+
+  <!-- Motion: GSAP (vendored locally, no third-party runtime dependency) -->
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="vendor/gsap/SplitText.min.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

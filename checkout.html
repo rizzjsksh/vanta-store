@@ -16,10 +16,12 @@
   <link rel="canonical" href="https://xanta.pages.dev/checkout.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <aside class="top-announcement-bar" aria-label="Announcement">
     <div class="announcement-inner">
       <div class="announcement-left">
@@ -30,7 +32,7 @@
           <circle cx="18.5" cy="18.5" r="2.5"></circle>
         </svg>
         <span class="announcement-text">
-          Fast Standard Dispatch <span class="sep">|</span> Premium Streetwear <span class="sep">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
+          Fast Standard Dispatch <span class="sep" aria-hidden="true">|</span> Premium Streetwear <span class="sep" aria-hidden="true">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
         </span>
       </div>
       <div class="announcement-socials" aria-label="Follow XANTA">
@@ -117,9 +119,9 @@
     </div>
   </aside>
 
-  <main class="page-main">
+  <main id="main-content" class="page-main">
     <p class="eyebrow">XANTA / SECURE CHECKOUT</p>
-    <h1 class="page-title">CHECKOUT.</h1>
+    <h1 class="page-title" data-reveal="up">CHECKOUT.</h1>
 
     <div id="checkout-content">
       <div class="checkout-grid" id="checkout-grid">
@@ -129,11 +131,11 @@
               <h2>1. CONTACT INFORMATION</h2>
               <div class="checkout-field">
                 <label for="cust-email">EMAIL ADDRESS *</label>
-                <input type="email" id="cust-email" required placeholder="alex@example.com">
+                <input class="form-input" type="email" id="cust-email" autocomplete="email" required placeholder="alex@example.com">
               </div>
               <div class="checkout-field">
                 <label for="cust-phone">PHONE NUMBER (FOR DISPATCH UPDATES)</label>
-                <input type="tel" id="cust-phone" placeholder="+1 (555) 019-2834">
+                <input class="form-input" type="tel" id="cust-phone" autocomplete="tel" placeholder="+1 (555) 019-2834">
               </div>
             </div>
 
@@ -142,30 +144,30 @@
               <div class="checkout-row">
                 <div class="checkout-field">
                   <label for="cust-fname">FIRST NAME *</label>
-                  <input type="text" id="cust-fname" required placeholder="Alex">
+                  <input class="form-input" type="text" id="cust-fname" autocomplete="given-name" required placeholder="Alex">
                 </div>
                 <div class="checkout-field">
                   <label for="cust-lname">LAST NAME *</label>
-                  <input type="text" id="cust-lname" required placeholder="Rivers">
+                  <input class="form-input" type="text" id="cust-lname" autocomplete="family-name" required placeholder="Rivers">
                 </div>
               </div>
               <div class="checkout-field">
                 <label for="cust-address">STREET ADDRESS *</label>
-                <input type="text" id="cust-address" required placeholder="124 Fashion Ave, Apt 4B">
+                <input class="form-input" type="text" id="cust-address" autocomplete="street-address" required placeholder="124 Fashion Ave, Apt 4B">
               </div>
               <div class="checkout-row">
                 <div class="checkout-field">
                   <label for="cust-city">CITY *</label>
-                  <input type="text" id="cust-city" required placeholder="New York">
+                  <input class="form-input" type="text" id="cust-city" autocomplete="address-level2" required placeholder="New York">
                 </div>
                 <div class="checkout-field">
                   <label for="cust-zip">POSTAL / ZIP CODE *</label>
-                  <input type="text" id="cust-zip" required placeholder="10001">
+                  <input class="form-input" type="text" id="cust-zip" autocomplete="postal-code" required placeholder="10001">
                 </div>
               </div>
               <div class="checkout-field">
                 <label for="cust-country">COUNTRY *</label>
-                <select id="cust-country" required>
+                <select class="form-select" id="cust-country" required autocomplete="country-name">
                   <option value="United States" selected>United States</option>
                   <option value="United Kingdom">United Kingdom</option>
                   <option value="Canada">Canada</option>
@@ -196,9 +198,9 @@
             <div class="checkout-section">
               <h2>4. PAYMENT & CONFIRMATION</h2>
               <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:18px">
-                Pay securely through Monime's hosted checkout. Your order is confirmed only after Monime verifies your payment.
+                Payment gateway setup (Monime) is scheduled for activation. Submitting this order registers your items in inventory and secures your order reference.
               </p>
-              <button type="submit" class="button button-dark" style="width:100%">PAY SECURELY WITH MONIME ↗</button>
+              <button type="submit" class="button button-dark" style="width:100%">CONFIRM ORDER ↗</button>
             </div>
           </form>
         </section>
@@ -206,9 +208,9 @@
         <aside class="order-summary-sidebar">
           <h2>ORDER SUMMARY</h2>
           <div id="checkout-summary-items"></div>
-          <div class="cart-summary-line" style="margin-top:20px;border-top:1px solid var(--line);padding-top:16px">
+          <div class="cart-summary-line" style="margin-top:20px;border-top:1px solid var(--edge-soft);padding-top:16px">
             <span>SUBTOTAL</span>
-            <span id="summary-subtotal">$0.00</span>
+            <span id="summary-subtotal" role="status" aria-live="polite">$0.00</span>
           </div>
           <div class="cart-summary-line">
             <span>SHIPPING</span>
@@ -216,7 +218,7 @@
           </div>
           <div class="cart-summary-line total">
             <span>TOTAL</span>
-            <span id="summary-grand-total">$0.00</span>
+            <span id="summary-grand-total" role="status" aria-live="polite">$0.00</span>
           </div>
           <p style="font-size:10px;color:var(--muted);margin-top:18px;line-height:1.6">
             All prices in USD. Carbon-neutral fulfillment packaging from our studio.
@@ -236,7 +238,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">COLLECTION</h4>
+          <h2 class="footer-col-title">COLLECTION</h2>
           <ul class="footer-links">
             <li><a href="shop.html?category=T-SHIRT">Heavyweight Tees</a></li>
             <li><a href="shop.html?category=HOODIE">Luxury Hoodies</a></li>
@@ -245,7 +247,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">INFORMATION</h4>
+          <h2 class="footer-col-title">INFORMATION</h2>
           <ul class="footer-links">
             <li><a href="about.html">About XANTA</a></li>
             <li><a href="contact.html">Client Care</a></li>
@@ -255,7 +257,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">CLIENT SUPPORT</h4>
+          <h2 class="footer-col-title">CLIENT SUPPORT</h2>
           <ul class="footer-links">
             <li><a href="contact.html#shipping">Priority Dispatch</a></li>
             <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
@@ -268,7 +270,7 @@
         <p>&copy; <span id="year">2026</span> XANTA. All rights reserved. Designed to Stand Apart.</p>
         <div class="footer-legal">
           <a href="about.html">Brand Integrity</a>
-          <span class="sep">&bull;</span>
+          <span class="sep" aria-hidden="true">&bull;</span>
           <a href="contact.html">Terms of Care</a>
         </div>
       </div>
@@ -317,5 +319,12 @@
 
   <div id="cart-toast" class="cart-toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
+  <div id="xanta-announcer" class="announce-region" role="status" aria-live="polite"></div>
+
+  <!-- Motion: GSAP (vendored locally, no third-party runtime dependency) -->
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="vendor/gsap/SplitText.min.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

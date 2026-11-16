@@ -12,8 +12,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <title>Client Care &amp; Inquiries | XANTA Clothing Brand</title>
-  <meta name="description" content="Contact XANTA client care for order inquiries, sizing guidance, and press requests. Dedicated client support for our USA, UK, and Canada customers.">
+  <title>Client Care &amp; Inquiries | XANTA</title>
+  <meta name="description" content="Direct client concierge and order support for XANTA customers across the United States, United Kingdom, and Canada.">
   <meta name="keywords" content="XANTA client care, streetwear customer support USA UK Canada">
   <link rel="canonical" href="https://xanta.pages.dev/contact.html">
 
@@ -22,14 +22,14 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="XANTA">
   <meta property="og:url" content="https://xanta.pages.dev/contact.html">
-  <meta property="og:title" content="Client Care &amp; Inquiries | XANTA Clothing Brand">
-  <meta property="og:description" content="Contact XANTA client care for order inquiries, sizing guidance, and press requests. Dedicated client support for our USA, UK, and Canada customers.">
+  <meta property="og:title" content="Client Care &amp; Inquiries | XANTA">
+  <meta property="og:description" content="Direct client concierge and order support for XANTA customers across the United States, United Kingdom, and Canada.">
 <meta property="og:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Client Care &amp; Inquiries | XANTA Clothing Brand">
-  <meta name="twitter:description" content="Contact XANTA client care for order inquiries, sizing guidance, and press requests. Dedicated client support for our USA, UK, and Canada customers.">
+  <meta name="twitter:title" content="Client Care &amp; Inquiries | XANTA">
+  <meta name="twitter:description" content="Direct client concierge and order support for XANTA customers across the United States, United Kingdom, and Canada.">
 <meta name="twitter:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Schema.org Structured Data (JSON-LD) -->
@@ -63,10 +63,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <aside class="top-announcement-bar" aria-label="Announcement">
     <div class="announcement-inner">
       <div class="announcement-left">
@@ -77,7 +79,7 @@
           <circle cx="18.5" cy="18.5" r="2.5"></circle>
         </svg>
         <span class="announcement-text">
-          Fast Standard Dispatch <span class="sep">|</span> Premium Streetwear <span class="sep">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
+          Fast Standard Dispatch <span class="sep" aria-hidden="true">|</span> Premium Streetwear <span class="sep" aria-hidden="true">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
         </span>
       </div>
       <div class="announcement-socials" aria-label="Follow XANTA">
@@ -254,7 +256,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">COLLECTION</h4>
+          <h2 class="footer-col-title">COLLECTION</h2>
           <ul class="footer-links">
             <li><a href="shop.html?category=T-SHIRT">Heavyweight Tees</a></li>
             <li><a href="shop.html?category=HOODIE">Luxury Hoodies</a></li>
@@ -263,7 +265,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">INFORMATION</h4>
+          <h2 class="footer-col-title">INFORMATION</h2>
           <ul class="footer-links">
             <li><a href="about.html">About XANTA</a></li>
             <li><a href="contact.html">Client Care</a></li>
@@ -273,7 +275,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">CLIENT SUPPORT</h4>
+          <h2 class="footer-col-title">CLIENT SUPPORT</h2>
           <ul class="footer-links">
             <li><a href="contact.html#shipping">Priority Dispatch</a></li>
             <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
@@ -286,7 +288,7 @@
         <p>&copy; <span id="year">2026</span> XANTA. All rights reserved. Designed to Stand Apart.</p>
         <div class="footer-legal">
           <a href="about.html">Brand Integrity</a>
-          <span class="sep">&bull;</span>
+          <span class="sep" aria-hidden="true">&bull;</span>
           <a href="contact.html">Terms of Care</a>
         </div>
       </div>
@@ -335,5 +337,12 @@
 
   <div id="cart-toast" class="cart-toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
+  <div id="xanta-announcer" class="announce-region" role="status" aria-live="polite"></div>
+
+  <!-- Motion: GSAP (vendored locally, no third-party runtime dependency) -->
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="vendor/gsap/SplitText.min.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

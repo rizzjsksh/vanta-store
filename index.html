@@ -12,9 +12,9 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <title>XANTA Clothing Brand | Luxury Streetwear | Official Store</title>
-  <meta name="description" content="Discover XANTA, the independent luxury streetwear clothing brand. Explore heavyweight statement tees, polo shirts, pants, and denim. Shipping to US, UK, CA.">
-  <meta name="keywords" content="XANTA, Xanta clothing brand, Xanta luxury streetwear, official XANTA, luxury streetwear brand, modern streetwear">
+  <title>XANTA Clothing Brand | Official XANTA Streetwear Store</title>
+  <meta name="description" content="Discover XANTA, the official XANTA clothing brand for modern streetwear. Explore statement T-shirts, hoodies, trousers and everyday essentials.">
+  <meta name="keywords" content="XANTA, XANTA Clothing Brand, official XANTA, XANTA streetwear, XANTA clothing, XANTA apparel">
   <link rel="canonical" href="https://xanta.pages.dev/">
 
   <!-- Open Graph / Facebook -->
@@ -22,14 +22,14 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="XANTA">
   <meta property="og:url" content="https://xanta.pages.dev/">
-  <meta property="og:title" content="XANTA Clothing Brand | Luxury Streetwear | Official Store">
-  <meta property="og:description" content="Discover XANTA, the independent luxury streetwear clothing brand. Explore heavyweight statement tees, polo shirts, pants, and denim. Shipping to US, UK, CA.">
+  <meta property="og:title" content="XANTA Clothing Brand | Official XANTA Streetwear Store">
+  <meta property="og:description" content="Discover XANTA, the official XANTA clothing brand for modern streetwear. Explore statement T-shirts, hoodies, trousers and everyday essentials.">
   <meta property="og:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XANTA Clothing Brand | Luxury Streetwear | Official Store">
-  <meta name="twitter:description" content="Discover XANTA, the independent luxury streetwear clothing brand. Explore heavyweight statement tees, polo shirts, pants, and denim. Shipping to US, UK, CA.">
+  <meta name="twitter:title" content="XANTA Clothing Brand | Official XANTA Streetwear Store">
+  <meta name="twitter:description" content="Discover XANTA, the official XANTA clothing brand for modern streetwear. Explore statement T-shirts, hoodies, trousers and everyday essentials.">
   <meta name="twitter:image" content="https://xanta.pages.dev/og-image.png">
 
   <!-- XANTA brand identity: homepage site name and organization entity -->
@@ -42,18 +42,18 @@
         "@id": "https://xanta.pages.dev/#website",
         "url": "https://xanta.pages.dev/",
         "name": "XANTA",
-        "alternateName": ["XANTA Clothing Brand", "XANTA Luxury Streetwear", "Xanta"],
+        "alternateName": ["XANTA Clothing Brand", "XANTA Streetwear"],
         "inLanguage": "en"
       },
       {
         "@type": "OnlineStore",
         "@id": "https://xanta.pages.dev/#organization",
         "name": "XANTA",
-        "alternateName": ["Xanta clothing brand", "Xanta luxury streetwear", "XANTA Official"],
+        "alternateName": "XANTA Clothing Brand",
         "url": "https://xanta.pages.dev/",
         "logo": "https://xanta.pages.dev/android-chrome-512x512.png",
         "image": "https://xanta.pages.dev/og-image.png",
-        "description": "XANTA is an independent luxury streetwear clothing brand delivering minimalist heavyweight apparel, statement tees, polo shirts, pants, and denim across the United States, United Kingdom, and Canada.",
+        "description": "XANTA is an independent clothing brand focused on modern streetwear, including statement T-shirts, hoodies, trousers and everyday clothing essentials.",
         "brand": { "@type": "Brand", "name": "XANTA" },
         "areaServed": [
           { "@type": "Country", "name": "United States" },
@@ -65,7 +65,7 @@
         "@type": "WebPage",
         "@id": "https://xanta.pages.dev/#webpage",
         "url": "https://xanta.pages.dev/",
-        "name": "XANTA Clothing Brand | Luxury Streetwear | Official Store",
+        "name": "XANTA Clothing Brand | Official XANTA Streetwear Store",
         "isPartOf": { "@id": "https://xanta.pages.dev/#website" },
         "about": { "@id": "https://xanta.pages.dev/#organization" },
         "description": "Discover XANTA, the official XANTA clothing brand for modern streetwear. Explore statement T-shirts, hoodies, trousers and everyday essentials."
@@ -77,10 +77,12 @@
   <!-- Typography: Space Grotesk, Montserrat, DM Sans, Manrope -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Manrope:wght@500;600;700;800&family=Montserrat:ital,wght@1,800;1,900&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body class="page-home dark-luxury-theme">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- Announcement Bar -->
   <aside class="top-announcement-bar" aria-label="Announcement">
     <div class="announcement-inner">
@@ -92,7 +94,7 @@
           <circle cx="18.5" cy="18.5" r="2.5"></circle>
         </svg>
         <span class="announcement-text">
-          Fast Standard Dispatch <span class="sep">|</span> Premium Streetwear <span class="sep">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
+          Fast Standard Dispatch <span class="sep" aria-hidden="true">|</span> Premium Streetwear <span class="sep" aria-hidden="true">|</span> <a href="shop.html" class="announcement-link">Shop the XANTA Collection &rarr;</a>
         </span>
       </div>
       <div class="announcement-socials" aria-label="Follow XANTA">
@@ -185,64 +187,63 @@
 
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="hero-section" aria-label="Hero Section">
+    <section class="hero-section" aria-labelledby="hero-title">
       <div class="hero-bg-accent" aria-hidden="true"></div>
       <div class="hero-inner-grid">
-        <!-- Hero Copy -->
         <div class="hero-copy">
           <div class="hero-brand-tag">
-            <span>XANTA CLOTHING BRAND</span>
+            <span>EDITION 001 &middot; XANTA ARCHIVE</span>
             <span class="gold-dash" aria-hidden="true"></span>
           </div>
 
-          <!-- HEADLINE: Removed 'THE ART OF' as requested, prominent 'STANDING APART.' in gold italic -->
-          <h1 class="hero-headline" aria-label="XANTA — Luxury Streetwear & Clothing Brand"><span class="sr-only">XANTA — Independent Luxury Streetwear &amp; Clothing Brand. Official XANTA Store.</span>
-            <span class="hero-gold-title">STANDING APART.</span>
+          <h1 class="hero-headline" id="hero-title">
+            <span class="hero-title-mask"><span class="hero-gold-title" data-hero-line>Standing</span></span>
+            <span class="hero-title-mask"><span class="hero-gold-title hero-title-accent" data-hero-line>Apart.</span></span>
           </h1>
 
           <p class="hero-subtext">
-            Independent luxury streetwear engineered with architectural drape and heavyweight combed cotton.<br>
-            Explore the <a href="shop.html" class="inline-accent-link">XANTA streetwear collection</a> or discover our <a href="about.html" class="inline-accent-link">brand story and design principles</a>.
+            Five heavyweight pieces, washed and colour-blocked for the long run.
+            Sizes S&ndash;XXL. Shipping to the USA, UK and Canada.
           </p>
 
           <div class="hero-actions-row">
             <a href="shop.html" class="btn-gold-pill">
-              <span>SHOP NOW</span>
-              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <span>Shop the collection</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </a>
-            <a href="about.html" class="btn-dark-outline-pill">LEARN MORE</a>
-          </div>
-
-          <div class="hero-carousel-dots" aria-hidden="true">
-            <span class="hero-dot"></span>
-            <span class="hero-dot active"></span>
-            <span class="hero-dot"></span>
+            <a href="about.html" class="btn-dark-outline-pill">How it&rsquo;s made</a>
           </div>
         </div>
 
-        <!-- Hero Apparel Showcase Visual -->
         <div class="hero-visual-col">
           <div class="hero-showcase-card" id="hero-showcase-frame">
+            <img id="hero-showcase-img" src="" alt="" loading="eager" fetchpriority="high" decoding="async" width="1200" height="1440" hidden>
             <div class="hero-showcase-placeholder" id="hero-showcase-placeholder">
               <div class="hero-showcase-placeholder-mark">X</div>
               <p class="hero-showcase-placeholder-tag">XANTA ARCHIVE</p>
             </div>
-            <div class="hero-garment-brand" id="hero-showcase-badge" style="display:none;">ESSENTIALS 001</div>
-            <span class="hero-badge-tag" id="hero-footer-tag" style="display:none;">XANTA ESSENTIALS</span>
+            <div class="hero-garment-brand" id="hero-showcase-badge">EDITION 001</div>
+            <span class="hero-badge-tag" id="hero-footer-tag"></span>
           </div>
+          <div class="hero-lot-row" id="hero-lot-row" role="group" aria-label="Colour lots of the featured piece"></div>
         </div>
       </div>
+
+      <dl class="hero-spec-rail">
+        <div><dt>Edition</dt><dd>001</dd></div>
+        <div><dt>Fabric weight</dt><dd>280&ndash;420 GSM</dd></div>
+        <div><dt>Pieces</dt><dd id="hero-piece-count">5</dd></div>
+        <div><dt>Ships to</dt><dd>USA &middot; UK &middot; CA</dd></div>
+      </dl>
     </section>
-
-
 
     <!-- Trending Now / Top Picks Section -->
     <section class="trending-section" id="collection" aria-label="Trending Products">
       <div class="section-container">
-        <div class="trending-header-row">
+        <div class="trending-header-row" data-reveal="up">
           <div class="trending-title-block">
             <div class="trending-eyebrow">
               <span class="gold-line-small"></span>
@@ -252,7 +253,6 @@
             <h2 class="trending-headline">
               Our <span class="gold-italic">Top Picks</span>
             </h2>
-            <p class="trending-subcopy" style="font-size:13px;color:var(--text-secondary);margin-top:6px">Discover signature pieces from the <a href="shop.html" class="inline-accent-link">XANTA clothing brand catalog</a>, or read our <a href="about.html#faq" class="inline-accent-link">materials &amp; sizing FAQ</a>.</p>
           </div>
           <a href="shop.html" class="btn-view-all">View All Products &rarr;</a>
         </div>
@@ -388,7 +388,7 @@
 
     <!-- Value Props / Trust Highlights Bar -->
     <section class="value-props-section" aria-label="Store Guarantees">
-      <div class="value-props-grid">
+      <div class="value-props-grid" data-reveal="up">
         <div class="prop-item">
           <svg class="prop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="1" y="3" width="15" height="13"></rect>
@@ -427,15 +427,14 @@
     <!-- Brand Philosophy Section -->
     <section class="manifesto-section" aria-label="Brand Philosophy">
       <div class="section-container">
-        <div class="manifesto-inner">
+        <div class="manifesto-inner" data-reveal="up">
           <p class="manifesto-eyebrow">THE XANTA PRINCIPLE</p>
           <h2 class="manifesto-heading">NO NOISE. PURE <span class="gold-italic">PRESENCE.</span></h2>
           <p class="manifesto-body">
-            XANTA exists for those who refuse to blend in. As an independent luxury streetwear clothing brand, XANTA crafts heavyweight minimalist apparel with clean architectural silhouettes, custom dye treatments, and zero unnecessary noise. Exclusively shipping to the USA, UK, and Canada. Browse our <a href="shop.html?category=T-SHIRT" class="inline-accent-link">heavyweight statement tees</a>, explore the full <a href="shop.html" class="inline-accent-link">XANTA streetwear collection</a>, or read our <a href="about.html#faq" class="inline-accent-link">clothing design &amp; materials FAQ</a>.
+            XANTA exists for those who refuse to blend in. We craft heavyweight luxury streetwear with clean architectural silhouettes, premium streetwear design, and zero unnecessary distractions. Designed for everyday longevity across the United States, United Kingdom, and Canada.
           </p>
           <div class="manifesto-cta">
             <a href="about.html" class="btn-dark-outline-pill">READ OUR STORY &rarr;</a>
-            <a href="shop.html" class="btn-gold-pill">EXPLORE COLLECTION &rarr;</a>
           </div>
         </div>
       </div>
@@ -453,7 +452,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">COLLECTION</h4>
+          <h2 class="footer-col-title">COLLECTION</h2>
           <ul class="footer-links">
             <li><a href="shop.html?category=T-SHIRT">Heavyweight Tees</a></li>
             <li><a href="shop.html?category=HOODIE">Luxury Hoodies</a></li>
@@ -462,7 +461,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">INFORMATION</h4>
+          <h2 class="footer-col-title">INFORMATION</h2>
           <ul class="footer-links">
             <li><a href="about.html">About XANTA</a></li>
             <li><a href="contact.html">Client Care</a></li>
@@ -472,7 +471,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-col-title">CLIENT SUPPORT</h4>
+          <h2 class="footer-col-title">CLIENT SUPPORT</h2>
           <ul class="footer-links">
             <li><a href="contact.html#shipping">Priority Dispatch</a></li>
             <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
@@ -485,7 +484,7 @@
         <p>&copy; <span id="year">2026</span> XANTA. All rights reserved. Designed to Stand Apart.</p>
         <div class="footer-legal">
           <a href="about.html">Brand Integrity</a>
-          <span class="sep">&bull;</span>
+          <span class="sep" aria-hidden="true">&bull;</span>
           <a href="contact.html">Terms of Care</a>
         </div>
       </div>
@@ -534,5 +533,12 @@
   <div id="cart-toast" class="cart-toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
+  <div id="xanta-announcer" class="announce-region" role="status" aria-live="polite"></div>
+
+  <!-- Motion: GSAP (vendored locally, no third-party runtime dependency) -->
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="vendor/gsap/SplitText.min.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

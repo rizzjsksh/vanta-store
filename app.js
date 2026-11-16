@@ -13,6 +13,19 @@ function escapeHtml(str) {
 }
 
 /* --------------------------------------------------------------------------
+   Screen-reader announcer
+   --------------------------------------------------------------------------
+   A single polite live region for the whole page. Messages are cleared and
+   re-set so repeated identical messages are still announced.
+   -------------------------------------------------------------------------- */
+function announce(message) {
+  const region = document.getElementById("xanta-announcer");
+  if (!region) return;
+  region.textContent = "";
+  window.setTimeout(() => { region.textContent = message; }, 50);
+}
+
+/* --------------------------------------------------------------------------
    Dynamic Schema.org Product JSON-LD Injection
    -------------------------------------------------------------------------- */
 function injectProductSchema(product) {
@@ -146,6 +159,13 @@ function updateCartCount() {
   document.querySelectorAll("#cart-count, .cart-count-badge, .bottom-cart-badge").forEach(el => {
     el.textContent = count;
   });
+  const live = document.getElementById("xanta-announcer");
+  if (live) {
+    live.textContent = "";
+    window.setTimeout(() => {
+      live.textContent = count === 1 ? "1 item in your bag." : `${count} items in your bag.`;
+    }, 50);
+  }
 }
 
 function addToCart(item) {
@@ -162,6 +182,8 @@ function addToCart(item) {
 
   saveCart(cart);
   showCartToast(item);
+  document.querySelectorAll("#cart-count, .cart-count-badge, .bottom-cart-badge")
+    .forEach(badge => badge.dispatchEvent(new CustomEvent("xanta:bump")));
   renderCartPage();
 }
 
@@ -210,70 +232,139 @@ function showCartToast(item) {
 /* --------------------------------------------------------------------------
    Product Card Component
    -------------------------------------------------------------------------- */
-function productCard(p) {
-  const badgeText = p.badge || (p.featured ? "Best Seller" : "New");
-  const badgeClass = badgeText.toLowerCase().includes("hot") ? "badge-hot" : (badgeText.toLowerCase().includes("seller") ? "badge-seller" : "badge-new");
-  const imgUrl = p.image ? (p.image.startsWith("http") || p.image.startsWith("/") ? p.image : XANTA_API + p.image) : "";
+/* --------------------------------------------------------------------------
+   Product Card Component — the archive "lot" card
+   --------------------------------------------------------------------------
+   A card is one archive lot: a numbered lot label, the garment on a light
+   specimen panel, and a strip of real colour swatches that swaps the garment
+   image in place so shoppers can browse colourways without leaving the grid.
+   -------------------------------------------------------------------------- */
+function productCard(p, options) {
+  const opts = options || {};
+  const prodId = escapeHtml(p.id);
+  const prodName = escapeHtml(p.name || "XANTA Product");
+  const isLead = !!opts.lead;
+
   const sizes = Array.isArray(p.sizes) ? p.sizes : [];
   const firstSize = sizes.find(s => s && typeof s === "object" && Number(s.price) > 0);
   const price = Number(p.price || firstSize?.price);
-  const priceDisplay = Number.isFinite(price) && price > 0 ? `$${price.toFixed(2)}` : "View details";
-  const prodId = escapeHtml(p.id);
-  const prodName = escapeHtml(p.name || "XANTA Product");
-
-  // Determine back view image if available
-  let backImgUrl = "";
-  if (Array.isArray(p.colourways) && p.colourways[0]?.images?.length > 1) {
-    const backObj = p.colourways[0].images[1];
-    backImgUrl = typeof backObj === "string" ? backObj : (backObj.url || backObj.src || "");
-  } else if (Array.isArray(p.gallery) && p.gallery.length > 1) {
-    const backObj = p.gallery[1];
-    backImgUrl = typeof backObj === "string" ? backObj : (backObj.url || backObj.src || "");
-  }
-  if (backImgUrl && !backImgUrl.startsWith("http") && !backImgUrl.startsWith("/")) {
-    backImgUrl = XANTA_API + backImgUrl;
-  }
-
-  const image = imgUrl
-    ? (backImgUrl
-        ? `<div class="card-visual"><img class="card-img-front" src="${escapeHtml(imgUrl)}" alt="${prodName} — Front View" loading="lazy" decoding="async" width="480" height="600"><img class="card-img-back" src="${escapeHtml(backImgUrl)}" alt="${prodName} — Back View" loading="lazy" decoding="async" width="480" height="600"></div>`
-        : `<div class="card-visual"><img src="${escapeHtml(imgUrl)}" alt="${prodName}" loading="lazy" decoding="async" width="480" height="600"></div>`
-      )
-    : `<div class="card-visual"><div class="product-image-unavailable" aria-label="Product image unavailable">XANTA</div></div>`;
+  const priceDisplay = Number.isFinite(price) && price > 0 ? `$${price.toFixed(2)}` : "View product";
 
   const cws = Array.isArray(p.colourways) ? p.colourways : [];
-  const coloursMarkup = cws.length > 1
-    ? `<div class="card-colour-indicators" aria-label="${cws.length} available colours">
-        ${cws.slice(0, 5).map(cw => `<a href="product.html?id=${encodeURIComponent(p.id)}&colour=${encodeURIComponent(cw.colour)}&view=front" class="card-colour-dot-link" aria-label="${escapeHtml(p.name)} in ${escapeHtml(cw.colour)}"><span class="card-colour-dot" style="background:${cw.hex || '#666'}" title="${escapeHtml(cw.colour || '')}"></span></a>`).join('')}
-        ${cws.length > 5 ? `<span class="card-colour-more">+${cws.length - 5}</span>` : ''}
-        <span class="card-colour-count">${cws.length} Colours</span>
+  const lotCode = `LOT ${String(p.sort_order || 0).padStart(2, "0")}`;
+  const badgeText = p.featured ? `${lotCode} · FEATURED` : lotCode;
+  const badgeClass = p.featured ? "badge-seller" : "badge-new";
+
+  const resolve = url => (!url ? "" : (url.startsWith("http") || url.startsWith("/") ? url : XANTA_API + url));
+  const imageAt = (cw, index) => {
+    const imgs = (cw && cw.images) || [];
+    const im = imgs[index];
+    if (!im) return "";
+    return typeof im === "string" ? im : (im.url || im.src || "");
+  };
+
+  const frontUrl = resolve(imageAt(cws[0], 0) || p.image || "");
+  const backUrl = resolve(imageAt(cws[0], 1));
+
+  // The lead card is above the fold, so it loads eagerly; everything else waits.
+  const loadAttrs = isLead
+    ? 'loading="eager" fetchpriority="high"'
+    : 'loading="lazy" fetchpriority="low"';
+
+  const image = frontUrl
+    ? `<div class="card-visual" data-lot-panel>
+         <img class="card-img-front" data-lot-front src="${escapeHtml(frontUrl)}" alt="${prodName} — front view" ${loadAttrs} decoding="async" width="800" height="1000">
+         ${backUrl ? `<img class="card-img-back" data-lot-back src="${escapeHtml(backUrl)}" alt="" aria-hidden="true" loading="lazy" decoding="async" width="800" height="1000">` : ""}
        </div>`
-    : (cws.length === 1 && cws[0]?.images?.length > 1 ? `<div class="card-colour-indicators"><span class="card-colour-count">Front &amp; Back Views</span></div>` : '');
+    : `<div class="card-visual"><div class="product-image-unavailable" role="img" aria-label="Product image unavailable">XANTA</div></div>`;
+
+  const lotStrip = cws.length
+    ? `<div class="lot-strip" role="group" aria-label="Colour lots for ${prodName}">
+         ${cws.map((cw, i) => `
+           <button type="button" class="lot-swatch" style="--swatch:${escapeHtml(cw.hex || "#777777")}"
+                   data-lot-index="${i}" data-product-id="${prodId}"
+                   aria-pressed="${i === 0}"
+                   aria-label="${escapeHtml(cw.colour || `Colour ${i + 1}`)}"><span class="sr-only">${escapeHtml(cw.colour || "")}</span></button>`).join("")}
+         <span class="lot-strip-count">${cws.length} ${cws.length === 1 ? "LOT" : "LOTS"}</span>
+         <span class="lot-swatch-label" data-lot-label aria-live="polite">${escapeHtml(cws[0]?.colour || "")}</span>
+       </div>`
+    : "";
 
   return `
-    <article class="top-pick-card" data-product-id="${prodId}">
+    <article class="top-pick-card" data-reveal="up" data-product-id="${prodId}">
       <div class="card-top-row">
         <span class="card-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-        <button type="button" class="wishlist-btn" aria-label="Add ${prodName} to wishlist" onclick="toggleWishlist(this, '${prodId}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <button type="button" class="wishlist-btn" aria-pressed="false" aria-label="Save ${prodName} to wishlist" onclick="toggleWishlist(this, '${prodId}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         </button>
       </div>
 
-      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}">
+      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}, ${escapeHtml(priceDisplay)}">
         ${image}
       </a>
+
+      ${lotStrip}
 
       <div class="card-details-row">
         <div class="card-meta">
           <h3 class="card-title"><a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a></h3>
-          ${coloursMarkup}
+          ${isLead && p.description ? `<p class="card-note">${escapeHtml(p.description)}</p>` : ""}
           <span class="card-price">${priceDisplay}</span>
         </div>
-        <button type="button" class="btn-card-add-cart" onclick="window.location.href='product.html?id=${encodeURIComponent(p.id)}'" aria-label="Choose options for ${prodName}">
-          <span>Options</span>
-        </button>
+        <a class="btn-card-add-cart" href="product.html?id=${encodeURIComponent(p.id)}" aria-label="View ${prodName} and choose a size">
+          <span>View product</span>
+        </a>
       </div>
     </article>`;
+}
+
+/* --------------------------------------------------------------------------
+   Lot Strip — swap the garment image when a colour swatch is chosen
+   -------------------------------------------------------------------------- */
+function handleLotSwatch(event) {
+  const swatch = event.target.closest(".lot-swatch");
+  if (!swatch) return;
+
+  const card = swatch.closest(".top-pick-card");
+  if (!card) return;
+
+  const productId = swatch.getAttribute("data-product-id");
+  const index = Number(swatch.getAttribute("data-lot-index"));
+  const product = liveCatalog.find(p => String(p.id) === productId);
+  const colourway = product && (product.colourways || [])[index];
+  if (!colourway) return;
+
+  card.querySelectorAll(".lot-swatch").forEach(el => {
+    el.setAttribute("aria-pressed", String(el === swatch));
+  });
+
+  const label = card.querySelector("[data-lot-label]");
+  if (label) label.textContent = colourway.colour || "";
+
+  const imageAt = (cw, i) => {
+    const imgs = (cw && cw.images) || [];
+    const im = imgs[i];
+    if (!im) return "";
+    return typeof im === "string" ? im : (im.url || im.src || "");
+  };
+  const resolve = url => (!url ? "" : (url.startsWith("http") || url.startsWith("/") ? url : XANTA_API + url));
+
+  const front = card.querySelector("[data-lot-front]");
+  const back = card.querySelector("[data-lot-back]");
+  const nextFront = resolve(imageAt(colourway, 0));
+  const nextBack = resolve(imageAt(colourway, 1));
+
+  if (front && nextFront) front.src = nextFront;
+  if (back) {
+    if (nextBack) {
+      back.src = nextBack;
+      back.style.display = "";
+    } else {
+      back.style.display = "none";
+    }
+  }
+
+  announce(`${product.name} — ${colourway.colour} selected.`);
 }
 
 function quickAddToCart(productId) {
@@ -281,16 +372,16 @@ function quickAddToCart(productId) {
 }
 
 function toggleWishlist(btn, productId) {
-  btn.classList.toggle("active");
+  const active = btn.classList.toggle("active");
+  btn.setAttribute("aria-pressed", String(active));
   const svg = btn.querySelector("svg");
-  if (btn.classList.contains("active")) {
-    svg.setAttribute("fill", "var(--gold)");
-    svg.setAttribute("stroke", "var(--gold)");
-    showCartToast("Added to wishlist");
-  } else {
-    svg.setAttribute("fill", "none");
-    svg.setAttribute("stroke", "currentColor");
+  if (svg) {
+    svg.setAttribute("fill", active ? "var(--oxide)" : "none");
+    svg.setAttribute("stroke", active ? "var(--oxide)" : "currentColor");
   }
+  const label = btn.getAttribute("aria-label") || "";
+  btn.setAttribute("aria-label", active ? label.replace(/^Save /, "Remove ") : label.replace(/^Remove /, "Save "));
+  announce(active ? "Saved to your wishlist." : "Removed from your wishlist.");
 }
 
 /* --------------------------------------------------------------------------
@@ -328,9 +419,7 @@ function renderProductDetail() {
   const qtyInput = document.getElementById("detail-qty");
 
   if (titleEl) titleEl.textContent = product.name || "XANTA Essential";
-  const breadcrumbEl = document.getElementById("breadcrumb-current-name");
-  if (breadcrumbEl) breadcrumbEl.textContent = product.name || "Product Details";
-  document.title = `${product.name || "XANTA Essential"} — XANTA Luxury Streetwear`;
+  document.title = `${product.name || "XANTA Essential"} | XANTA`;
   injectProductSchema(product);
   const defaultColourName = product.colour || "Standard";
   if (descEl) descEl.textContent = product.description || "";
@@ -1044,8 +1133,14 @@ function renderProductDetail() {
   const minus = document.getElementById("qty-minus");
   const plus = document.getElementById("qty-plus");
   if (qtyInput) qtyInput.value = "1";
-  if (minus && qtyInput) minus.onclick = () => { qtyInput.value = Math.max(1, (parseInt(qtyInput.value, 10) || 1) - 1); };
-  if (plus && qtyInput) plus.onclick = () => { qtyInput.value = Math.min(99, (parseInt(qtyInput.value, 10) || 1) + 1); };
+  if (minus && qtyInput) minus.onclick = () => {
+    qtyInput.value = Math.max(1, (parseInt(qtyInput.value, 10) || 1) - 1);
+    announce(`Quantity ${qtyInput.value}`);
+  };
+  if (plus && qtyInput) plus.onclick = () => {
+    qtyInput.value = Math.min(99, (parseInt(qtyInput.value, 10) || 1) + 1);
+    announce(`Quantity ${qtyInput.value}`);
+  };
 
   if (btnAdd) btnAdd.onclick = () => {
     const selectedSize = sizePillsContainer?.querySelector(".size-pill.active")?.dataset.size || sizeSelect?.value || activeSize;
@@ -1068,7 +1163,7 @@ function renderProductDetail() {
     });
   };
 
-  if (relatedEl) relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(productCard).join("");
+  if (relatedEl) relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(p => productCard(p)).join("");
 }
 
 /* --------------------------------------------------------------------------
@@ -1084,10 +1179,11 @@ function renderCartPage() {
 
   if (cart.length === 0) {
     cartContainer.innerHTML = `
-      <div style="padding: 60px 0; text-align: left;">
-        <p class="eyebrow">YOUR BAG IS CURRENTLY EMPTY</p>
-        <p style="font-size: 15px; color: var(--muted); margin: 12px 0 28px;">Explore Edition 001 and select your essential pieces.</p>
-        <a href="shop.html" class="button button-dark">EXPLORE COLLECTION ↗</a>
+      <div class="cart-empty">
+        <div class="cart-empty-mark" aria-hidden="true">X</div>
+        <h2 class="cart-empty-title">Your bag is empty</h2>
+        <p class="cart-empty-text">Edition 001 is five pieces in 280&ndash;420 GSM cotton. Choose a lot and it will appear here with your size and colour.</p>
+        <a href="shop.html" class="btn-gold-pill">Shop the collection</a>
       </div>
     `;
     if (subtotalDisplay) subtotalDisplay.textContent = "$0.00";
@@ -1142,27 +1238,6 @@ function renderCheckoutPage() {
   const summaryItemsContainer = document.getElementById("checkout-summary-items");
   if (!checkoutSection || !summaryItemsContainer) return;
 
-  const paymentParams = new URLSearchParams(window.location.search);
-  const paymentState = paymentParams.get("payment");
-  const returnedOrder = paymentParams.get("order");
-  if (paymentState === "success" && returnedOrder) {
-    document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">XANTA / PAYMENT</p><h2>VERIFYING PAYMENT…</h2><p style="color:var(--muted)">Please wait while we confirm your payment securely.</p></div>';
-    fetch(XANTA_API + "/api/checkout/status?order=" + encodeURIComponent(returnedOrder))
-      .then(r => r.json().then(d => ({ok:r.ok,data:d})))
-      .then(({ok,data}) => {
-        if (!ok || !data.ok) throw new Error(data.error || "We could not verify this payment yet.");
-        if (data.order.status === "paid") {
-          localStorage.removeItem(CART_STORAGE_KEY); updateCartCount();
-          document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">PAYMENT VERIFIED</p><h2>THANK YOU FOR YOUR ORDER.</h2><p style="color:var(--muted)">Your payment has been confirmed by Monime. Your XANTA order reference is:</p><div class="order-badge">' + escapeHtml(data.order.reference) + '</div><p>Total paid: $' + Number(data.order.total).toFixed(2) + ' USD</p><p style="color:var(--muted)">We will use your delivery details to process your order.</p><a href="shop.html" class="button button-dark">CONTINUE SHOPPING ↗</a></div>';
-        } else {
-          document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><p class="eyebrow">PAYMENT PENDING</p><h2>WE ARE STILL CONFIRMING.</h2><p style="color:var(--muted)">Your order is not marked as paid yet. Please wait a moment and refresh this page. Do not pay again unless Monime shows the first attempt failed.</p><div class="order-badge">' + escapeHtml(data.order.reference) + '</div><button class="button button-dark" onclick="location.reload()">CHECK PAYMENT STATUS</button></div>';
-        }
-      }).catch(error => { document.getElementById("checkout-content").innerHTML = '<div class="confirmation-card"><h2>PAYMENT STATUS UNAVAILABLE</h2><p>' + escapeHtml(error.message) + '</p><button class="button button-dark" onclick="location.reload()">TRY AGAIN</button></div>'; });
-    return;
-  }
-  if (paymentState === "cancelled") {
-    document.getElementById("checkout-content").insertAdjacentHTML("afterbegin", '<div class="confirmation-card"><p class="eyebrow">PAYMENT NOT COMPLETED</p><h2>YOUR CART IS SAVED.</h2><p style="color:var(--muted)">Your payment was cancelled or not completed. You can try again below.</p></div>');
-  }
   const cart = getCart();
   if (cart.length === 0) {
     document.getElementById("checkout-content").innerHTML = `
@@ -1221,43 +1296,73 @@ function renderCheckoutPage() {
   if (expressShippingRadio) expressShippingRadio.onchange = updateCheckoutTotal;
   updateCheckoutTotal();
 
-  // Create a server-priced Monime checkout session; never mark orders paid in the browser.
+  // Handle Checkout Form Submission
   const form = document.getElementById("checkout-form");
   if (form) {
-    form.onsubmit = async event => {
-      event.preventDefault();
-      const button = form.querySelector('button[type="submit"]');
-      if (button) { button.disabled = true; button.dataset.originalText = button.textContent; button.textContent = "CONNECTING TO MONIME…"; }
-      const showError = message => {
-        let box = document.getElementById("checkout-payment-error");
-        if (!box) { box = document.createElement("p"); box.id = "checkout-payment-error"; box.setAttribute("role","alert"); box.style.cssText = "color:#b42318;margin:12px 0;font-size:13px"; form.querySelector(".checkout-section:last-child")?.prepend(box); }
-        box.textContent = message;
+    form.onsubmit = e => {
+      e.preventDefault();
+      const orderId = "XANTA-" + Math.floor(100000 + Math.random() * 900000);
+      const email = document.getElementById("cust-email").value;
+      const firstName = document.getElementById("cust-fname").value;
+      const lastName = document.getElementById("cust-lname").value;
+      const address = document.getElementById("cust-address").value;
+      const city = document.getElementById("cust-city").value;
+      const zip = document.getElementById("cust-zip").value;
+      const country = document.getElementById("cust-country").value;
+      const phone = document.getElementById("cust-phone").value;
+
+      const orderData = {
+        orderId,
+        date: new Date().toISOString(),
+        customer: { firstName, lastName, email, phone },
+        shippingAddress: { address, city, zip, country },
+        items: cart,
+        subtotal,
+        shippingCost,
+        total: subtotal + shippingCost,
+        status: "CONFIRMED_PREORDER"
       };
+
       try {
-        const response = await fetch(XANTA_API + "/api/checkout/create", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            items: getCart().map(item => ({ id:item.id, size:item.size, colour:item.colour, quantity:item.quantity })),
-            shippingMethod: document.getElementById("shipping-express")?.checked ? "express" : "standard",
-            customer: {
-              email: document.getElementById("cust-email").value.trim(),
-              phone: document.getElementById("cust-phone").value.trim(),
-              firstName: document.getElementById("cust-fname").value.trim(),
-              lastName: document.getElementById("cust-lname").value.trim(),
-              address: document.getElementById("cust-address").value.trim(),
-              city: document.getElementById("cust-city").value.trim(),
-              zip: document.getElementById("cust-zip").value.trim(),
-              country: document.getElementById("cust-country").value
-            }
-          })
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok || !result.redirectUrl) throw new Error(result.error || "Could not start Monime checkout.");
-        window.location.assign(result.redirectUrl);
-      } catch (error) {
-        showError(error.message || "Payment could not be started. Your cart has been saved.");
-        if (button) { button.disabled = false; button.textContent = button.dataset.originalText || "PAY SECURELY WITH MONIME ↗"; }
+        const past = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY) || "[]");
+        past.unshift(orderData);
+        localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(past));
+      } catch (err) {
+        console.error(err);
       }
+
+      // Clear cart
+      localStorage.removeItem(CART_STORAGE_KEY);
+      updateCartCount();
+
+      // Show Confirmation Screen
+      document.getElementById("checkout-content").innerHTML = `
+        <div class="confirmation-card">
+          <p class="eyebrow" style="color:var(--ink)">ORDER RECORDED // 001</p>
+          <h2>THANK YOU, ${firstName.toUpperCase()}.</h2>
+          <p style="color:var(--muted);font-size:14px;line-height:1.7">Your order has been recorded in inventory. A confirmation reference has been registered for your delivery.</p>
+          <div class="order-badge">ORDER REF: ${orderId}</div>
+          
+          <div class="order-recap-box">
+            <strong>DELIVERY DISPATCH DETAILS</strong><br>
+            ${firstName} ${lastName}<br>
+            ${address}<br>
+            ${city}, ${zip}, ${country}<br>
+            Email: ${email} · Phone: ${phone || 'N/A'}<br><br>
+            <strong>ORDER BREAKDOWN</strong><br>
+            ${cart.map(i => `· ${i.quantity}x ${i.name} (${i.colour} / ${i.size}) — $${(i.price * i.quantity).toFixed(2)}`).join("<br>")}<br>
+            Shipping: ${shippingCost === 0 ? "FREE" : "$" + shippingCost.toFixed(2)}<br>
+            <strong>TOTAL: $${(subtotal + shippingCost).toFixed(2)}</strong>
+          </div>
+
+          <p style="font-size:12px;color:var(--muted);line-height:1.8">
+            Your pieces are reserved in production. When live payment gateways (Monime) are activated, tracking and automated dispatch updates will link directly to this order reference.
+          </p>
+
+          <a href="shop.html" class="button button-dark" style="margin-top:24px;display:inline-block">CONTINUE SHOPPING ↗</a>
+        </div>
+      `;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     };
   }
 }
@@ -1273,39 +1378,97 @@ function renderHeroShowcase(settings) {
   const frame = document.getElementById("hero-showcase-frame");
   if (!frame) return;
 
+  const img = document.getElementById("hero-showcase-img");
+  const placeholder = document.getElementById("hero-showcase-placeholder");
+  const badge = document.getElementById("hero-showcase-badge");
   const footerTag = document.getElementById("hero-footer-tag");
+
+  const heroKey = (settings && settings.hero_image_key) || "";
   let heroUrl = (settings && settings.hero_image_url) || null;
-  let heroTitle = (settings && settings.hero_title) || "ESSENTIALS 001";
+  let heroTitle = (settings && settings.hero_title) || "EDITION 001";
   let heroBadge = (settings && settings.hero_badge) || "LIMITED RUN // 280 GSM";
 
-  // Fallback to any featured product that has an image
-  if (!heroUrl && typeof liveCatalog !== "undefined" && Array.isArray(liveCatalog)) {
-    const withImg = liveCatalog.find(p => p.image);
-    if (withImg) {
-      heroUrl = withImg.image;
-      heroTitle = withImg.name;
+  // Resolve which lot the hero is showing so the swatch strip stays in sync.
+  let heroProduct = null;
+  if (Array.isArray(liveCatalog)) {
+    if (heroKey) {
+      const encoded = encodeURIComponent(heroKey);
+      heroProduct = liveCatalog.find(p => (p.image || "").includes(encoded)) || null;
+    }
+    if (!heroProduct) {
+      heroProduct = liveCatalog.find(p => p.featured && p.image)
+        || liveCatalog.find(p => p.image)
+        || null;
     }
   }
+  if (!heroUrl && heroProduct) heroUrl = heroProduct.image;
 
-  if (heroUrl) {
-    frame.classList.add("has-image");
-    frame.innerHTML = `
-      <img src="${heroUrl}" alt="${escapeHtml(heroTitle)} — XANTA Minimalist Luxury Streetwear &amp; 280 GSM Heavyweight Essentials Showcase" title="${escapeHtml(heroTitle)} — XANTA Showcase" class="hero-showcase-img" loading="eager" fetchpriority="high" decoding="async" width="1200" height="800">
-      <div class="hero-garment-brand" id="hero-showcase-badge">${escapeHtml(heroTitle)}</div>
-    `;
-  } else {
-    frame.classList.remove("has-image");
-    frame.innerHTML = `
-      <div class="hero-showcase-placeholder" id="hero-showcase-placeholder">
-        <div class="hero-showcase-placeholder-mark">X</div>
-        <p class="hero-showcase-placeholder-tag">XANTA ARCHIVE</p>
-      </div>
-      <div class="hero-garment-brand" id="hero-showcase-badge" style="display:none;">${escapeHtml(heroTitle)}</div>
-    `;
+  if (img) {
+    if (heroUrl) {
+      img.src = heroUrl;
+      img.alt = `${heroTitle} — XANTA Edition 001`;
+      img.hidden = false;
+      if (placeholder) placeholder.hidden = true;
+    } else {
+      img.hidden = true;
+      if (placeholder) placeholder.hidden = false;
+    }
   }
-  if (footerTag && heroBadge) {
-    footerTag.textContent = heroBadge;
+  if (badge) badge.textContent = heroTitle;
+  if (footerTag) footerTag.textContent = heroBadge;
+
+  renderHeroLots(heroProduct);
+}
+
+/* --------------------------------------------------------------------------
+   Hero Lot Strip — the archive colourway rail beneath the specimen stage
+   -------------------------------------------------------------------------- */
+function renderHeroLots(product) {
+  const row = document.getElementById("hero-lot-row");
+  if (!row) return;
+
+  const cws = (product && product.colourways) || [];
+  if (!cws.length) {
+    row.innerHTML = "";
+    return;
   }
+
+  row.innerHTML = cws.map((cw, i) => `
+    <button type="button" class="lot-swatch" style="--swatch:${escapeHtml(cw.hex || "#777777")}"
+            data-hero-lot="${i}" data-product-id="${escapeHtml(product.id)}"
+            aria-pressed="${i === 0}" aria-label="Show ${escapeHtml(cw.colour || `colour ${i + 1}`)}">
+      <span class="sr-only">${escapeHtml(cw.colour || "")}</span>
+    </button>`).join("")
+    + `<span class="hero-lot-caption">${cws.length} colour lots</span>`;
+}
+
+function handleHeroLotSwatch(event) {
+  const swatch = event.target.closest("[data-hero-lot]");
+  if (!swatch) return;
+
+  const productId = swatch.getAttribute("data-product-id");
+  const index = Number(swatch.getAttribute("data-hero-lot"));
+  const product = liveCatalog.find(p => String(p.id) === productId);
+  const colourway = product && (product.colourways || [])[index];
+  if (!colourway) return;
+
+  const imgs = colourway.images || [];
+  const first = imgs[0];
+  const url = typeof first === "string" ? first : (first?.url || first?.src || "");
+  if (!url) return;
+
+  document.querySelectorAll("[data-hero-lot]").forEach(el => {
+    el.setAttribute("aria-pressed", String(el === swatch));
+  });
+
+  const img = document.getElementById("hero-showcase-img");
+  if (img) {
+    img.classList.add("is-swapping");
+    window.setTimeout(() => { img.src = url; }, 140);
+    window.setTimeout(() => { img.classList.remove("is-swapping"); }, 460);
+  }
+
+  announce(`${product.name} — ${colourway.colour} selected.`);
 }
 
 async function loadVantaCatalog() {
@@ -1321,6 +1484,8 @@ async function loadVantaCatalog() {
       const data = await res.json();
       if (Array.isArray(data.products)) {
         liveCatalog = data.products;
+        const countEl = document.getElementById("hero-piece-count");
+        if (countEl) countEl.textContent = String(liveCatalog.length);
       }
       if (data.settings) {
         try { localStorage.setItem("xanta_hero_settings", JSON.stringify(data.settings)); } catch(_) {}
@@ -1344,7 +1509,8 @@ async function loadVantaCatalog() {
     const featured = liveCatalog.filter(p => p.featured);
     const toShow = featured.length ? featured : liveCatalog;
     if (toShow.length) {
-      featuredContainer.innerHTML = toShow.map(productCard).join("");
+      featuredContainer.innerHTML = toShow.map((p, i) => productCard(p, { lead: i === 0 })).join("");
+      if (window.XANTAMotion) window.XANTAMotion.refresh();
     } else {
       featuredContainer.innerHTML = `
         <div class="catalog-empty-notice">
@@ -1360,7 +1526,8 @@ async function loadVantaCatalog() {
   const allProductsContainer = document.getElementById("all-products");
   if (allProductsContainer) {
     if (liveCatalog.length) {
-      allProductsContainer.innerHTML = liveCatalog.map(productCard).join("");
+      allProductsContainer.innerHTML = liveCatalog.map((p, i) => productCard(p, { lead: i === 0 })).join("");
+      if (window.XANTAMotion) window.XANTAMotion.refresh();
     } else {
       allProductsContainer.innerHTML = `
         <div class="catalog-empty-notice">
@@ -1375,6 +1542,9 @@ async function loadVantaCatalog() {
 
   // Render product detail page
   renderProductDetail();
+
+  // Related products render last, so let the motion layer pick them up too.
+  if (window.XANTAMotion) window.XANTAMotion.refresh();
 }
 
 /* Contact form: submit only through the backend, never show a false success. */
@@ -1472,7 +1642,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   initContactForm();
   updateCartCount();
-  
+
+  // Lot strips swap the garment image in place (delegated so it survives re-renders)
+  document.addEventListener("click", handleLotSwatch);
+  document.addEventListener("click", handleHeroLotSwatch);
+
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 

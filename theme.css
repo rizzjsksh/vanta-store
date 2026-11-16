@@ -835,6 +835,13 @@ textarea:focus-visible,
   align-items: stretch;
   justify-content: flex-start;
 }
+
+/* In the lead tile the media absorbs the spare height, so the body must not
+   claim it with an auto top margin. */
+.trending-grid > .top-pick-card:first-child .card-details-row,
+.product-grid > .top-pick-card:first-child .card-details-row {
+  margin-top: 0;
+}
 .card-meta {
   display: flex;
   flex-direction: column;

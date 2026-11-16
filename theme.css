@@ -1391,8 +1391,8 @@ textarea:focus-visible,
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  min-height: 42px;
-  padding: 10px 18px;
+  min-height: 44px;
+  padding: 11px 18px;
 }
 .gallery-view-tab:hover { color: var(--undyed); border-color: var(--undyed-dim); }
 .gallery-view-tab.active {

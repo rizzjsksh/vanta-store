@@ -279,42 +279,27 @@ function productCard(p, options) {
     : `<div class="card-visual"><div class="product-image-unavailable" role="img" aria-label="Product image unavailable">XANTA</div></div>`;
 
   const lotStrip = cws.length
-    ? `<div class="lot-strip" role="group" aria-label="Colour lots for ${prodName}">
+    ? `<div class="lot-strip" role="group" aria-label="Colours for ${prodName}">
          ${cws.map((cw, i) => `
            <button type="button" class="lot-swatch" style="--swatch:${escapeHtml(cw.hex || "#777777")}"
                    data-lot-index="${i}" data-product-id="${prodId}"
                    aria-pressed="${i === 0}"
                    aria-label="${escapeHtml(cw.colour || `Colour ${i + 1}`)}"><span class="sr-only">${escapeHtml(cw.colour || "")}</span></button>`).join("")}
-         <span class="lot-strip-count">${cws.length} ${cws.length === 1 ? "LOT" : "LOTS"}</span>
-         <span class="lot-swatch-label" data-lot-label aria-live="polite">${escapeHtml(cws[0]?.colour || "")}</span>
        </div>`
     : "";
 
   return `
     <article class="top-pick-card" data-reveal="up" data-product-id="${prodId}">
-      <div class="card-top-row">
-        <span class="card-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-        <button type="button" class="wishlist-btn" aria-pressed="false" aria-label="Save ${prodName} to wishlist" onclick="toggleWishlist(this, '${prodId}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-        </button>
-      </div>
-
       <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}, ${escapeHtml(priceDisplay)}">
         ${image}
       </a>
-
-      ${lotStrip}
-
       <div class="card-details-row">
         <div class="card-meta">
           <h3 class="card-title"><a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a></h3>
-          ${isLead && p.description ? `<p class="card-note">${escapeHtml(p.description)}</p>` : ""}
           <span class="card-price">${priceDisplay}</span>
         </div>
-        <a class="btn-card-add-cart" href="product.html?id=${encodeURIComponent(p.id)}" aria-label="View ${prodName} and choose a size">
-          <span>View product</span>
-        </a>
       </div>
+      ${lotStrip}
     </article>`;
 }
 

@@ -714,7 +714,7 @@ textarea:focus-visible,
   width: 100%;
   height: auto;
   max-height: none;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 0;
   /* Matches the seamless studio backdrop of the photography, so the
@@ -893,8 +893,8 @@ textarea:focus-visible,
 .product-grid > .top-pick-card:first-child .card-visual {
   /* 4/5 fills the taller tile so the lead lot has no dead space. */
   aspect-ratio: 4 / 5;
-  flex: 0 0 auto;
-  min-height: 0;
+  flex: 1 1 auto;
+  min-height: 380px;
 }
 
 /* The lead tile carries the garment note, so it earns its extra space. */
@@ -923,7 +923,7 @@ textarea:focus-visible,
 }
 @media (max-width: 760px) {
   .trending-grid > .top-pick-card:first-child .card-visual,
-  .product-grid > .top-pick-card:first-child .card-visual { aspect-ratio: 4 / 3; }
+  .product-grid > .top-pick-card:first-child .card-visual { aspect-ratio: 4 / 3; min-height: 0; flex: 0 0 auto; }
   .trending-grid > .top-pick-card:first-child .card-title,
   .product-grid > .top-pick-card:first-child .card-title { font-size: 15px; }
 }
@@ -1251,6 +1251,13 @@ textarea:focus-visible,
 /* --------------------------------------------------------------------------
    13. RESPONSIVE
    -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .product-detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-inner-grid { grid-template-columns: 1fr; gap: 32px; }
   .hero-visual-col { margin-left: 0; order: -1; }

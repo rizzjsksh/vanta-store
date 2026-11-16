@@ -1875,3 +1875,18 @@ textarea:focus-visible,
     font-size: 9px;
   }
 }
+
+
+/* XANTA compact catalogue cards: image, title, price, colour swatches only. */
+.top-pick-card { background: #ededed; border: 0; border-radius: 2px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+.top-pick-card:hover { transform: none; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+.top-pick-card .card-visual { margin: 0; aspect-ratio: 1 / 1; background: #ededed; padding: 8px; box-sizing: border-box; }
+.top-pick-card .card-visual img { object-fit: contain; }
+.top-pick-card .card-details-row { margin: 0; padding: 8px 10px 2px; gap: 4px; }
+.top-pick-card .card-meta { gap: 6px; }
+.top-pick-card .card-title { color: #171717; font-size: 14px; line-height: 1.25; letter-spacing: 0; }
+.top-pick-card .card-title a { color: #171717; }
+.top-pick-card .card-price { color: #292929; font-size: 13px; }
+.top-pick-card .lot-strip { gap: 3px; padding: 2px 6px 10px; align-items: center; }
+.top-pick-card .lot-swatch { width: 38px; height: 38px; min-width: 38px; padding: 9px; border-radius: 50%; background: var(--swatch, #777) content-box; }
+.top-pick-card .lot-swatch::after { border-radius: 50%; }

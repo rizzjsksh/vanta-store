@@ -1,0 +1,1113 @@
+/* ==========================================================================
+   XANTA — REFORMIA THEME DESIGN SYSTEM (PORTED FROM SHOPLAZZA REFORMIA THEME)
+   ========================================================================== */
+
+:root {
+  --color-bg: #FFFFFF;
+  --color-foreground: #1C1F23;
+  --color-muted: #6F7173;
+  --color-border: #E6E8EA;
+  --color-bone: #F4F1EA;
+  --color-ink: #14161A;
+  --color-denim: #5C7B96;
+  --color-card-bg: #FAFAFA;
+  --color-gray-bg: #EDEDED;
+  --radius-btn: 6px;
+  --radius-card: 12px;
+  --radius-input: 40px;
+  --font-main: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --container-max: 1440px;
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-foreground);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Top Marquee / Ticker Carousel
+   -------------------------------------------------------------------------- */
+.xanta-ticker {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 2rem;
+  align-items: center;
+  animation: ticker-slide 28s linear infinite;
+  will-change: transform;
+}
+
+.xanta-ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-block;
+}
+
+.ticker-divider {
+  color: var(--color-denim);
+  font-size: 0.9rem;
+}
+
+@keyframes ticker-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* --------------------------------------------------------------------------
+   Reformia Sticky Header
+   -------------------------------------------------------------------------- */
+.reformia-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+.header-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-menu-btn {
+  display: none;
+  padding: 6px;
+  color: var(--color-ink);
+}
+
+.header-logo .logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-ink);
+  text-transform: uppercase;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-link:hover {
+  color: var(--color-ink);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: var(--color-ink);
+  transition: width 0.2s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+  padding: 8px 10px;
+  border-radius: var(--radius-btn);
+  transition: background-color 0.15s ease;
+  position: relative;
+}
+
+.action-btn:hover {
+  background-color: var(--color-bone);
+  color: var(--color-ink);
+}
+
+.cart-badge {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Reformia Hero Section
+   -------------------------------------------------------------------------- */
+.reformia-hero {
+  position: relative;
+  min-height: 720px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: #FFFFFF;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 22, 26, 0.25) 0%, rgba(20, 22, 26, 0.75) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #E2E8F0;
+  margin-bottom: 16px;
+}
+
+.hero-headline {
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 800px;
+  margin-bottom: 20px;
+  color: #FFFFFF;
+}
+
+.hero-subheadline {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 580px;
+  margin-bottom: 36px;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* Buttons */
+.reformia-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: var(--radius-btn);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.btn-ink {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  border: 1px solid var(--color-ink);
+}
+
+.btn-ink:hover {
+  background-color: #2D3139;
+  border-color: #2D3139;
+}
+
+.btn-white {
+  background-color: #FFFFFF;
+  color: var(--color-ink);
+  border: 1px solid #FFFFFF;
+}
+
+.btn-white:hover {
+  background-color: var(--color-bone);
+  border-color: var(--color-bone);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Sections General
+   -------------------------------------------------------------------------- */
+.reformia-section {
+  padding: 80px 0;
+}
+
+.reformia-section.bg-light {
+  background-color: #FAF9F6;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  gap: 16px;
+}
+
+.section-header.center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.header-titles {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.section-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-denim);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.section-badge {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--color-muted);
+  max-width: 520px;
+  margin-top: 8px;
+}
+
+.section-link {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.section-link:hover {
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   Product Cards & Grid
+   -------------------------------------------------------------------------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.product-scroll-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.reformia-product-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.reformia-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(20, 22, 26, 0.08);
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background-color: #F5F5F5;
+  overflow: hidden;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.reformia-product-card:hover .card-media img {
+  transform: scale(1.04);
+}
+
+.card-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.card-quick-add {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--color-ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: var(--radius-btn);
+  text-align: center;
+  border: 1px solid var(--color-border);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: var(--transition);
+  z-index: 3;
+}
+
+.reformia-product-card:hover .card-quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-info {
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-denim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.card-price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #F0F2F4;
+}
+
+.card-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.card-colors {
+  display: flex;
+  gap: 6px;
+}
+
+.color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Category Switcher Tabs
+   -------------------------------------------------------------------------- */
+.category-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.category-tab {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  padding: 10px 20px;
+  border-radius: 40px;
+  border: 1px solid var(--color-border);
+  background-color: #FFFFFF;
+  transition: var(--transition);
+}
+
+.category-tab:hover {
+  color: var(--color-ink);
+  border-color: #CBD5E1;
+}
+
+.category-tab.active {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  border-color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Instagram / Editorial Grid
+   -------------------------------------------------------------------------- */
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.ins-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.ins-media {
+  aspect-ratio: 1 / 1;
+  background-color: #F5F5F5;
+  overflow: hidden;
+}
+
+.ins-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.ins-card:hover .ins-media img {
+  transform: scale(1.03);
+}
+
+.ins-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  background-color: #FFFFFF;
+}
+
+.ins-desc {
+  font-size: 0.88rem;
+  color: var(--color-foreground);
+  line-height: 1.45;
+}
+
+.ins-user {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-denim);
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Brand Story Band (gen_7bg0271tyf41)
+   -------------------------------------------------------------------------- */
+.brand-story-band {
+  background-color: var(--color-bone);
+  color: var(--color-ink);
+  padding: 100px 24px;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.story-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.story-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--color-denim);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.story-heading {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  color: var(--color-ink);
+}
+
+.story-body {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #2D3139;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.story-btn {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  border-bottom: 2px solid var(--color-ink);
+  padding-bottom: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.story-btn:hover {
+  opacity: 0.65;
+}
+
+/* --------------------------------------------------------------------------
+   Closing Banner
+   -------------------------------------------------------------------------- */
+.reformia-closing {
+  position: relative;
+  min-height: 520px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.closing-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 22, 26, 0.45);
+  z-index: 1;
+}
+
+.closing-content {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.closing-eyebrow {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #E2E8F0;
+  margin-bottom: 14px;
+}
+
+.closing-headline {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: #FFFFFF;
+}
+
+.closing-subheadline {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 32px;
+}
+
+/* --------------------------------------------------------------------------
+   Cart Drawer (Slide-out)
+   -------------------------------------------------------------------------- */
+.cart-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cart-drawer-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background-color: #FFFFFF;
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.cart-drawer.active {
+  transform: translateX(0);
+}
+
+.cart-drawer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-drawer-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.cart-drawer-close {
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--color-muted);
+  padding: 4px;
+  transition: color 0.15s ease;
+}
+
+.cart-drawer-close:hover {
+  color: var(--color-ink);
+}
+
+.free-shipping-progress {
+  padding: 12px 24px;
+  background-color: var(--color-bone);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.progress-track {
+  height: 4px;
+  background-color: #E2DDD3;
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--color-denim);
+  transition: width 0.3s ease;
+}
+
+.cart-drawer-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-empty-message {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--color-muted);
+}
+
+.cart-drawer-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #F0F2F4;
+}
+
+.cart-item-img {
+  width: 80px;
+  height: 100px;
+  border-radius: 6px;
+  object-fit: cover;
+  background-color: #F5F5F5;
+  flex-shrink: 0;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 4px;
+}
+
+.cart-item-meta {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.cart-item-price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-qty-ctrl {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.qty-btn {
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+}
+
+.qty-display {
+  padding: 0 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.cart-item-remove {
+  font-size: 0.78rem;
+  color: #DC2626;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cart-drawer-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--color-border);
+  background-color: #FFFFFF;
+}
+
+.cart-subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+}
+
+.tax-shipping-note {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+.view-cart-link {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Reformia Footer
+   -------------------------------------------------------------------------- */
+.reformia-footer {
+  background-color: #171717;
+  color: #FFFFFF;
+  padding: 80px 0 32px;
+  border-top: 1px solid #2A2A2A;
+}
+
+.footer-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr;
+  gap: 48px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid #2A2A2A;
+}
+
+.footer-brand .footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.footer-tagline {
+  font-size: 0.9rem;
+  color: #A2A3A4;
+  line-height: 1.6;
+  max-width: 340px;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.col-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.footer-nav-col a {
+  font-size: 0.88rem;
+  color: #A2A3A4;
+  transition: color 0.15s ease;
+}
+
+.footer-nav-col a:hover {
+  color: #FFFFFF;
+}
+
+.dest-badge {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: #E2E8F0;
+  padding: 4px 8px;
+  background-color: #242424;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  width: fit-content;
+}
+
+.footer-bottom {
+  padding-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.copyright {
+  font-size: 0.82rem;
+  color: #71717A;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pay-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  background-color: #242424;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  color: #D4D4D8;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .instagram-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: block;
+  }
+  .header-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    padding: 24px;
+    gap: 16px;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  .header-nav.active {
+    display: flex;
+  }
+  .reformia-hero {
+    min-height: 520px;
+  }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .product-scroll-track {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .instagram-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}

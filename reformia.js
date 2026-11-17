@@ -405,6 +405,27 @@
     updateCartDrawer();
   }
 
+  // Global Event Listeners for Cart Updates
+  window.addEventListener("xanta:cart-updated", () => {
+    updateCartDrawer();
+    openCartDrawer();
+  });
+  window.addEventListener("xanta:bump", () => {
+    updateCartDrawer();
+  });
+  window.addEventListener("storage", (e) => {
+    if (e.key === "xanta_cart") updateCartDrawer();
+  });
+
+  window.XANTAReformia = {
+    openCartDrawer,
+    closeCartDrawer,
+    updateCartDrawer,
+    getCart,
+    saveCart,
+    renderProductCard
+  };
+
   // Initialize
   document.addEventListener("DOMContentLoaded", () => {
     initEvents();

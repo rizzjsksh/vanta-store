@@ -182,9 +182,14 @@ function addToCart(item) {
 
   saveCart(cart);
   showCartToast(item);
-  document.querySelectorAll("#cart-count, .cart-count-badge, .bottom-cart-badge")
+  document.querySelectorAll("#cart-count, .cart-count-badge, .bottom-cart-badge, #cart-count-badge")
     .forEach(badge => badge.dispatchEvent(new CustomEvent("xanta:bump")));
   renderCartPage();
+
+  window.dispatchEvent(new CustomEvent("xanta:cart-updated", { detail: { item, cart } }));
+  if (window.XANTAReformia && typeof window.XANTAReformia.openCartDrawer === "function") {
+    window.XANTAReformia.openCartDrawer();
+  }
 }
 
 function updateCartQuantity(index, delta) {
@@ -404,6 +409,9 @@ function renderProductDetail() {
   const qtyInput = document.getElementById("detail-qty");
 
   if (titleEl) titleEl.textContent = product.name || "XANTA Essential";
+  const bcEl = document.getElementById("breadcrumb-product-name");
+  if (bcEl) bcEl.textContent = (product.name || "Product").toUpperCase();
+  if (typeEl) typeEl.textContent = `XANTA // DROP 01 · ${product.category || "ESSENTIALS"}`;
   document.title = `${product.name || "XANTA Essential"} | XANTA`;
   injectProductSchema(product);
   const defaultColourName = product.colour || "Standard";
@@ -1148,7 +1156,13 @@ function renderProductDetail() {
     });
   };
 
-  if (relatedEl) relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(p => productCard(p)).join("");
+  if (relatedEl) {
+    if (window.XANTAReformia && typeof window.XANTAReformia.renderProductCard === "function") {
+      relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(p => window.XANTAReformia.renderProductCard(p)).join("");
+    } else {
+      relatedEl.innerHTML = liveCatalog.filter(candidate => candidate.id !== product.id).slice(0, 4).map(p => productCard(p)).join("");
+    }
+  }
 }
 
 /* --------------------------------------------------------------------------

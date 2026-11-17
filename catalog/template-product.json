@@ -1,0 +1,41 @@
+{
+  "id": "xanta-product-slug",
+  "name": "Product Display Name",
+  "category": "T-SHIRT",
+  "colour": "Vintage Black",
+  "price": 55.00,
+  "description": "High-density combed cotton heavyweight streetwear essential with dropped shoulders and architectural box cut.",
+  "details": [
+    "280 GSM luxury combed cotton",
+    "Pre-shrunk vintage wash treatment",
+    "Double-stitched ribbed neckline",
+    "Tailored boxy drape"
+  ],
+  "care": [
+    "Machine wash cold inside out",
+    "Hang dry recommended",
+    "Do not bleach",
+    "Cool iron if necessary"
+  ],
+  "sizes": ["S", "M", "L", "XL"],
+  "published": true,
+  "featured": true,
+  "sort_order": 1,
+  "colourways": [
+    {
+      "id": "colour-vintage-black",
+      "colour": "Vintage Black",
+      "hex": "#1a1a1a",
+      "images": [
+        {
+          "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-product-slug/vintage-black-front.png",
+          "label": "Front"
+        },
+        {
+          "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-product-slug/vintage-black-back.png",
+          "label": "Back"
+        }
+      ]
+    }
+  ]
+}

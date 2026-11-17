@@ -1,0 +1,490 @@
+{
+  "catalog_version": "1.0.0",
+  "updated_at": "2026-11-18",
+  "products": [
+    {
+      "id": "xanta-distressed-blue-denim-shorts",
+      "name": "Distressed Blue XANTA Denim Shorts",
+      "category": "DENIM",
+      "colour": "Distressed Blue",
+      "price": 85.0,
+      "description": "Crafted from premium heavyweight cotton denim featuring artisanal hand distressing, subtle vintage fading, custom branded hardware, and classic rear patch pockets.",
+      "details": [
+        "Heavyweight 100% cotton denim",
+        "Artisanal hand-distressed detailing",
+        "XANTA embossed hardware",
+        "Classic 5-pocket styling",
+        "Relaxed vintage streetwear fit"
+      ],
+      "care": [
+        "Machine wash cold inside out",
+        "Do not tumble dry",
+        "Do not bleach",
+        "Cool iron if needed"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "published": true,
+      "featured": true,
+      "sort_order": 1,
+      "colourways": [
+        {
+          "id": "denim-shorts-distressed-blue",
+          "colour": "Distressed Blue",
+          "hex": "#6b829e",
+          "images": [
+            {
+              "key": "products/xanta-distressed-blue-denim-shorts/distressed-blue-front.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-distressed-blue-denim-shorts/distressed-blue-front.png",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-distressed-blue-denim-shorts/distressed-blue-back.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-distressed-blue-denim-shorts/distressed-blue-back.png",
+              "label": "Back"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xanta-mens-loose-straight-pants",
+      "name": "XANTA Men's Loose Straight Pants",
+      "category": "PANTS",
+      "colour": "Caramel / Brown",
+      "price": 68.0,
+      "description": "Tailored with an effortless wide-leg drape and relaxed straight silhouette. Features high-density fleece cotton, an encased elastic drawstring waistband, and subtle XANTA embroidery on the left thigh.",
+      "details": [
+        "420 GSM ultra-heavyweight fleece cotton",
+        "Embroidered tonal XANTA emblem",
+        "Elasticated waistband with metal-tipped drawstrings",
+        "Deep side welt pockets",
+        "Straight-leg relaxed puddle drape"
+      ],
+      "care": [
+        "Machine wash cold with like colours",
+        "Hang dry recommended",
+        "Warm iron inside out",
+        "Do not dry clean"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "published": true,
+      "featured": true,
+      "sort_order": 2,
+      "colourways": [
+        {
+          "id": "loose-pants-caramel",
+          "colour": "Caramel / Brown",
+          "hex": "#8a5a36",
+          "images": [
+            {
+              "key": "products/xanta-mens-loose-straight-pants/caramel-front.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mens-loose-straight-pants/caramel-front.png",
+              "label": "Front"
+            }
+          ]
+        },
+        {
+          "id": "loose-pants-charcoal",
+          "colour": "Charcoal Grey",
+          "hex": "#383838",
+          "images": [
+            {
+              "key": "products/xanta-mens-loose-straight-pants/charcoal-front.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mens-loose-straight-pants/charcoal-front.png",
+              "label": "Front"
+            }
+          ]
+        },
+        {
+          "id": "loose-pants-dark-green",
+          "colour": "Dark Green",
+          "hex": "#1f3323",
+          "images": [
+            {
+              "key": "products/xanta-mens-loose-straight-pants/dark-green-front.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mens-loose-straight-pants/dark-green-front.png",
+              "label": "Front"
+            }
+          ]
+        },
+        {
+          "id": "loose-pants-navy",
+          "colour": "Navy Blue",
+          "hex": "#1c2438",
+          "images": [
+            {
+              "key": "products/xanta-mens-loose-straight-pants/navy-front.png",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mens-loose-straight-pants/navy-front.png",
+              "label": "Front"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xanta-mineral-wash-boxy-cotton-t-shirt",
+      "name": "XANTA Mineral Wash Boxy Cotton T-Shirt",
+      "category": "T-SHIRT",
+      "colour": "Sand / Cream",
+      "price": 48.0,
+      "description": "Cut in our signature boxy, dropped-shoulder silhouette from vintage mineral-washed cotton. Minimalist tonal XANTA chest print paired with our statement STANDING APART artwork across the back.",
+      "details": [
+        "280 GSM luxury combed cotton",
+        "Custom acid mineral wash finish",
+        "High-density ribbed crew collar",
+        "Front XANTA minimalist chest print",
+        "Back STANDING APART statement artwork"
+      ],
+      "care": [
+        "Machine wash cold delicate cycle",
+        "Wash with similar vintage wash tones",
+        "Tumble dry low or line dry",
+        "Do not iron directly over print"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "published": true,
+      "featured": true,
+      "sort_order": 3,
+      "colourways": [
+        {
+          "id": "mineral-wash-sand",
+          "colour": "Sand / Cream",
+          "hex": "#d9cebe",
+          "images": [
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/sand-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/sand-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/sand-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/sand-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "mineral-wash-sky-blue",
+          "colour": "Mineral Sky Blue",
+          "hex": "#8fa8bd",
+          "images": [
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/sky-blue-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/sky-blue-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/sky-blue-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/sky-blue-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "mineral-wash-white",
+          "colour": "Pure White",
+          "hex": "#f2f2f2",
+          "images": [
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/white-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/white-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/white-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/white-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "mineral-wash-grey",
+          "colour": "Mineral Wash Grey",
+          "hex": "#595959",
+          "images": [
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/grey-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/grey-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/grey-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/grey-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "mineral-wash-black",
+          "colour": "Mineral Wash Black",
+          "hex": "#262626",
+          "images": [
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/black-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/black-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-mineral-wash-boxy-cotton-t-shirt/black-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-mineral-wash-boxy-cotton-t-shirt/black-back.jpg",
+              "label": "Back"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xanta-unisex-color-block-polo-shirt",
+      "name": "XANTA Unisex Color Block Polo Shirt",
+      "category": "T-SHIRT",
+      "colour": "Black / Dark Color Block",
+      "price": 75.99,
+      "description": "Modern architectural color-blocking meets refined luxury sportswear. Features a tailored collar, concealed front button placket, tonal XANTA chest logo, and the bold STANDING APART signature across the back.",
+      "details": [
+        "Premium double-knit pique cotton blend",
+        "Contrast architectural color-block panels",
+        "Concealed 2-button front placket",
+        "Embossed XANTA chest signature",
+        "Full-width STANDING APART rear artwork"
+      ],
+      "care": [
+        "Machine wash gentle at 30\u00b0C",
+        "Reshape while damp",
+        "Do not tumble dry",
+        "Iron on reverse side"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "published": true,
+      "featured": true,
+      "sort_order": 4,
+      "colourways": [
+        {
+          "id": "polo-black",
+          "colour": "Black / Dark Color Block",
+          "hex": "#1f1f1f",
+          "images": [
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/black-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/black-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/black-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/black-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "polo-ice-blue",
+          "colour": "Ice Blue Color Block",
+          "hex": "#adc5d9",
+          "images": [
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/ice-blue-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/ice-blue-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/ice-blue-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/ice-blue-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "polo-mocha",
+          "colour": "Mocha Brown Color Block",
+          "hex": "#5c4738",
+          "images": [
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/mocha-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/mocha-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/mocha-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/mocha-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "polo-slate-navy",
+          "colour": "Slate Navy Color Block",
+          "hex": "#2b364a",
+          "images": [
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/slate-navy-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/slate-navy-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-color-block-polo-shirt/slate-navy-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-color-block-polo-shirt/slate-navy-back.jpg",
+              "label": "Back"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xanta-unisex-oversized-t-shirt",
+      "name": "XANTA Unisex Oversized T-Shirt",
+      "category": "T-SHIRT",
+      "colour": "Pastel Blue",
+      "price": 29.99,
+      "description": "The foundation of the XANTA wardrobe. Sculpted with generous dropped shoulders and high-density cotton. Features the understated XANTA chest emblem and the iconic STANDING APART statement across the shoulders.",
+      "details": [
+        "300 GSM ultra-heavy combed organic cotton",
+        "Generous relaxed oversized drape",
+        "Tightly knit anti-sag collar ribbing",
+        "Chest XANTA minimalist brand logo",
+        "Back STANDING APART signature graphic"
+      ],
+      "care": [
+        "Machine wash cold with similar colours",
+        "Do not tumble dry",
+        "Cool iron inside out",
+        "Dry flat"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "published": true,
+      "featured": true,
+      "sort_order": 5,
+      "colourways": [
+        {
+          "id": "oversized-tee-pastel-blue",
+          "colour": "Pastel Blue",
+          "hex": "#9bbcd4",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/pastel-blue-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/pastel-blue-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/pastel-blue-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/pastel-blue-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "oversized-tee-navy",
+          "colour": "Navy Blue",
+          "hex": "#1f293d",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/navy-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/navy-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/navy-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/navy-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "oversized-tee-cream",
+          "colour": "Cream / Sand",
+          "hex": "#e0d6c5",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/cream-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/cream-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/cream-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/cream-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "oversized-tee-mocha",
+          "colour": "Mocha Brown",
+          "hex": "#5e4534",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/mocha-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/mocha-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/mocha-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/mocha-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "oversized-tee-yellow",
+          "colour": "Pale Yellow / Butter",
+          "hex": "#eee4b8",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/yellow-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/yellow-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/yellow-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/yellow-back.jpg",
+              "label": "Back"
+            }
+          ]
+        },
+        {
+          "id": "oversized-tee-white",
+          "colour": "Pure White",
+          "hex": "#f7f7f7",
+          "images": [
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/white-front.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/white-front.jpg",
+              "label": "Front"
+            },
+            {
+              "key": "products/xanta-unisex-oversized-t-shirt/white-back.jpg",
+              "url": "https://vanta-api.rizzify.workers.dev/images/products/xanta-unisex-oversized-t-shirt/white-back.jpg",
+              "label": "Back"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

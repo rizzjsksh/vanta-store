@@ -80,57 +80,63 @@
   <div id="xanta-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Announcement Ticker -->
-  <div class="xanta-ticker" role="region" aria-label="Store announcement">
+    <!-- Top Marquee Ticker -->
+  <aside class="reformia-ticker" aria-label="Announcement">
     <div class="ticker-track">
-      <div class="ticker-item">XANTA — DROP 01 · CUT SHARP. WORN EASY. · NEW ARRIVALS</div>
-      <div class="ticker-divider">•</div>
-      <div class="ticker-item">HEAVYWEIGHT COTTON · HONEST WASHES · USA · UK · CANADA</div>
-      <div class="ticker-divider">•</div>
-      <div class="ticker-item">XANTA — DROP 01 · CUT SHARP. WORN EASY. · NEW ARRIVALS</div>
-      <div class="ticker-divider">•</div>
-      <div class="ticker-item">HEAVYWEIGHT COTTON · HONEST WASHES · USA · UK · CANADA</div>
-      <div class="ticker-divider">•</div>
-      <div class="ticker-item">XANTA — DROP 01 · CUT SHARP. WORN EASY. · NEW ARRIVALS</div>
-      <div class="ticker-divider">•</div>
-      <div class="ticker-item">HEAVYWEIGHT COTTON · HONEST WASHES · USA · UK · CANADA</div>
+      <span class="ticker-item">XANTA — DROP 01</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">CUT SHARP. WORN EASY.</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">HEAVYWEIGHT COTTON ESSENTIALS</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">FREE PRIORITY SHIPPING OVER $100 (USA, UK &amp; CANADA)</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">XANTA — DROP 01</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">CUT SHARP. WORN EASY.</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">HONEST WASHES</span>
+      <span class="ticker-dot">•</span>
+      <span class="ticker-item">BUILT FOR THE EVERYDAY</span>
     </div>
-  </div>
+  </aside>
 
-  <!-- Reformia Navigation Header -->
-  <header class="reformia-header">
-    <div class="header-inner">
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      </button>
+  <!-- Sticky Luxury Header -->
+  <header class="reformia-header" role="banner">
+    <div class="header-container">
+      <a href="index.html" class="brand-wordmark" aria-label="XANTA Home">XANTA</a>
 
-      <a href="/" class="header-logo" aria-label="XANTA Homepage">
-        <span class="logo-text">XANTA</span>
-      </a>
-
-      <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
-        <a href="/shop.html" class="nav-link">Shop All</a>
-        <a href="#new-arrivals" class="nav-link">New Arrivals</a>
-        <a href="#bottoms" class="nav-link">Bottoms</a>
-        <a href="#category-switch" class="nav-link">Categories</a>
-        <a href="/about.html" class="nav-link">About</a>
-        <a href="/contact.html" class="nav-link">Contact</a>
+      <nav class="header-nav" id="header-nav" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-item active">HOME</a>
+        <a href="shop.html" class="nav-item">DROP 01</a>
+        <a href="shop.html?category=t-shirts" class="nav-item">TEES &amp; POLOS</a>
+        <a href="shop.html?category=bottoms" class="nav-item">BOTTOMS</a>
+        <a href="about.html" class="nav-item">STORY</a>
+        <a href="contact.html" class="nav-item">CARE</a>
       </nav>
 
-      <div class="header-actions">
-        <button class="action-btn search-trigger" id="search-trigger" aria-label="Search catalog">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span class="action-label desktop-only">Search</span>
+      <div class="header-tools">
+        <button type="button" class="tool-btn" id="search-trigger" aria-label="Search catalog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
         </button>
-
-        <a href="/contact.html" class="action-btn desktop-only" aria-label="Customer Care / Inquiries">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span class="action-label">Account</span>
-        </a>
-
-        <button class="action-btn cart-trigger" id="cart-drawer-btn" aria-label="Open Shopping Bag">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-          <span class="action-label desktop-only">Cart</span>
+        <button type="button" class="tool-btn cart-btn" id="cart-drawer-btn" aria-label="Open shopping bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
           <span class="cart-badge" id="cart-count-badge">0</span>
+          <span class="cart-count-badge" id="cart-count" style="display:none">0</span>
+        </button>
+        <button type="button" class="tool-btn mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       </div>
     </div>

@@ -247,65 +247,65 @@ function showCartToast(item) {
 function productCard(p, options) {
   const opts = options || {};
   const prodId = escapeHtml(p.id);
-  const prodName = escapeHtml(p.name || "XANTA Product");
+  const prodName = escapeHtml(p.name || "XANTA Essential");
   const isLead = !!opts.lead;
+
+  const resolve = url => {
+    if (!url) return "";
+    if (/^https?:\/\//i.test(url) || url.startsWith("/")) return url;
+    return `${XANTA_API}${url}`;
+  };
 
   const sizes = Array.isArray(p.sizes) ? p.sizes : [];
   const firstSize = sizes.find(s => s && typeof s === "object" && Number(s.price) > 0);
-  const price = Number(p.price || firstSize?.price);
-  const priceDisplay = Number.isFinite(price) && price > 0 ? `$${price.toFixed(2)}` : "View product";
+  const price = Number(p.price || firstSize?.price) || 0;
+  const priceDisplay = price > 0 ? `$${price.toFixed(2)}` : "View piece";
 
   const cws = Array.isArray(p.colourways) ? p.colourways : [];
-  const lotCode = `LOT ${String(p.sort_order || 0).padStart(2, "0")}`;
-  const badgeText = p.featured ? `${lotCode} · FEATURED` : lotCode;
-  const badgeClass = p.featured ? "badge-seller" : "badge-new";
+  const firstCw = cws[0] || {};
+  const cwImages = Array.isArray(firstCw.images) ? firstCw.images : [];
 
-  const resolve = url => (!url ? "" : (url.startsWith("http") || url.startsWith("/") ? url : XANTA_API + url));
-  const imageAt = (cw, index) => {
-    const imgs = (cw && cw.images) || [];
-    const im = imgs[index];
-    if (!im) return "";
-    return typeof im === "string" ? im : (im.url || im.src || "");
+  const getImgUrl = item => {
+    if (!item) return "";
+    if (typeof item === "string") return resolve(item);
+    return resolve(item.url || item.src || (item.key ? `/images/${item.key}` : ""));
   };
 
-  const frontUrl = resolve(imageAt(cws[0], 0) || p.image || "");
-  const backUrl = resolve(imageAt(cws[0], 1));
+  const frontUrl = getImgUrl(cwImages[0]) || resolve(p.image) || "/og-image.png";
+  const backUrl = getImgUrl(cwImages[1]);
+  const category = p.category ? String(p.category).toUpperCase() : "ESSENTIALS";
+  const colourCount = cws.length || 1;
 
-  // The lead card is above the fold, so it loads eagerly; everything else waits.
-  const loadAttrs = isLead
-    ? 'loading="eager" fetchpriority="high"'
-    : 'loading="lazy" fetchpriority="low"';
+  const loadAttrs = isLead ? 'loading="eager" fetchpriority="high"' : 'loading="lazy" fetchpriority="low"';
 
-  const image = frontUrl
-    ? `<div class="card-visual" data-lot-panel>
-         <img class="card-img-front" data-lot-front src="${escapeHtml(frontUrl)}" alt="${prodName} — front view" ${loadAttrs} decoding="async" width="800" height="1000">
-         ${backUrl ? `<img class="card-img-back" data-lot-back src="${escapeHtml(backUrl)}" alt="" aria-hidden="true" loading="lazy" decoding="async" width="800" height="1000">` : ""}
-       </div>`
-    : `<div class="card-visual"><div class="product-image-unavailable" role="img" aria-label="Product image unavailable">XANTA</div></div>`;
-
-  const lotStrip = cws.length
-    ? `<div class="lot-strip" role="group" aria-label="Colours for ${prodName}">
-         ${cws.map((cw, i) => `
-           <button type="button" class="lot-swatch" style="--swatch:${escapeHtml(cw.hex || "#777777")}"
-                   data-lot-index="${i}" data-product-id="${prodId}"
-                   aria-pressed="${i === 0}"
-                   aria-label="${escapeHtml(cw.colour || `Colour ${i + 1}`)}"><span class="sr-only">${escapeHtml(cw.colour || "")}</span></button>`).join("")}
-       </div>`
-    : "";
+  const colorsHtml = cws.length
+    ? cws.slice(0, 5).map(cw => `
+        <span class="color-dot" style="background:${escapeHtml(cw.hex || '#14161A')};" title="${escapeHtml(cw.colour || 'Colour')}"></span>
+      `).join("")
+    : `<span class="color-dot" style="background:#14161A;" title="Standard"></span>`;
 
   return `
-    <article class="top-pick-card" data-reveal="up" data-product-id="${prodId}">
-      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-visual-link" aria-label="View ${prodName}, ${escapeHtml(priceDisplay)}">
-        ${image}
+    <article class="reformia-product-card" data-product-id="${prodId}">
+      <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-media" aria-label="${prodName}, ${escapeHtml(priceDisplay)}">
+        <img class="card-img-front" src="${escapeHtml(frontUrl)}" alt="${prodName} — front view" ${loadAttrs} decoding="async" width="800" height="1000">
+        ${backUrl ? `<img class="card-img-back" src="${escapeHtml(backUrl)}" alt="${prodName} — back view" loading="lazy" decoding="async" width="800" height="1000">` : ""}
+        <span class="card-tag">${escapeHtml(category)}</span>
+        <span class="card-quick-add">View Piece &rarr;</span>
       </a>
-      <div class="card-details-row">
-        <div class="card-meta">
-          <h3 class="card-title"><a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a></h3>
+      <div class="card-info">
+        <span class="card-category">${escapeHtml(category)} · ${colourCount} ${colourCount === 1 ? "COLOUR" : "COLOURWAYS"}</span>
+        <h3 class="card-title">
+          <a href="product.html?id=${encodeURIComponent(p.id)}">${prodName}</a>
+        </h3>
+        <div class="card-price-row">
           <span class="card-price">${priceDisplay}</span>
+          <div class="card-colors" title="${colourCount} available colourways">
+            ${colorsHtml}
+          </div>
         </div>
       </div>
-      ${lotStrip}
-    </article>`;
+    </article>
+  `;
 }
 
 /* --------------------------------------------------------------------------

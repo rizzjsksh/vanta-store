@@ -398,18 +398,49 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   Product Cards & Grid
+   Product Cards & Grid (Enlarged & Responsive Across Devices)
    -------------------------------------------------------------------------- */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
 }
 
 .product-scroll-track {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .product-scroll-track {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+  }
+
+  .product-scroll-track .reformia-product-card {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+  }
 }
 
 .reformia-product-card {
@@ -419,31 +450,52 @@ img {
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
   position: relative;
+  width: 100%;
 }
 
 .reformia-product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(20, 22, 26, 0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(20, 22, 26, 0.09);
 }
 
 .card-media {
   position: relative;
   aspect-ratio: 4 / 5;
-  background-color: #F5F5F5;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--color-border);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card-media img {
+.card-media img.card-img-front {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.35s ease;
+  object-fit: contain;
+  padding: clamp(12px, 3vw, 20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
-.reformia-product-card:hover .card-media img {
-  transform: scale(1.04);
+.card-media img.card-img-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: clamp(12px, 3vw, 20px);
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reformia-product-card:hover .card-media img.card-img-back {
+  opacity: 1;
+}
+
+.reformia-product-card:hover .card-media img.card-img-front {
+  transform: scale(1.02);
 }
 
 .card-tag {
@@ -1664,4 +1716,379 @@ img {
     width: 100%;
     justify-content: space-between;
   }
+}
+
+
+/* Sticky PDP Desktop & Portable Mobile Styles */
+@media (min-width: 901px) {
+  .detail-info-col {
+    position: sticky;
+    top: 96px;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-page-container {
+    padding: 0 16px;
+  }
+  .product-detail-layout {
+    gap: 24px;
+  }
+  .detail-visual {
+    padding: 12px;
+  }
+  .detail-info-col {
+    padding: 20px 16px;
+  }
+  .detail-title {
+    font-size: 1.45rem;
+  }
+}
+
+/* Subpage Layout Consistency */
+.page-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .page-main {
+    padding: 28px 16px 60px;
+  }
+}
+
+.shop-hero-header,
+.contact-header-block {
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+.shop-filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.filter-pill {
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background-color: #FFFFFF;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--color-ink);
+}
+
+.filter-pill.active {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  border-color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility & Skip Link
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  background: var(--color-ink);
+  color: #FFFFFF;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 9999;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Unified Header & Ticker Aliases
+   -------------------------------------------------------------------------- */
+.reformia-ticker,
+.xanta-ticker {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+}
+
+.ticker-dot {
+  color: var(--color-denim);
+  margin: 0 4px;
+}
+
+.header-container,
+.header-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-wordmark,
+.header-logo .logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--color-ink);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-nav .nav-item,
+.header-nav .nav-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  position: relative;
+  padding: 4px 0;
+}
+
+.header-nav .nav-item:hover,
+.header-nav .nav-link:hover,
+.header-nav .nav-item.active,
+.header-nav .nav-link.active {
+  color: var(--color-ink);
+}
+
+.header-tools,
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tool-btn,
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: var(--radius-btn);
+  color: var(--color-ink);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.tool-btn:hover,
+.action-btn:hover {
+  background-color: var(--color-bone);
+}
+
+/* --------------------------------------------------------------------------
+   Quick Search Modal
+   -------------------------------------------------------------------------- */
+.search-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(20, 22, 26, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 210;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.search-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.search-modal {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -20px);
+  width: 90%;
+  max-width: 600px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+  z-index: 220;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.search-modal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.search-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.search-modal-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.search-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.search-modal-close:hover {
+  color: var(--color-ink);
+}
+
+.search-modal-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-btn);
+  background: var(--color-bone);
+  color: var(--color-ink);
+  box-sizing: border-box;
+}
+
+.search-modal-input:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  background: #FFFFFF;
+}
+
+.search-results-box {
+  margin-top: 16px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .header-nav {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+/* Explicitly ensure product card title and meta are readable without truncation */
+.reformia-product-card .card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 10px 0;
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.reformia-product-card .card-title a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.reformia-product-card .card-title a:hover {
+  color: var(--color-denim);
+  text-decoration: underline;
+}
+
+.reformia-product-card .card-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.reformia-product-card .card-info {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+@media (max-width: 640px) {
+  .reformia-product-card .card-title {
+    font-size: 0.98rem;
+  }
+  .reformia-product-card .card-info {
+    padding: 14px 16px 18px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Contact Page Contrast & Legibility Polish
+   -------------------------------------------------------------------------- */
+.channel-title,
+.form-panel-title {
+  color: #FFFFFF !important;
+}
+
+.channel-text,
+.form-panel-desc,
+.channel-timeframe {
+  color: #D1D5DB !important;
+}
+
+.channel-card,
+.contact-form-panel {
+  background-color: #14161A !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }

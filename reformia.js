@@ -176,30 +176,53 @@
   }
 
   function renderProductCard(p) {
-    const imgUrl = getFirstProductImage(p);
+    const resolve = url => {
+      if (!url) return "";
+      if (/^https?:\/\//i.test(url) || url.startsWith("/")) return url;
+      return `${XANTA_API}${url}`;
+    };
+
+    const cws = Array.isArray(p.colourways) ? p.colourways : [];
+    const firstCw = cws[0] || {};
+    const cwImages = Array.isArray(firstCw.images) ? firstCw.images : [];
+
+    const getImgUrl = item => {
+      if (!item) return "";
+      if (typeof item === "string") return resolve(item);
+      return resolve(item.url || item.src || (item.key ? `/images/${item.key}` : ""));
+    };
+
+    const frontUrl = getImgUrl(cwImages[0]) || resolve(p.image) || "/og-image.png";
+    const backUrl = getImgUrl(cwImages[1]);
+
     const priceNum = Number(p.price) || 0;
     const priceFormatted = `$${priceNum.toFixed(2)}`;
-    const category = p.category ? p.category.toUpperCase() : "APPAREL";
-    const colourCount = (p.colourways && p.colourways.length) || 1;
+    const category = p.category ? String(p.category).toUpperCase() : "ESSENTIALS";
+    const colourCount = cws.length || 1;
+
+    const colorsHtml = cws.length
+      ? cws.slice(0, 5).map(cw => `
+          <span class="color-dot" style="background:${escapeHtml(cw.hex || '#14161A')};" title="${escapeHtml(cw.colour || 'Colour')}"></span>
+        `).join("")
+      : `<span class="color-dot" style="background:#14161A;" title="Standard"></span>`;
 
     return `
       <article class="reformia-product-card" data-product-id="${escapeHtml(p.id)}">
-        <a href="/product.html?id=${encodeURIComponent(p.id)}" class="card-media" aria-label="${escapeHtml(p.name)}">
-          <img src="${imgUrl}" alt="${escapeHtml(p.name)} — XANTA Streetwear" loading="lazy" width="320" height="400">
+        <a href="product.html?id=${encodeURIComponent(p.id)}" class="card-media" aria-label="${escapeHtml(p.name)}">
+          <img class="card-img-front" src="${escapeHtml(frontUrl)}" alt="${escapeHtml(p.name)} — front view" loading="lazy" width="800" height="1000">
+          ${backUrl ? `<img class="card-img-back" src="${escapeHtml(backUrl)}" alt="${escapeHtml(p.name)} — back view" loading="lazy" width="800" height="1000">` : ""}
           <span class="card-tag">${escapeHtml(category)}</span>
           <span class="card-quick-add">View Piece &rarr;</span>
         </a>
         <div class="card-info">
-          <span class="card-category">${escapeHtml(category)} · ${colourCount} ${colourCount === 1 ? "COLOUR" : "COLOURS"}</span>
+          <span class="card-category">${escapeHtml(category)} · ${colourCount} ${colourCount === 1 ? "COLOUR" : "COLOURWAYS"}</span>
           <h3 class="card-title">
-            <a href="/product.html?id=${encodeURIComponent(p.id)}">${escapeHtml(p.name)}</a>
+            <a href="product.html?id=${encodeURIComponent(p.id)}">${escapeHtml(p.name)}</a>
           </h3>
           <div class="card-price-row">
             <span class="card-price">${priceFormatted}</span>
             <div class="card-colors" title="${colourCount} available colourways">
-              <span class="color-dot" style="background:#14161A;"></span>
-              <span class="color-dot" style="background:#EDEDED;"></span>
-              <span class="color-dot" style="background:#5C7B96;"></span>
+              ${colorsHtml}
             </div>
           </div>
         </div>

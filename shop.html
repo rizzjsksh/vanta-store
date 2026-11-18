@@ -215,7 +215,7 @@
         <strong id="drawer-subtotal">$0.00</strong>
       </div>
       <p class="cart-tax-notice">Taxes and priority tracked shipping calculated at checkout</p>
-      <a href="checkout.html" class="btn-checkout-primary" id="cart-checkout-btn">PROCEED TO CHECKOUT &rarr;</a>
+      <a href="checkout.html" class="btn-checkout-primary" id="drawer-checkout-btn">PROCEED TO CHECKOUT &rarr;</a>
       <a href="cart.html" class="view-bag-link">View Full Bag Details</a>
     </div>
   </aside>
@@ -270,104 +270,53 @@
     </div>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+    <footer class="reformia-footer" role="contentinfo">
     <div class="footer-inner">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <span class="brand-logo footer-brand">XANTA</span>
-          <p class="footer-tagline">Architectural luxury streetwear crafted for longevity. Designed to stand apart.</p>
-          <p class="footer-geo">&bull; USA &bull; United Kingdom &bull; Canada</p>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo">XANTA</span>
+          <p class="footer-tagline">Cut sharp. Worn easy. Minimalist streetwear designed for the USA, UK, and Canada.</p>
         </div>
 
-        <div class="footer-col">
-          <h2 class="footer-col-title">COLLECTION</h2>
-          <ul class="footer-links">
-            <li><a href="shop.html?category=T-SHIRT">Heavyweight Tees</a></li>
-            <li><a href="shop.html?category=HOODIE">Luxury Hoodies</a></li>
-            <li><a href="shop.html">Browse All</a></li>
-          </ul>
+        <div class="footer-nav-col">
+          <span class="col-title">Shop</span>
+          <a href="shop.html">All Products</a>
+          <a href="shop.html?category=t-shirts">T-Shirts &amp; Polos</a>
+          <a href="shop.html?category=denim,pants">Bottoms</a>
+          <a href="cart.html">Shopping Bag</a>
         </div>
 
-        <div class="footer-col">
-          <h2 class="footer-col-title">INFORMATION</h2>
-          <ul class="footer-links">
-            <li><a href="about.html">About XANTA</a></li>
-            <li><a href="contact.html">Client Care</a></li>
-            <li><a href="llms.txt">LLMs Context File</a></li>
-            <li><a href="sitemap.xml">Sitemap</a></li>
-          </ul>
+        <div class="footer-nav-col">
+          <span class="col-title">Brand</span>
+          <a href="about.html">About XANTA</a>
+          <a href="about.html#faq">FAQ &amp; Materials</a>
+          <a href="contact.html">Client Care &amp; Inquiries</a>
         </div>
 
-        <div class="footer-col">
-          <h2 class="footer-col-title">CLIENT SUPPORT</h2>
-          <ul class="footer-links">
-            <li><a href="contact.html#shipping">Priority Dispatch</a></li>
-            <li><a href="contact.html#returns">Returns &amp; Exchanges</a></li>
-            <li><a href="contact.html">Customer Support</a></li>
-          </ul>
+        <div class="footer-nav-col">
+          <span class="col-title">Destination</span>
+          <p style="font-size: 0.85rem; color: #A2A3A4; margin-bottom: 10px;">Official distribution serving:</p>
+          <span class="dest-badge">United States</span>
+          <span class="dest-badge">United Kingdom</span>
+          <span class="dest-badge">Canada</span>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; <span id="year">2026</span> XANTA. All rights reserved. Designed to Stand Apart.</p>
-        <div class="footer-legal">
-          <a href="about.html">Brand Integrity</a>
-          <span class="sep" aria-hidden="true">&bull;</span>
-          <a href="contact.html">Terms of Care</a>
+        <p class="copyright">&copy; 2026 XANTA. All rights reserved.</p>
+        <div class="payment-methods" aria-label="Accepted Payment Methods">
+          <span class="pay-chip">VISA</span>
+          <span class="pay-chip">Mastercard</span>
+          <span class="pay-chip">AMEX</span>
+          <span class="pay-chip">Apple Pay</span>
+          <span class="pay-chip">Google Pay</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
-    <a href="index.html" class="bottom-nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-      </svg>
-      <span>Home</span>
-    </a>
-
-    <a href="shop.html" class="bottom-nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <path d="M16 10a4 4 0 0 1-8 0"></path>
-      </svg>
-      <span>Shop</span>
-    </a>
-    <a href="contact.html" class="bottom-nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
-      <span>Contact</span>
-    </a>
-
-    <a href="cart.html" class="bottom-nav-item">
-      <div class="bottom-cart-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <span class="cart-count-badge bottom-cart-badge">0</span>
-      </div>
-      <span>Cart</span>
-    </a>
-  </nav>
-
-  
-  
-
-  <div id="cart-toast" class="cart-toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
   <script src="reformia.js"></script>
-  <div id="xanta-announcer" class="announce-region" role="status" aria-live="polite"></div>
-
-  <!-- Motion: GSAP (vendored locally, no third-party runtime dependency) -->
-  <script src="vendor/gsap/gsap.min.js"></script>
-  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
-  <script src="vendor/gsap/SplitText.min.js"></script>
-  <script src="motion.js"></script>
 </body>
 </html>
+
